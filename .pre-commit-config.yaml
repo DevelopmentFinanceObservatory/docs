@@ -1,0 +1,128 @@
+# Pre-commit hooks for Python + data repos
+# Install dev deps:  uv sync --group dev
+# Enable hooks:      pre-commit install
+# Run all files:     pre-commit run --all-files
+# Update hooks:      pre-commit autoupdate
+# Skip once:         git commit --no-verify
+
+repos:
+  # ---------------------------------------------------------------------------
+  # Ruff: fast linter + formatter
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.7
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  # ---------------------------------------------------------------------------
+  # Core hygiene, JSON/YAML/TOML, security
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      # Whitespace & endings
+      # docsync fixtures are recorded Google Docs exports: a trailing two-space
+      # hard break and a missing final newline are part of what Google wrote.
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+        exclude: ^tests/docsync/fixtures/
+      - id: end-of-file-fixer
+        exclude: ^tests/docsync/fixtures/
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+      # Conflicts & platform quirks
+      - id: check-case-conflict
+      - id: check-merge-conflict
+
+      # Python sanity
+      - id: debug-statements
+      - id: check-ast
+      - id: check-shebang-scripts-are-executable
+      - id: check-builtin-literals
+      - id: check-docstring-first
+
+      # Config/data formats
+      - id: check-json
+      - id: pretty-format-json
+        args: [--autofix, --indent=2, --no-sort-keys]
+        exclude: |
+          (?x)^(
+            \.idea/.*|
+            \.vscode/.*
+          )$
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-toml
+
+      # Basic secret hygiene
+      - id: detect-private-key
+
+      # Large files (5MB) with sensible excludes
+      - id: check-added-large-files
+        args: [--maxkb=5000]
+        exclude: |
+          (?x)^(
+            .*\.parquet|
+            .*\.feather|
+            uv\.lock
+          )$
+
+  # ---------------------------------------------------------------------------
+  # Type checking (uses settings from pyproject.toml)
+  # ---------------------------------------------------------------------------
+  - repo: local
+    hooks:
+      - id: ty
+        name: ty type check
+        language: system
+        entry: uv run ty check
+        types: [python]
+        pass_filenames: false
+
+  # ---------------------------------------------------------------------------
+  # Spelling (docs + code comments)
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
+    hooks:
+      - id: codespell
+        args: [--write-changes]
+        exclude: |
+          (?x)^(
+            .*\.lock|
+            .*\.parquet|
+            .*\.feather
+          )$
+
+  # ---------------------------------------------------------------------------
+  # GitHub Actions linting
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+
+  # ---------------------------------------------------------------------------
+  # Markdown formatting (GFM + front matter)
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/hukkin/mdformat
+    rev: 1.0.0
+    hooks:
+      - id: mdformat
+        args: [--wrap, "no"]
+        additional_dependencies:
+          - mdformat-gfm>=1.0.0
+          - mdformat-frontmatter>=2.1.0
+          # Parses `!!! note|tip|warning` callouts, which the normaliser converts
+          # to site alerts. Without it mdformat un-indents their bodies.
+          - mdformat-admon>=2.0
+        # tests/fixtures/markdown/** is deliberately malformed Markdown, the
+        # normaliser's test input. mdformat rewrites indented_untitled.md,
+        # admonition_in_fence.md, indented_titled.md, and
+        # transclusion/repo/docs/page.md on contact, silently overwriting the
+        # fixtures. Excluded rather than fixed. tests/docsync/fixtures/** holds
+        # recorded Google Docs exports and the source pages they came from.
+        exclude: ^tests/(docsync/)?fixtures/

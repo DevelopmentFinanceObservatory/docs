@@ -1,0 +1,143 @@
+[project]
+name = "dfo-docs"
+version = "0.1.0"
+description = "Fetches, normalises, and publishes documentation aggregated from DFO source repositories."
+
+authors = [
+  { name = "ONE Campaign", email = "jorge.rivera@one.org" }
+]
+
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "google-auth>=2.59.1",
+    "markdown-it-py>=4.2",
+    "PyYAML>=6.0",
+    "requests>=2.34.2",
+]
+
+[project.scripts]
+dfo-docs-build = "dfo_docs.cli:main"
+dfo-docsync = "dfo_docs.docsync.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.13"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.0",
+    "pytest-cov>=7.1.0",
+    "ty>=0.0.59",
+    "ruff>=0.15.0",
+    "pre-commit>=4.6.0",
+    "jsonschema>=4.25.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+# Carried verbatim from the template even though this repo has no notebooks
+# yet; dropping it would conflict on a future `copier update`.
+extend-include = ["*.ipynb"]
+
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "*.egg-info",
+    ".pytest_cache",
+    "htmlcov",
+]
+# docsync fixtures are recorded Google Docs exports, kept byte for byte; ruff
+# would otherwise reformat the Python inside their code blocks.
+extend-exclude = ["tests/docsync/fixtures"]
+
+[tool.ruff.lint]
+# `select` is the template's `project` type list, kept verbatim (do not edit)
+# so a future `copier update` sees no local change here. The looser `project`
+# rule set exists because pandas/numpy stubs make strict rules noisy in
+# analysis code; dfo-docs imports neither, `ty check` already passes clean,
+# and the strict set costs only ten source fixes here, so we opt in via
+# `extend-select` instead of switching project types.
+select = [
+    "E", "W", "F",      # pycodestyle, pyflakes
+    "I",                 # isort
+    "UP",                # pyupgrade
+    "B",                 # bugbear
+    "C4",                # comprehensions
+    "RUF",               # ruff-specific
+]
+extend-select = ["N", "SIM", "PL", "ERA", "PERF", "ANN"]
+
+ignore = [
+    "E501",     # Line length (formatter handles)
+    "PLR0913",  # Too many arguments
+    "PLR0912",  # Too many branches
+    "PLR0914",  # Too many locals
+    "PLR0915",  # Too many statements
+    "PLR2004",  # Magic values
+    "ANN401",   # Allow `Any` in typed signatures
+]
+# F841 (unused local) stays enabled. It never fires on this codebase, and an
+# unused local in a build tool is worth seeing.
+
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.per-file-ignores]
+# Tests don't need annotations or pylint-complexity gates.
+"tests/**/*.py" = ["ANN", "PLR2004"]
+# Notebooks: same template carry-over as `extend-include` above.
+"**/*.ipynb" = ["ANN", "F401", "F811", "E402"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ty.environment]
+python-version = "3.13"
+
+[tool.ty.src]
+include = ["src/dfo_docs"]
+
+# The template's `[tool.ty.analysis]` (replace-imports-with-any for
+# pandas/numpy) and `[tool.ty.rules]` (demoting possibly-missing-attribute and
+# possibly-unresolved-reference) are intentionally omitted here. Both exist to
+# silence pandas/numpy stub noise by demoting real checks; dfo-docs imports
+# neither library, and `ty check` already passes clean, so demoting them would
+# give away a working check for nothing.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=src/dfo_docs --cov-report=term --cov-report=xml"
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "def __str__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+show_missing = true
+precision = 2

@@ -1,0 +1,6 @@
+path: tools/new-package
+title: new-package
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md

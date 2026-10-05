@@ -1,0 +1,38 @@
+# The Platform tab's own categories and every entry in it. Owned by the platform
+# team; see CODEOWNERS. `track` must match this file's entry in
+# roadmap/index.yaml.
+#
+# The categories and entries below are placeholders for the owning team to
+# replace. They exist only to give the website team a worked example of this
+# track's shape; none of them are a real commitment.
+
+track: platform
+
+categories:
+  - id: infrastructure
+    label: "Placeholder: Infrastructure"
+  - id: integrations
+    label: "Placeholder: Integrations"
+  - id: developer-experience
+    label: "Placeholder: Developer experience"
+
+entries:
+  - id: placeholder-released-no-version
+    title: "Placeholder: Released Entry Without a Version"
+    description: >-
+      This is a placeholder showing a released entry that carries no version
+      number, and it carries no commitment. It exists only so a reader can see
+      a released entry whose shipped thing has no version to display.
+    status: released
+    released_on: "2026-02-01"
+
+  - id: placeholder-in-development-two-categories
+    title: "Placeholder: In-Development Entry With Two Categories"
+    description: >-
+      This is a placeholder showing the in-development status paired with two
+      categories from this track's own vocabulary, and it carries no
+      commitment. It exists only so a reader can see an in-development entry
+      filed under two filter chips at once.
+    categories: [infrastructure, integrations]
+    status: in-development
+    expected: "2026-Q2"

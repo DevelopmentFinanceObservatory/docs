@@ -1,0 +1,10 @@
+site_name: pydeflate
+site_description: Deflate and exchange-rate-adjust monetary values.
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Changelog: changelog.md
+extra:
+  dfo:
+    path: tools/pydeflate

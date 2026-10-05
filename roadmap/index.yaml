@@ -1,0 +1,17 @@
+# The roadmap's tabs, in display order, with the first as the default tab. Each
+# entry's `file` is derived by the loader as roadmap/<id>.json rather than authored
+# here. `description` is optional intro copy for a tab; a track with nothing to say
+# yet omits it rather than carrying invented copy.
+#
+# Each id here names a roadmap/<id>.yaml file, owned by that track's team; see
+# CODEOWNERS.
+
+- id: data
+  label: Data
+  description: >-
+    Datasets and coverage the data team is building, has shipped, or is still
+    weighing.
+- id: platform
+  label: Platform
+- id: ai-tools
+  label: AI tools

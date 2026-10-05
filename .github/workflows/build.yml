@@ -1,0 +1,262 @@
+# Fetches every enabled source, normalises it, builds the manifest and the roadmap, runs
+# the guards, checks links, and publishes whichever of the roadmap and the corpus is
+# ready to the publish branch (`corpus` by default; see `publish_branch` below).
+#
+# The roadmap and the corpus are two independent artefacts (see src/dfo_docs/cli.py's
+# module docstring), and this workflow's own exit-status handling and publish step
+# preserve that split rather than collapsing it. `scripts/build.py` itself returns one of
+# three exit codes: 0 (both published), 1 (nothing published; the roadmap itself failed
+# or something before it did), or 2 (the roadmap published, the corpus half did not). The
+# corpus half additionally depends on lychee, which runs outside the CLI, so "the corpus
+# half is good" here means build exit 0 *and* lychee passing; this workflow is the one
+# place that conjunction is formed. A build exit of 1 leaves nothing to publish and the
+# job fails outright. A build exit of 2, or a lychee failure on top of a clean build,
+# still publishes the roadmap and leaves the previous corpus and manifest in place, and
+# still fails the job so the failure is visible.
+#
+# Freshness: a source docs merge is expected to reach the published corpus within 24
+# hours (the daily `schedule` run below), or immediately once that source repository
+# sends a `source-docs-updated` `repository_dispatch`. Sending that dispatch is each
+# source repository's own concern and is not set up here.
+#
+# Every step that can fail captures its exit status into an output rather than failing
+# outright, because a step runs under bash -e and a failing command in a plain assignment
+# would kill the shell before its status could be read. Guarding the assignment with an
+# if, which bash does not treat as a failure, captures the build's three-way exit status
+# and lychee's, below.
+#
+# Private sources: the build clones with a short-lived, read-only installation token for the
+# `dfo-reader` GitHub App, minted each run from the `READER_APP_CLIENT_ID` variable and the
+# `READER_APP_PRIVATE_KEY` secret. The token reaches git through a credential helper set
+# in the environment of the build step alone. Git asks a helper only when the server
+# challenges, so public sources still clone anonymously. To admit a private repository,
+# install `dfo-reader` on it and add its name to the `repositories:` input of the "Mint a
+# read-only token for private sources" step below. A missing secret fails the run at that
+# step, and nothing falls back to an anonymous clone.
+#
+# Every run, pull requests included, is ONEcampaign-only. The job mints a `dfo-reader`
+# token, which the DevelopmentFinanceObservatory copy of the repository keeps only in
+# main-limited environments, and the `corpus` branch it publishes is consumed only by
+# ONEcampaign. The copy skips the workflow.
+name: Build and publish corpus
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      publish_branch:
+        description: >-
+          The branch to publish to. Defaults to the branch the site pins; point this at
+          a throwaway branch to rehearse a failure (e.g. a partial roadmap-only publish)
+          without touching it.
+        required: false
+        default: corpus
+  schedule:
+    - cron: "0 6 * * *"
+  repository_dispatch:
+    types: [source-docs-updated]
+
+# Publishing builds share one group, so a push landing mid-publish waits behind the one
+# ahead of it onto the publish branch rather than racing it. A pull request build writes
+# nothing, so each one gets its own group keyed by ref: it never queues behind a publish,
+# and a new push to the same pull request cancels the run it supersedes.
+concurrency:
+  group: dfo-docs-build-${{ github.event_name == 'pull_request' && github.ref || 'publish' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    # Mints a dfo-reader token, which prod keeps only in main-limited
+    # environments, so this runs in ONEcampaign only. The identical tree
+    # ran it here before it was synced.
+    if: github.repository_owner == 'ONEcampaign'
+    runs-on: ubuntu-latest
+    env:
+      # Every place the publish branch's name is needed reads this rather than a literal
+      # `corpus`, so a `workflow_dispatch` can rehearse a failure against a throwaway
+      # branch.
+      PUBLISH_BRANCH: ${{ inputs.publish_branch || 'corpus' }}
+    steps:
+      - name: Check out dfo-docs
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.0.0
+
+      - name: Set up Python 3.13
+        run: uv python install '3.13'
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Run tests
+        run: uv run pytest -q
+
+      # An unset variable or secret expands to an empty string, so this step names which
+      # one is missing before the token action runs.
+      - name: Check the dfo-reader credentials are configured
+        env:
+          READER_APP_CLIENT_ID: ${{ vars.READER_APP_CLIENT_ID }}
+          READER_APP_PRIVATE_KEY: ${{ secrets.READER_APP_PRIVATE_KEY }}
+        run: |
+          missing=0
+          if [ -z "$READER_APP_CLIENT_ID" ]; then
+            echo "::error::The READER_APP_CLIENT_ID variable is not set or not available to this run; private sources cannot be cloned."
+            missing=1
+          fi
+          if [ -z "$READER_APP_PRIVATE_KEY" ]; then
+            echo "::error::The READER_APP_PRIVATE_KEY secret is not set or not available to this run; private sources cannot be cloned."
+            missing=1
+          fi
+          exit "$missing"
+
+      # `permission-contents: read` narrows the token below what the App itself holds, so
+      # the build can read these repositories and write nothing to them.
+      - name: Mint a read-only token for private sources
+        id: reader
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.READER_APP_CLIENT_ID }}
+          private-key: ${{ secrets.READER_APP_PRIVATE_KEY }}
+          owner: ONEcampaign
+          repositories: dfo-apis,dfo-ai,dfo-skills
+          permission-contents: read
+
+      - name: Build the roadmap and the corpus
+        id: build
+        # This step runs under bash -e, so the build's exit code (0, 1, or 2; see
+        # src/dfo_docs/cli.py's main()) is read from an if rather than from a bare $?.
+        #
+        # GIT_CONFIG_COUNT and its KEY/VALUE pairs add a credential helper for
+        # github.com to every git command in this step and in no other. The helper
+        # answers only `get`, reads the token from the environment, and so never
+        # writes it to a config file or a remote URL.
+        env:
+          READER_APP_TOKEN: ${{ steps.reader.outputs.token }}
+          GIT_CONFIG_COUNT: "1"
+          GIT_CONFIG_KEY_0: credential.https://github.com.helper
+          GIT_CONFIG_VALUE_0: >-
+            !f() { test "$1" = get || return 0; echo username=x-access-token; echo "password=$READER_APP_TOKEN"; }; f
+        run: |
+          set -uo pipefail
+          if uv run python scripts/build.py --out published; then
+            build_status=0
+          else
+            build_status=$?
+          fi
+          echo "Build exited $build_status."
+          echo "status=$build_status" >> "$GITHUB_OUTPUT"
+
+      - name: Install lychee
+        uses: taiki-e/install-action@v2
+        with:
+          tool: lychee@0.24.2
+
+      - name: Check internal links
+        id: lychee
+        # A build exit of 1 means nothing published at all, and a build exit of 2 means
+        # the roadmap published but the corpus half did not, so published/corpus/ does
+        # not exist either way; skip lychee rather than have it fail on a missing
+        # directory and obscure the build's own error. Checking for the directory
+        # itself, rather than the build status, is what covers both exit codes. Captured
+        # the same way as the build's own status above, for the same bash -e reason.
+        run: |
+          set -uo pipefail
+          if [ ! -d published/corpus ]; then
+            echo "published/corpus does not exist (build status ${{ steps.build.outputs.status }}); skipping the link check."
+            echo "status=skipped" >> "$GITHUB_OUTPUT"
+          elif lychee --config lychee.toml published/corpus/; then
+            echo "status=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "status=$?" >> "$GITHUB_OUTPUT"
+          fi
+
+      # A pull request build runs every step above this one, so the build, the guards and
+      # the link check all gate the merge. This step is the only one that writes, and a
+      # pull request must not move the branch the site pins, so it stops here.
+      - name: Publish
+        if: steps.build.outputs.status != '1' && github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          # A build exit other than 1 means the roadmap phase itself passed and wrote
+          # its files (see src/dfo_docs/cli.py's _run), but asserting the file is here
+          # rather than trusting the status alone catches a typo in this step before
+          # it silently publishes an empty roadmap.
+          if [ ! -f published/roadmap.json ]; then
+            echo "::error::published/roadmap.json is missing despite build status ${{ steps.build.outputs.status }}; refusing to publish."
+            exit 1
+          fi
+
+          rm -rf /tmp/corpus-publish
+          git clone --quiet "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" /tmp/corpus-publish
+          cd /tmp/corpus-publish
+
+          # The commit below happens in this clone, not in the workspace checkout, so
+          # the identity has to be set here (repo-local is enough; it's a fresh clone
+          # that's deleted at the end of the job). Setting it before the `cd` above, in
+          # the workspace checkout, configures a different repository and leaves this
+          # clone with no identity, which git rejects with an "empty ident name" error.
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if ! git checkout "$PUBLISH_BRANCH" 2>/dev/null; then
+            git checkout --orphan "$PUBLISH_BRANCH"
+            git rm -rf . > /dev/null 2>&1 || true
+          fi
+
+          # Replacement is per subtree, not a full-tree wipe: a full wipe would delete a
+          # corpus that did not rebuild this run, on the days the corpus half fails.
+          # Each subtree is removed and copied back whole, never file by file, which is
+          # what keeps a page or track file removed upstream from surviving on this
+          # branch forever.
+          rm -rf roadmap roadmap.json roadmap*.schema.json
+          cp -R "$GITHUB_WORKSPACE/published/roadmap" ./roadmap
+          cp "$GITHUB_WORKSPACE/published/roadmap.json" ./roadmap.json
+          cp "$GITHUB_WORKSPACE/published/roadmap.schema.json" ./roadmap.schema.json
+          cp "$GITHUB_WORKSPACE/published/roadmap-track.schema.json" ./roadmap-track.schema.json
+
+          if [ "${{ steps.build.outputs.status }}" = "0" ] && [ "${{ steps.lychee.outputs.status }}" = "0" ]; then
+            rm -rf corpus manifest.json manifest.schema.json
+            cp -R "$GITHUB_WORKSPACE/published/corpus" ./corpus
+            cp "$GITHUB_WORKSPACE/published/manifest.json" ./manifest.json
+            cp "$GITHUB_WORKSPACE/published/manifest.schema.json" ./manifest.schema.json
+          else
+            echo "Corpus half did not succeed (build status ${{ steps.build.outputs.status }}, lychee status ${{ steps.lychee.outputs.status }}); leaving the previous corpus and manifest in place."
+          fi
+
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing changed; $PUBLISH_BRANCH branch already matches this build."
+          else
+            git commit -m "Publish from ${GITHUB_SHA}"
+            git push origin "$PUBLISH_BRANCH"
+          fi
+
+      # Every step above captures its own exit status into an output rather than letting
+      # a non-zero exit fail the step outright, which is what lets the roadmap still
+      # publish on a corpus-half failure. Nothing above this point fails the job on its
+      # own, so this is the one place that still happens, and it must run whether or not
+      # an earlier step's condition skipped it.
+      - name: Fail the job on a build or link-check problem
+        if: always()
+        run: |
+          build_status="${{ steps.build.outputs.status }}"
+          lychee_status="${{ steps.lychee.outputs.status }}"
+          if [ "$lychee_status" = "skipped" ]; then
+            lychee_detail="lychee skipped (published/corpus does not exist)"
+          else
+            lychee_detail="lychee exited $lychee_status"
+          fi
+          if [ "$build_status" != "0" ] || [ "$lychee_status" != "0" ]; then
+            echo "::error::build exited $build_status, $lychee_detail."
+            exit 1
+          fi

@@ -1,0 +1,25 @@
+# The AI tools tab's own categories and every entry in it. Owned by the AI tools
+# team; see CODEOWNERS. `track` must match this file's entry in
+# roadmap/index.yaml.
+#
+# The categories and entries below are placeholders for the owning team to
+# replace. They exist only to give the website team a worked example of this
+# track's shape; none of them are a real commitment.
+
+track: ai-tools
+
+categories:
+  - id: assistants
+    label: "Placeholder: Assistants"
+  - id: automation
+    label: "Placeholder: Automation"
+
+entries:
+  - id: placeholder-under-consideration
+    title: "Placeholder: Under-Consideration Entry"
+    description: >-
+      This is a placeholder showing the under-consideration status with a
+      category from this track's own vocabulary, and it carries no commitment.
+      It exists only so a reader can see an unscheduled entry in this track.
+    categories: [assistants]
+    status: under-consideration
