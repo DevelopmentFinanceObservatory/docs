@@ -1,13 +1,17 @@
 name: CI
 
+# A draft pull request runs nothing; marking it ready starts the run. The push to
+# main is the only test of the merged tree.
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
   lint:
+    if: github.event.pull_request.draft != true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -31,6 +35,7 @@ jobs:
         run: uv run ty check 'src/dfo_docs'
 
   test:
+    if: github.event.pull_request.draft != true
     runs-on: ubuntu-latest
     strategy:
       matrix:
