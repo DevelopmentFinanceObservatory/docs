@@ -1,0 +1,26 @@
+# Link-checking config for the assembled corpus.
+#
+# build.yml runs `lychee --config lychee.toml corpus/` after every build, over the
+# tree normalise.py has already rewritten to corpus-relative `.md` links. `offline`
+# means this pass only ever resolves links against files that are actually on disk.
+# It cannot fail on an external site's flakiness or rate limiting, and it cannot pass
+# an internal link by accident just because the target happens to be reachable over
+# the network too. External link rot against the live site is a separate, monthly
+# concern. See registry-health.yml.
+#
+# Relative links, including `.md` links between corpus pages, are all checked. Nothing
+# under corpus/ is excluded. bblocks_data_importers's importers/index.md links to
+# `./hdi`, and the real file is `hdr.md`, a genuine upstream defect. A correct
+# configuration reports it, which is the point of running lychee here at all.
+#
+# Root-relative links such as `/data/sources` or `/studio` point at site pages that live
+# outside the corpus, and the site passes them through unchanged. Offline lychee cannot
+# resolve them without a root, so `root_dir` maps them under a placeholder directory,
+# `site-root`, and `exclude` then skips everything mapped there. The directory never
+# exists, so lychee prints a warning that it is missing. A broken root-relative link
+# passes this check; the site's own routes are the authority for those.
+
+offline = true
+no_progress = true
+root_dir = "site-root"
+exclude = ["/site-root/"]

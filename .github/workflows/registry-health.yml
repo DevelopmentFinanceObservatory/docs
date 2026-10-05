@@ -1,0 +1,188 @@
+# The three checks that need more than git, run monthly: a registered repository
+# renamed since sources.yaml was written, one that has been archived, and external
+# link rot in the published corpus.
+#
+# Rename and archival detection read the GitHub API, which is why they live here and
+# not in build.py. build.py talks to git and nothing else. Link rot needs a real
+# network request per external link, which the main build deliberately never makes
+# (see lychee.toml's `offline = true`). This job checks the corpus branch, the tree
+# the site actually reads, without that restriction.
+#
+# The default GITHUB_TOKEN cannot read a private repository outside this one, so the rename
+# and archival check reads the private sources with a read-only `dfo-reader` installation
+# token, minted the same way as in build.yml. That token covers only the repositories named
+# in READER_REPOSITORIES below; every other source keeps using GITHUB_TOKEN, which reads any
+# public repository. Admitting a private source means adding it to READER_REPOSITORIES here
+# as well as to the build workflow's `repositories:` list.
+#
+# Only ONEcampaign runs this workflow. It checks the `corpus` branch that build.yml
+# publishes there, and a copy in another organisation publishes none.
+#
+# This opens a GitHub issue rather than failing the workflow run. A red X on a
+# scheduled job is easy to miss for months. Whoever inherits this repository reads
+# issues, not Actions history, in the week something else is on fire (see README).
+# One issue is opened per run that finds anything. Nothing here tries to detect or
+# update a previous one, since that's a judgement call better left to whoever
+# triages it.
+name: Registry health
+
+on:
+  schedule:
+    - cron: "0 6 1 * *" # 06:00 UTC on the first of every month
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  registry-health:
+    if: github.repository_owner == 'ONEcampaign'
+    runs-on: ubuntu-latest
+    env:
+      # The ONEcampaign repositories the dfo-reader token is minted for, comma-separated.
+      READER_REPOSITORIES: dfo-apis,dfo-ai,dfo-skills
+    steps:
+      - name: Check out dfo-docs
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.0.0
+
+      - name: Set up Python 3.13
+        run: uv python install '3.13'
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Check the dfo-reader credentials are configured
+        env:
+          READER_APP_CLIENT_ID: ${{ vars.READER_APP_CLIENT_ID }}
+          READER_APP_PRIVATE_KEY: ${{ secrets.READER_APP_PRIVATE_KEY }}
+        run: |
+          missing=0
+          if [ -z "$READER_APP_CLIENT_ID" ]; then
+            echo "::error::The READER_APP_CLIENT_ID variable is not set or not available to this run; private sources cannot be checked."
+            missing=1
+          fi
+          if [ -z "$READER_APP_PRIVATE_KEY" ]; then
+            echo "::error::The READER_APP_PRIVATE_KEY secret is not set or not available to this run; private sources cannot be checked."
+            missing=1
+          fi
+          exit "$missing"
+
+      # `GET /repos/{repo}` needs metadata read and nothing more.
+      - name: Mint a read-only token for private sources
+        id: reader
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.READER_APP_CLIENT_ID }}
+          private-key: ${{ secrets.READER_APP_PRIVATE_KEY }}
+          owner: ONEcampaign
+          repositories: ${{ env.READER_REPOSITORIES }}
+          permission-metadata: read
+
+      - name: Check registered repositories for a rename or archival
+        id: registry
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          READER_APP_TOKEN: ${{ steps.reader.outputs.token }}
+        run: |
+          uv run python - <<'PY'
+          import json
+          import os
+          import urllib.error
+          import urllib.request
+
+          from dfo_docs.registry import load_sources
+
+          reader_repos = {
+              f"ONEcampaign/{name.strip()}"
+              for name in os.environ["READER_REPOSITORIES"].split(",")
+          }
+          sources = load_sources("sources.yaml")
+
+          findings = []
+          for source in sources.values():
+              if not source.enabled or "/" not in source.repo:
+                  continue  # a disabled row, or a non-GitHub repo shorthand, has nothing to check
+
+              token = os.environ[
+                  "READER_APP_TOKEN" if source.repo in reader_repos else "GITHUB_TOKEN"
+              ]
+              request = urllib.request.Request(
+                  f"https://api.github.com/repos/{source.repo}",
+                  headers={
+                      "Authorization": f"Bearer {token}",
+                      "Accept": "application/vnd.github+json",
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(request) as response:
+                      data = json.load(response)
+              except urllib.error.HTTPError as exc:
+                  findings.append(
+                      f"- `{source.name}` (`{source.repo}`): GitHub API request failed "
+                      f"({exc.code})."
+                  )
+                  continue
+
+              if data["full_name"] != source.repo:
+                  findings.append(
+                      f"- `{source.name}`: sources.yaml says `{source.repo}`, GitHub now "
+                      f"resolves that to `{data['full_name']}`. Update the `repo` field."
+                  )
+              if data.get("archived"):
+                  findings.append(f"- `{source.name}` (`{source.repo}`) is archived on GitHub.")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as gh_output:
+              gh_output.write(f"has_findings={'true' if findings else 'false'}\n")
+
+          if findings:
+              with open("registry-findings.md", "w") as handle:
+                  handle.write("\n".join(findings) + "\n")
+          PY
+
+      - name: Check out the published corpus
+        uses: actions/checkout@v7
+        with:
+          ref: corpus
+          path: published-corpus
+
+      - name: Install lychee
+        uses: taiki-e/install-action@v2
+        with:
+          tool: lychee@0.24.2
+
+      - name: Check external links against the published corpus
+        id: linkrot
+        run: |
+          set +e
+          lychee --no-progress published-corpus/corpus/ > lychee-output.txt 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          cat lychee-output.txt
+
+      - name: Open an issue for anything found
+        if: steps.registry.outputs.has_findings == 'true' || steps.linkrot.outputs.status != '0'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const fs = require("fs");
+
+            let body = "";
+            if ("${{ steps.registry.outputs.has_findings }}" === "true") {
+              body += "## Registry\n\n";
+              body += fs.readFileSync("registry-findings.md", "utf8") + "\n\n";
+            }
+            if ("${{ steps.linkrot.outputs.status }}" !== "0") {
+              const linkrot = fs.readFileSync("lychee-output.txt", "utf8");
+              body += "## External link rot\n\n```\n" + linkrot + "\n```\n";
+            }
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Registry health: issues found on ${new Date().toISOString().slice(0, 10)}`,
+              body,
+              labels: ["registry-health"],
+            });

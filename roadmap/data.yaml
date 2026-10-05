@@ -1,0 +1,67 @@
+# The Data tab's own categories and every entry in it, upcoming and released
+# together. Owned by the data team; see CODEOWNERS. `track` must match this file's
+# entry in roadmap/index.yaml.
+
+track: data
+
+categories:
+  - id: aid-oda
+    label: Aid & ODA
+  - id: debt
+    label: Debt
+  - id: climate
+    label: Climate
+  - id: humanitarian
+    label: Humanitarian
+
+entries:
+  - id: mdb-flows
+    title: Multilateral Development Bank Flows
+    description: >-
+      A unified view of disbursement, commitment, and project-level data from the
+      six major multilateral development banks, harmonised against the DFO sector
+      taxonomy and linked to recipient country nodes in the knowledge graph.
+    categories: [aid-oda]
+    status: in-development
+    expected: "2026-Q3"
+
+  - id: south-south-cooperation
+    title: South-South Cooperation
+    description: >-
+      Flows from non-DAC development partners, with a focus on South-South and
+      triangular cooperation. Data availability is fragmented and methodologies
+      vary, so scope and feasibility are still being assessed.
+    categories: [aid-oda]
+    status: under-consideration
+
+  - id: crs-2025
+    title: OECD DAC CRS 2025 Data
+    description: >-
+      Added 2024 data year (provisional). Revised 2022 disbursements for 7 donors
+      following OECD restatement. Updated sector imputation model to v3.
+    categories: [aid-oda]
+    status: released
+    released_on: "2026-06-12"
+    version: "4.2.0"
+
+  # The two entries below are placeholders added to give the website team a worked
+  # example of every case the schema allows. They carry no commitment and are not
+  # real roadmap items; see the three entries above for those.
+
+  - id: placeholder-planned-multi-category
+    title: "Placeholder: Planned Entry With Several Categories"
+    description: >-
+      This is a placeholder showing the planned status paired with more than one
+      category, and it carries no commitment. It exists only so a reader can see
+      a planned entry filed under two filter chips at once.
+    categories: [climate, humanitarian]
+    status: planned
+    expected: "2026-Q4"
+
+  - id: placeholder-no-categories
+    title: "Placeholder: Entry With No Categories"
+    description: >-
+      This is a placeholder showing an entry that names no category, and it
+      carries no commitment. It exists only so a reader can see an entry that
+      appears under the All filter only.
+    status: under-consideration

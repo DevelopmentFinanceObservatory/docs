@@ -1,0 +1,23 @@
+# docsync publishes the DFO docs pages to Google Docs and pulls edits back as pull requests.
+#
+# `sources` is the allowlist of what docsync publishes. `hub` is this repository's own pages,
+# the ones hub.yaml names under content/hub/. Every other name must be an enabled `docs` or
+# `skill` row in sources.yaml that hub.yaml mounts.
+#
+# `drive_folder_id` is the "DFO docs" folder in the ONE Data shared drive. Each page's Doc
+# goes in a folder under it named after the page's nav section, and the tracking Sheet sits
+# in it, created by `dfo-docsync init` and found by its Drive property dfo_role=tracking-sheet.
+#
+# `pr_author` is the author docsync lists its open pull requests by, as gh's `--author` takes
+# it. The value `app/dfo-bot` names the dfo-bot GitHub App that opens them in CI. A local run
+# that opens pull requests with your own gh login passes `--pr-author @me`.
+
+sources:
+  - hub
+  - dfo-apis
+  - dfo-ai
+  - dfo-skills
+
+drive_folder_id: 1DL_BWEeo92oksJEr28xlXFD46xQxFQG1
+
+pr_author: app/dfo-bot

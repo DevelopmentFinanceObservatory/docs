@@ -1,0 +1,73 @@
+# The hub's own nav, plus the tree the registered sources mount into.
+#
+# A grouping heading (like "ODA" below) exists in this file only. A `mount` or
+# `external` entry deliberately carries no `title` of its own. The title comes from the source's
+# sidecar, or from Source.title for an external or skill row.
+
+title: DFO Docs
+
+nav:
+  - title: Home
+    page: index.md
+
+  - title: Get started
+    children:
+      - title: Get data
+        page: get-started/get-data.md
+      - title: Use DFO Studio
+        page: get-started/use-studio.md
+      # Connect your assistant (get-started/connect-your-assistant.md) joins once the MCP endpoint is public.
+
+  - title: Build with the DFO
+    children:
+      - title: Share live data or a snapshot
+        page: build/share.md
+      - title: Embed a chart
+        page: build/embed.md
+      - title: Use DFO data in your code
+        page: build/use-data-in-code.md
+      - mount: dfo-apis
+      - mount: dfo-ai
+
+  - title: Data
+    children:
+      - title: Where the numbers come from
+        page: data/where-the-numbers-come-from.md
+      - title: The knowledge graph
+        page: data/knowledge-graph.md
+      - title: The development finance ontology
+        page: data/ontology.md
+      - title: Versions and snapshots
+        page: data/versions.md
+      - title: The data bundle
+        page: data/bundle.md
+      - title: Methods
+        page: data/methods.md
+      - title: Glossary
+        page: data/glossary.md
+
+  - title: Skills
+    children:
+      - title: What a skill is
+        page: skills/what-a-skill-is.md
+      - title: Use skills in your own agent
+        page: skills/use-in-your-agent.md
+      - mount: dfo-skills
+
+  - title: Python packages
+    children:
+      - title: ODA
+        children:
+          - mount: oda_reader
+
+      - mount: dcp-tools
+      - mount: imf-reader
+      - mount: tossd-reader
+
+      - external: pydeflate
+      - external: resolvekit
+
+  - title: About
+    children:
+      - title: Cite and licence
+        page: about/cite-and-licence.md

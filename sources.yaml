@@ -1,0 +1,123 @@
+# The dfo-docs registry.
+#
+# Every row loads whether it is enabled or not, so a disabled row is still reported by name and
+# flipping one on is a one-line edit (change `enabled: false` to `enabled: true`, or remove the
+# line).
+#
+# `ref` and `commit` are both always present in the schema. Only `ref` is set today; `commit`
+# stays unset while the registry tracks a branch. Pinning a commit later uses the same shape.
+#
+# `path` is the public path this row expects to publish at. For a `kind: docs` row, the source's
+# own sidecar is authoritative and this field is only an assertion checked against it at build
+# time, so a mismatch errors before any cloning happens. For a `kind: external` or `kind: skill`
+# row, which has no sidecar, this field and `title` are authoritative outright.
+#
+# A `kind: skill` row publishes one page per directory under `docs_dir` that holds a `SKILL.md`,
+# with each file in that directory's `references/` as a child page. Directories whose names start
+# with `_` stay out. The row must set `docs_dir`, `path` and `title`, and may not set `exclude`.
+#
+# `exclude` holds pages out of the corpus that the source's own nav carries. It is the same
+# admission decision `enabled` makes for a whole repository, one level down, which is why it lives
+# here rather than in the sidecar: the sidecar says what a source's documentation is, this file
+# says what the corpus takes. Patterns are globs against the docs-root-relative path, and one
+# matching no nav entry fails the build rather than passing silently.
+
+sources:
+  # Aggregated tier: prose docs, fetched and normalised into the corpus.
+  - name: bblocks_data_importers
+    repo: ONEcampaign/bblocks_data_importers
+    ref: main
+    docs_dir: docs
+    path: tools/bblocks/data-importers
+    title: Data importers
+    enabled: false
+    reason: >-
+      Its documentation is being reworked upstream. Three of its links are broken on its own
+      published site and are fixed in ONEcampaign/bblocks_data_importers#101, and dsa.md exists in
+      the repository without its nav navigating to it. Turn this back on once that work settles.
+
+  - name: dcp-tools
+    repo: ONEcampaign/dcp-tools
+    ref: main
+    docs_dir: docs
+    path: tools/dcp-tools
+    title: DCP tools
+
+  - name: oda_reader
+    repo: ONEcampaign/oda_reader
+    ref: main
+    docs_dir: docs
+    path: tools/oda-reader
+    title: ODA reader
+
+  - name: imf-reader
+    repo: ONEcampaign/imf-reader
+    ref: main
+    docs_dir: docs
+    path: tools/imf-reader
+    title: IMF reader
+
+  - name: tossd-reader
+    repo: ONEcampaign/tossd-reader
+    ref: main
+    docs_dir: docs
+    path: tools/tossd-reader
+    title: TOSSD reader
+    exclude:
+      - reference/*
+
+  # Private repositories, cloned with the dfo-reader GitHub App token the build workflow mints.
+  - name: dfo-apis
+    repo: ONEcampaign/dfo-apis
+    ref: dev
+    docs_dir: docs/guide
+    path: api
+    title: API
+
+  - name: dfo-ai
+    repo: ONEcampaign/dfo-ai
+    ref: dev
+    docs_dir: docs/guide
+    path: mcp
+    title: MCP server
+
+  - name: dfo-skills
+    repo: ONEcampaign/dfo-skills
+    kind: skill
+    ref: main
+    docs_dir: skills
+    path: skills
+    title: All skills
+
+  # Self-published tier: API reference generated from installed Python, so it stays on its own
+  # versioned domain. The manifest carries a URL and a card, not a fetched file.
+  - name: pydeflate
+    repo: jm-rivera/pydeflate
+    kind: external
+    url: https://jm-rivera.github.io/pydeflate/
+    path: tools/pydeflate
+    title: pydeflate
+
+  - name: resolvekit
+    repo: jm-rivera/resolvekit
+    kind: external
+    url: https://jm-rivera.github.io/resolvekit/
+    path: tools/resolvekit
+    title: ResolveKit
+
+  # Disabled: known, named, and one line away from being turned on.
+  - name: bblocks
+    repo: ONEcampaign/bblocks
+    ref: main
+    docs_dir: docs
+    path: tools/bblocks
+    enabled: false
+    reason: >-
+      Its docs are a byte-level duplicate of bblocks_data_importers.
+
+  - name: bblocks-projects
+    repo: ONEcampaign/bblocks-projects
+    ref: main
+    docs_dir: docs
+    enabled: false
+    reason: "Has not been decided to be public-facing."
