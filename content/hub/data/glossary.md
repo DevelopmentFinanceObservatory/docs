@@ -12,15 +12,11 @@ The SHA-256 of one downloadable file, written `sha256:` and 64 hex characters. O
 
 ## Bundle
 
-The zip a download comes in by default: the data file plus `datapackage.json`, `CITATION.cff` and a README. See [The data bundle](bundle.md).
+The zip a download comes in by default: a README, the data file, a table of code names, `SOURCES.md`, `CITATION.cff` and `datapackage.json`. See [The data bundle](bundle.md).
 
 ## Classification
 
 A coded list a source uses to describe its data, such as CRS purpose codes or finance types. Each code is a node in the knowledge graph, for example `CRSPurposeCode12220` for basic health care. See [The development finance ontology](ontology.md#source-codes).
-
-## Collection
-
-A set of specs registered together under one `col_` id. A collection downloads as one bundle with a data file per member. See [The data bundle](bundle.md#collections).
 
 ## `content_version`
 

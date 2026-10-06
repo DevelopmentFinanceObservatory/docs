@@ -24,8 +24,6 @@ OECD, Creditor Reporting System (2026), via the Development Finance Observatory.
 
 <!-- TODO: verify whether a source's "Last Update" on /data/sources is the publisher's release date or the day the DFO last pulled the file, and state which year the citation uses. -->
 
-<!-- TODO: add a one-line command that converts a bundle's CITATION.cff to BibTeX once dfo-apis writes CITATION.cff as YAML with real titles and authors (ONEcampaign/dfo-apis#981). -->
-
 ## Live and snapshot links
 
 Cite a snapshot link, made with **Share** and the **Snapshot** tab. It keeps the cited numbers fixed and opens with the banner "Snapshot · data as of 28 Sep 2026", the day the data was captured. A live link reruns the search and can show different numbers after a source refresh. Use the day you read the data as the retrieval date. [Share live data or a snapshot](../build/share.md) shows how to make both.
@@ -44,7 +42,7 @@ Cite a Studio card in the same form. Use its title as the dataset title, the sou
 
 Each source's licence governs its data. Find it on the source's page on [Sources](/data/sources), under "License & Updates". The [CRS page](/data/sources/provenance/OECDCreditorReportingSystem), for example, links to the [OECD Terms and Conditions](https://www.oecd.org/en/about/terms-conditions.html).
 
-<!-- TODO: bundles record every source's licence as "unspecified" in datapackage.json and the README. Say that the bundle carries each source's licence once it does. -->
+A bundle carries each source's licence in `SOURCES.md` and `datapackage.json`.
 
 ONE Data's Python packages, such as [oda_reader](https://github.com/ONEcampaign/oda_reader) and [imf-reader](https://github.com/ONEcampaign/imf-reader), state their licences in their GitHub repositories.
 
