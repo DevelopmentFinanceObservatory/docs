@@ -126,7 +126,7 @@ Snapshot files live in two tiers. The working tier keeps them for 30 days from s
 ## Where the ids appear
 
 - Share links on `/data` are short `/s/…` links. A live link stores the `spec_id` and replays the definition each time it opens. A snapshot link stores the `spec_id` and `content_version`, and the site pins the snapshot when it can. Studio links are always snapshots. [Share live data or a snapshot](../build/share.md) covers the choice.
-- A download is named `{spec_id}.{content_version}.zip`, and its `CITATION.cff` title and `datapackage.json` carry the `spec_id`. [The data bundle](bundle.md) lists each file.
+- A download is named `dfo_<sources>_<YYYY-MM-DD>_<format>_<version>.zip`, where `<version>` is the first six characters of the `content_version` after `cv_`. Its `datapackage.json` carries the full `spec_id`. [The data bundle](bundle.md) lists each file and name.
 - The Data MCP's `get_data` tool returns a frame reference, the pair `{spec_id, content_version}`, and every analysis tool takes one. <!-- TODO: link the Data MCP guide when it is public. -->
 
 ## Reproduce the exact rows in code

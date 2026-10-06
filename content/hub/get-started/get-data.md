@@ -73,16 +73,18 @@ The panel beside the table gives the number of observations. Click "Details" to 
 
 Click "Download CSV". The button reads "Preparing…" while the file is built, then your browser downloads a ZIP file.
 
-Unzip it. It holds four files:
+Unzip it. It holds six files:
 
 ```text
-data/data.csv
 README.md
+data/<slug>.csv
+data/codes.csv
+SOURCES.md
 CITATION.cff
 datapackage.json
 ```
 
-`data/data.csv` is the table from Step 3, with graph identifiers such as `country/KEN` and the source of every row in the `provenance` column. [Cite and licence](../about/cite-and-licence.md) shows how to cite it.
+`data/<slug>.csv` is the table from Step 3, with graph identifiers such as `country/KEN` and the source of every row in the `provenance` column. `data/codes.csv` gives the plain name of each code, and `README.md` is the place to start. [Cite and licence](../about/cite-and-licence.md) shows how to cite it.
 
 Use the arrow beside the download button to open the options. "Format" switches between CSV, Excel, and Parquet. "README" and "Sources & Citations" add the extra files and are ticked by default. "Additional Options" adds columns such as "ISO3 country codes".
 
@@ -97,4 +99,4 @@ Paste the link into a new tab. It opens `/data` with the same sentence and rerun
 ## Next
 
 - [Share live data or a snapshot](../build/share.md) explains when to share a live link and when to save fixed results in a snapshot.
-- [The data bundle](../data/bundle.md) describes every file in the ZIP and every column in `data.csv`.
+- [The data bundle](../data/bundle.md) describes every file in the ZIP and the name each download carries.
