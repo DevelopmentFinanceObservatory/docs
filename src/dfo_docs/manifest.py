@@ -20,6 +20,7 @@ import posixpath
 import re
 from collections.abc import Callable, Mapping, Sequence
 from functools import partial
+from itertools import groupby
 from pathlib import Path, PurePosixPath
 
 import yaml
@@ -39,8 +40,8 @@ from dfo_docs.models import (
     SourceKind,
 )
 from dfo_docs.normalise import FRONTMATTER_RE, normalise_markdown
-from dfo_docs.sidecar import load_sidecar, title_from_text
-from dfo_docs.skills import Skill, load_skills, skill_page_text
+from dfo_docs.sidecar import de_kebab, load_sidecar, title_from_text
+from dfo_docs.skills import Skill, load_skills, skill_page_text, write_skill_bundle
 
 # The hub's own content has no registered Source, so it is given a stand-in name and
 # repo shorthand consistent with the "owner/name" shape every other source_repo carries.
@@ -89,7 +90,8 @@ def build_pages(
     A `mount` of a `kind: skill` source becomes a group titled by `Source.title`, with
     no landing page, holding one node per skill: a group whose `page_id` is the skill
     page when the skill has reference files, which are its children, and a `page` leaf
-    when it has none.
+    when it has none. A skill with a `Skill.category` sits inside one group per heading
+    of it, each titled by the heading in sentence case.
 
     `sources` supplies the external rows and may be the full registry or just the
     enabled subset; a disabled row is skipped either way. `fetched` drives the
@@ -239,34 +241,66 @@ def _skill_mount_nav_node(
 ) -> NavNode:
     assert source.title is not None  # registry requires `title` on a skill row
     group_key = (*key_path, source.name)
-    children = []
-    for skill in skills:
-        page_id = _page_id(source.name, skill.directory)
-        if not skill.references:
-            children.append(NavNode(id=page_id, title=skill.name, kind=NavKind.PAGE))
+    return NavNode(
+        id=_group_id(group_key),
+        title=source.title,
+        kind=NavKind.GROUP,
+        children=_skill_nav_children(source, skills, depth=0, key_path=group_key),
+    )
+
+
+def _skill_nav_children(
+    source: Source, skills: Sequence[Skill], *, depth: int, key_path: tuple[str, ...]
+) -> tuple[NavNode, ...]:
+    """The nav nodes for `skills`, which share their first `depth` category headings.
+
+    Rebuilds nesting from consecutive runs of a matching heading at `depth`, as
+    `_build_source_nav` does from breadcrumbs: `skills.load_skills` returns each
+    category's skills together. A skill whose category ends at `depth` is a node at this
+    level, and each run with a further heading becomes a group.
+    """
+    children: list[NavNode] = []
+    for heading, run in groupby(
+        skills, key=lambda skill: skill.category[depth : depth + 1]
+    ):
+        if not heading:
+            children.extend(
+                _skill_nav_node(source, skill, key_path=key_path) for skill in run
+            )
             continue
-        references = tuple(
+        sub_key = (*key_path, *heading)
+        children.append(
+            NavNode(
+                id=_group_id(sub_key),
+                title=de_kebab(*heading),
+                kind=NavKind.GROUP,
+                children=_skill_nav_children(
+                    source, tuple(run), depth=depth + 1, key_path=sub_key
+                ),
+            )
+        )
+    return tuple(children)
+
+
+def _skill_nav_node(
+    source: Source, skill: Skill, *, key_path: tuple[str, ...]
+) -> NavNode:
+    page_id = _page_id(source.name, skill.directory)
+    if not skill.references:
+        return NavNode(id=page_id, title=skill.name, kind=NavKind.PAGE)
+    return NavNode(
+        id=_group_id((*key_path, skill.directory)),
+        title=skill.name,
+        kind=NavKind.GROUP,
+        page_id=page_id,
+        children=tuple(
             NavNode(
                 id=_page_id(source.name, _page_slug(reference.file)),
                 title=reference.title,
                 kind=NavKind.PAGE,
             )
             for reference in skill.references
-        )
-        children.append(
-            NavNode(
-                id=_group_id((*group_key, skill.directory)),
-                title=skill.name,
-                kind=NavKind.GROUP,
-                page_id=page_id,
-                children=references,
-            )
-        )
-    return NavNode(
-        id=_group_id(group_key),
-        title=source.title,
-        kind=NavKind.GROUP,
-        children=tuple(children),
+        ),
     )
 
 
@@ -421,35 +455,46 @@ def _skill_pages(
 ) -> list[Page]:
     """One `skill` page per skill, with the generated header, and one `page` per
     reference file. Paths follow the files: `<path>/<skill>` for a skill and
-    `<path>/<skill>/references/<stem>` for a reference."""
+    `<path>/<skill>/references/<stem>` for a reference.
+
+    A skill that ships also gets its zip written beside its corpus directory. The page's
+    `bundle_path` and the header's download link are both derived from the path written."""
     source = fetched.source
     assert source.path is not None  # registry requires `path` on a skill row
     install_target = f"{_HUB_SOURCE_NAME}/{_SKILL_INSTALL_PAGE}"
 
     pages = []
     for skill in skills:
-        install_link = posixpath.relpath(
-            install_target, f"{source.name}/{skill.directory}"
-        )
+        page_dir = f"{source.name}/{skill.directory}"
+        install_link = posixpath.relpath(install_target, page_dir)
+        bundle_path = bundle_link = None
+        if skill.ships:
+            bundle = write_skill_bundle(skill, dest_dir=corpus_root / source.name)
+            bundle_path = f"corpus/{bundle.relative_to(corpus_root).as_posix()}"
+            bundle_link = posixpath.relpath(bundle_path, f"corpus/{page_dir}")
         pages.append(
             _fetched_page(
                 fetched,
-                docs_root=fetched.docs_root,
+                docs_root=skill.root,
                 file=skill.file,
                 slug=skill.directory,
                 path_prefix=source.path,
                 title=skill.name,
                 kind=PageKind.SKILL,
                 corpus_root=corpus_root,
+                bundle_path=bundle_path,
                 transform=partial(
-                    skill_page_text, skill=skill, install_link=install_link
+                    skill_page_text,
+                    skill=skill,
+                    install_link=install_link,
+                    bundle_link=bundle_link,
                 ),
             )
         )
         pages.extend(
             _fetched_page(
                 fetched,
-                docs_root=fetched.docs_root,
+                docs_root=skill.root,
                 file=reference.file,
                 slug=_page_slug(reference.file),
                 path_prefix=source.path,
@@ -474,11 +519,12 @@ def _fetched_page(
     corpus_root: Path,
     excluded: tuple[str, ...] = (),
     docs_url: str | None = None,
+    bundle_path: str | None = None,
     transform: Callable[[str], str] | None = None,
 ) -> Page:
     """Read `docs_root / file`, apply `transform` if given, normalise the result, write
     it to `corpus/<source>/<file>`, and return its `Page`, whose description is the
-    text's front matter `description`.
+    text's front matter `description` and whose `bundle_path` is the one given.
 
     Raises `ManifestError`, naming the file relative to the source repository, if the
     file does not exist.
@@ -519,6 +565,7 @@ def _fetched_page(
         source_commit=fetched.commit,
         last_modified=last_modified(fetched.repo_root, source_path),
         corpus_path=f"corpus/{source.name}/{file}",
+        bundle_path=bundle_path,
     )
 
 
@@ -667,6 +714,7 @@ def _page_json(page: Page) -> dict[str, object]:
         "source_commit": page.source_commit,
         "last_modified": page.last_modified,
         "corpus_path": page.corpus_path,
+        "bundle_path": page.bundle_path,
         "url": page.url,
     }
     return {key: value for key, value in raw.items() if value is not None}

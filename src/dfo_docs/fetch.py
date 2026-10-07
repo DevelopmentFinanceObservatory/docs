@@ -37,14 +37,15 @@ def fetch_source(source: Source, *, workdir: Path) -> Fetched:
     """Clone `source` into `workdir` and return where it landed and its resolved commit.
 
     Clones with `--filter=blob:none --sparse`, keeping full history so `last_modified`
-    can read `git log` with no API calls, then sparse-checks-out `source.docs_dir` plus
-    the repository root (cone mode already includes top-level files, but the pattern is
-    set explicitly so a root `mkdocs.yml`, `zensical.toml`, `CHANGELOG.md`, or
-    `CONTRIBUTING.md` is never in doubt). Checks out `source.commit` if set,
-    `source.ref` otherwise.
+    can read `git log` with no API calls, then sparse-checks-out `source.docs_dir`,
+    `source.internal_dir` when the row sets one, and the repository root (cone mode
+    already includes top-level files, but the pattern is set explicitly so a root
+    `mkdocs.yml`, `zensical.toml`, `CHANGELOG.md`, or `CONTRIBUTING.md` is never in
+    doubt). Checks out `source.commit` if set, `source.ref` otherwise.
 
     Raises `ValueError` if `source` is `kind: external`, or if the checked-out docs
-    directory is missing or contains no Markdown file. Raises `RuntimeError` if a git
+    directory is missing or contains no Markdown file. A missing `internal_dir` passes
+    here, and `skills.check_internal_dir` warns of it. Raises `RuntimeError` if a git
     command fails.
     """
     if source.kind not in FETCHED_KINDS:
@@ -62,7 +63,10 @@ def fetch_source(source: Source, *, workdir: Path) -> Fetched:
     _run_git(None, clone_args)
 
     _run_git(dest, ["sparse-checkout", "init", "--cone"])
-    _run_git(dest, ["sparse-checkout", "set", source.docs_dir, "."])
+    directories = [source.docs_dir]
+    if source.internal_dir is not None:
+        directories.append(source.internal_dir)
+    _run_git(dest, ["sparse-checkout", "set", *directories, "."])
 
     if source.commit:
         _run_git(dest, ["checkout", "-q", source.commit])

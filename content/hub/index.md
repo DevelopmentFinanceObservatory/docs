@@ -4,23 +4,27 @@ description: What the Development Finance Observatory is and which tool fits you
 
 # DFO docs
 
-The Development Finance Observatory (DFO) brings development finance data from the OECD, the World Bank, the IMF, and other publishers into one [knowledge graph](data/knowledge-graph.md). A CRS disbursement, a World Bank debt figure, and a WDI indicator use the same countries, codes, and years. Search the graph on [/data](/data), use DFO Studio, connect an AI assistant through an MCP server (a connector that lets it call the DFO's tools), call the API, or use a family of Python packages. The [sources page](/data/sources) lists every dataset in the graph. The [roadmap](/data/roadmap) records what shipped and when.
+The Development Finance Observatory (DFO) brings development finance data from the OECD, the World Bank, the IMF, and other publishers into one [knowledge graph](data/knowledge-graph.md). All the data uses the same country names, codes, and years, so you can compare or combine figures from different sources without having to clean and standardise them first. For example, you can put aid flows from the OECD's Creditor Reporting System (CRS) next to World Bank figures.
+
+See the full list of datasets on the [sources page](/data/sources), and what's new on the [roadmap](/data/roadmap).
 
 ## Where to start
 
-Choose the starting point that matches your task.
+Choose the starting point that matches what you want to do.
 
-| Task                                                                                                                                                          | Use                                                                                                                                                                                                                  | Start here                                                                              |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| CRS disbursements to Nigeria as a CSV                                                                                                                         | Search on [/data](/data)                                                                                                                                                                                             | [Get data](get-started/get-data.md)                                                     |
-| A chart of French health aid for a briefing                                                                                                                   | DFO Studio at [/studio](/studio)                                                                                                                                                                                     | [Use DFO Studio](get-started/use-studio.md)                                             |
-| Let an AI assistant query development finance data                                                                                                            | The DFO MCP server                                                                                                                                                                                                   | The MCP server guide <!-- TODO: link when the MCP endpoint and its guide are public --> |
-| Fetch a dataset from a script or an app                                                                                                                       | The DFO API                                                                                                                                                                                                          | The API quickstart <!-- TODO: link when the API guide is public -->                     |
-| Read OECD DAC (Development Assistance Committee) statistics, IMF data or TOSSD (Total Official Support for Sustainable Development) data straight into pandas | The Python packages: [ODA reader](../oda_reader/index.md), [IMF reader](../imf-reader/index.md), [TOSSD reader](../tossd-reader/index.md), [DCP tools](../dcp-tools/index.md) and [pydeflate](/docs/tools/pydeflate) | Python packages, in the navigation                                                      |
+| If you want to…                                             | Use                                                                   | Start here                                                                                                                                                                                                       |
+| ----------------------------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Download data as a CSV, e.g. aid disbursements to Nigeria   | Data search ([/data](/data))                                          | [Get data](get-started/get-data.md)                                                                                                                                                                              |
+| Make a chart, e.g. French health aid for a briefing         | DFO Studio ([/studio](/studio))                                       | [Use DFO Studio](get-started/use-studio.md)                                                                                                                                                                      |
+| Let an AI assistant (like Claude or ChatGPT) query the data | The DFO MCP server, a connector that lets AI assistants use DFO tools | MCP server guide <!-- TODO: link when the MCP endpoint and its guide are public -->                                                                                                                              |
+| Pull data into a script or app                              | The DFO API                                                           | API quickstart <!-- TODO: link when the API guide is public -->                                                                                                                                                  |
+| Load OECD, IMF or TOSSD data straight into Python (pandas)  | DFO Python packages                                                   | Python packages: [ODA reader](../oda_reader/index.md), [IMF reader](../imf-reader/index.md), [TOSSD reader](../tossd-reader/index.md), [DCP tools](../dcp-tools/index.md) and [pydeflate](/docs/tools/pydeflate) |
 
-Signed-out visitors can search and try five Studio prompts. Sign in to save a canvas.
+**Do I need an account?**
+
+No. Anyone can search the data and try five prompts in DFO Studio. Sign in to save your work in Studio.
 
 ## Next
 
-- [Get data](get-started/get-data.md) turns a `/data` question into a CSV file and a shareable link in about five minutes.
-- [The knowledge graph](data/knowledge-graph.md) shows how one CRS row becomes entities and codes, so one search can cover several publishers.
+- [Get data](get-started/get-data.md): a step-by-step guide to finding a dataset and downloading it as a CSV, in about five minutes.
+- How the data fits together: Explore [the knowledge graph](data/knowledge-graph.md) to see how the DFO matches data from different publishers so one search can cover all of them.

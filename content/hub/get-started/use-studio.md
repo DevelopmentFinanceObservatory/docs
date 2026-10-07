@@ -1,80 +1,50 @@
 ---
-description: Ask DFO Studio one question, approve its research plan, read the chart it draws on the canvas, and pin the card you want to keep.
+description: Ask DFO Studio a question, approve its plan, and pin a chart to your canvas.
 ---
 
 # Use DFO Studio
 
-You'll ask Studio for an overview of health spending in Kenya, approve the plan it proposes, and pin the chart it draws so it stays on your canvas.
+DFO Studio turns a question into charts on a canvas, a workspace where you can arrange, save and share results. This example asks for an overview of health spending in Kenya and ends with a pinned line chart of health spending per person from 2000 to 2023.
 
-## What you'll build
-
-A canvas with one pinned line chart, "Current Health Expenditure Per Capita in Kenya (2000-2023)", and an answer in the chat that cites World Development Indicators:
-
-> Based on data from the World Development Indicators, healthcare expenditure per person in Kenya spanned from **2000 to 2023** across 24 observations … Started at **75.5 International Dollars** in 2000 and increased to **274.0 International Dollars** by 2023.
-
-Studio generates a new plan, title, and answer for each run. The chart uses the same data.
+It takes about ten minutes and uses two of the five prompts available without an account. Sign in first if you want to save your canvas.
 
 <!-- TODO: verify the chart title, plan and answer against the staging site; they come from the recorded Studio session dfo-ai docs/transcripts/studio_transcript_plan.jsonl. -->
 
-## What you'll learn
+## Step 1: Ask a question
 
-- How to start a canvas from a question.
-- How to read and approve the plan Studio proposes.
-- How to read a card on the canvas and where its data came from.
-- How to pin a card so it stays on the canvas after the next question.
+Go to [/studio](/studio). Under the question box, click "Give me a comprehensive overview of health spending in Kenya", or type it and click **Start**.
 
-## What you'll need
+A chat opens next to a blank canvas.
 
-A web browser. Signed-out visitors get five prompts and nothing is saved, so sign in first if you want to come back to the canvas. The walk-through takes about ten minutes and uses two prompts.
+## Step 2: Review and approve the plan
 
-## Step 1: ask a question
+For broad questions, Studio suggests a research plan before it fetches any data. The plan appears in the chat as a list of steps, for example "Fetch health spending data for Kenya". Click a step to see the choices behind it, such as which years it will cover and why.
 
-Open [/studio](/studio). The page is headed "Create a Canvas" and "Start exploring with DFO data", with a box that reads "Start with a question, topic, or idea...".
-
-Under the box, click the suggestion "Give me a comprehensive overview of health spending in Kenya". Typing the same words and clicking "Start" does the same thing.
-
-Studio opens a chat beside a blank canvas and searches for health spending data in Kenya.
-
-## Step 2: review and approve the plan
-
-For broad questions, Studio proposes a research plan before fetching data. The plan appears in the chat as a card with a title, a step count such as "1 Step", and the steps themselves:
-
-> Fetch health spending data for Kenya
-
-Click a step to see what it will do. Studio lists its choices under the steps, with a reason for each:
-
-> Time range of health spending data in Kenya to inspect — **Full available series** (A comprehensive overview requires looking across the entire available dataset for Kenya health spending.)
-
-While the plan waits, the chat box reads "Propose changes or ask a follow up...". To change the plan, type what you want there, such as "Only the last ten years", and Studio sends back a new version marked "v2".
-
-To use this plan, click "Approve Plan" under "Shall we proceed?".
+- To change the plan, type your edit in the chat box (for example, "Only the last ten years"). Studio sends back a revised version.
+- To go ahead, click **Approve Plan**.
 
 !!! note
-    Studio proposes a plan for broad questions. A narrow question, such as the suggestion "Life expectancy in Nigeria", goes straight to the canvas.
+    Narrower questions, such as "Life expectancy in Nigeria", skip the plan and go straight to the canvas.
 
     <!-- TODO: verify on the staging site that "Life expectancy in Nigeria" skips the plan. -->
 
-## Step 3: read the canvas
+## Step 3: Read the chart
 
-Studio fetches the data and draws a line chart titled "Current Health Expenditure Per Capita in Kenya (2000-2023)". The chat answer names World Development Indicators as its source and gives the first and last values.
+Studio adds a line chart to the canvas, "Current Health Expenditure Per Capita in Kenya (2000-2023)". The chat answer names the source, World Development Indicators, and gives the start and end values: 75.5 international dollars in 2000, rising to 274.0 in 2023.
 
-Hover over the line to read the value for a single year. You can drag the card to another spot on the canvas and resize it.
+Results vary a little each time. The plan, chart title and wording may differ, but the data is the same.
 
-Open the ⋮ menu in the card's top-right corner. It offers "Download Data" for the rows behind the chart, plus "Share", "Ask follow up", "Add Note", and "Remove".
+- Hover over the line to see the value for each year.
+- Drag or resize the card to rearrange the canvas.
+- Open the **⋮** menu in the card's corner to download the data, share the chart, ask a follow-up, add a note or remove the card.
 
-## Step 4: pin the card
+## Step 4: Pin the card
 
-Studio keeps the cards from your latest question on the canvas. When you ask a new question, Studio replaces unpinned cards with its new cards.
+When you ask a new question, Studio replaces any cards that aren't pinned. To keep the Kenya chart, click the pin icon next to the ⋮ menu.
 
-Click the pin button in the chart card's top-right corner, next to the ⋮ menu. The pin turns on, and the ⋮ menu includes "Unpin from Canvas".
-
-Type a follow-up in "Ask a follow up..." and send it:
-
-> How does Kenya compare with Uganda?
-
-Studio answers with new cards. Your pinned Kenya chart stays where you put it.
+Try it with a follow-up: *How does Kenya compare with Uganda?* New cards appear, and your pinned chart stays where you left it.
 
 ## Next
 
-- [Embed a chart](../build/embed.md) puts a pinned card or the whole canvas into your own web page.
-- [Share live data or a snapshot](../build/share.md) explains why a Studio link always shows the canvas as it was when you shared it.
+- [Embed a chart](../build/embed.md): put a pinned card or the whole canvas into your own web page.
+- [Share live data or a snapshot](../build/share.md) explains how to share a canvas or card as a live link, which shows current data, or as a snapshot, which keeps the numbers it had when you made it.

@@ -1,73 +1,75 @@
 ---
-description: How each DFO figure traces back to its source file, what the DFO changes as it loads the data into the knowledge graph, and how to check a figure against its source.
+description: How each DFO figure traces back to its source, what the DFO changes as it loads the data into the knowledge graph, and how to check a figure against its source.
 ---
 
 # Where the numbers come from
 
-Every figure in the DFO starts as a file its source publishes. The DFO fetches that file, checks it, maps its codes onto shared concepts, and loads the result into one [knowledge graph](knowledge-graph.md). Search on [/data](/data), DFO Studio, the DFO API and the DFO MCP server all read that graph, so the same question returns the same numbers on every surface.
+Every figure in the DFO starts as data its source publishes. The DFO downloads that data, checks it, prepares it, and loads the result into one [knowledge graph](knowledge-graph.md). That one graph serves search on [/data](/data), DFO Studio, the DFO API and the DFO MCP server, so the same question returns the same numbers on every surface.
 
 ```mermaid
 flowchart TD
-    file["the source's file<br/>as its publisher releases it"]
+    file["the source's data<br/>as its publisher releases it"]
     checks["checks<br/>a failed check stops the release"]
-    codes["codes mapped to shared concepts<br/>e.g. CRS purpose 12220 → CRSPurposeCode12220"]
-    graph["the knowledge graph"]
+    codes["prepared for the graph<br/>codes mapped, records summed, amounts at full value"]
+    knowledgeGraph["the knowledge graph"]
     search["/data search"]
     studio["DFO Studio"]
     api["the DFO API"]
     mcp["the DFO MCP server"]
-    file --> checks --> codes --> graph
-    graph --> search
-    graph --> studio
-    graph --> api
-    graph --> mcp
+    file --> checks --> codes --> knowledgeGraph
+    knowledgeGraph --> search
+    knowledgeGraph --> studio
+    knowledgeGraph --> api
+    knowledgeGraph --> mcp
 ```
 
-Some series enter the graph through a different route. Data Commons, which underlies the DFO's graph, runs its own imports of datasets such as the World Bank's World Development Indicators. Those series carry a provenance that begins `dc/base/`, and [Methods](methods.md) shows how to read it.
-
-The rest of this page uses the OECD's Creditor Reporting System (CRS), a record of each aid activity donors report, as its worked example.
+The examples on the rest of this page use the OECD's Creditor Reporting System (CRS), which records each aid activity donors report.
 
 ## What the DFO changes and preserves
 
-Values keep the currency and prices their source reports. In the CRS, for example, amounts are in current US dollars, so each CRS amount has the unit `CurrencyUSD` and a StatVar whose dcid ends in `Nominal` to mark current prices.
+The Transformation Log on each source's page on [Sources](/data/sources) lists every change the DFO makes to that source, for example the [CRS's](/data/sources/provenance/OECDCreditorReportingSystem?tab=log).
 
-The DFO stores amounts in whole units. Where a source reports in thousands or millions, the DFO multiplies to whole values. The CRS reports amounts in millions, so France's 2008 basic health care grants to Togo total 3.97253 in the CRS file and 3,972,530 in the graph.
+Each pipeline keeps only the rows its source's figures should be built from, leaving out series outside the DFO's scope and rows that would count the same money twice. For the CRS, that means excluding donors' core contributions to multilateral organisations (`bi_multi` 2), which the multilateral reports again when it spends it.
 
-<!-- TODO: confirm unit scaling for each source as its pipeline starts loading into the graph; the CRS is the one verified case. -->
+Each source's codes map to shared concepts, so the same country or purpose has one identifier across sources. In the CRS, purpose 12220 becomes `CRSPurposeCode12220`, and OECD Development Assistance Committee (DAC) donor code 4 becomes `country/FRA`. [The development finance ontology](ontology.md) explains how a source code becomes a graph identifier and where to look codes up.
 
-The DFO maps each source's codes to shared concepts, so the same country or purpose has one identifier across sources. In the CRS, purpose 12220 becomes `CRSPurposeCode12220`, and OECD Development Assistance Committee (DAC) donor code 4 becomes `country/FRA`. [The development finance ontology](ontology.md) explains how a source code becomes a graph identifier and where to look codes up.
+Some sources, such as the CRS, report individual records, one row per activity with the agency, channel and project behind it. The graph holds one number per series and year, not one per project, so the DFO sums the records that share every coded column, such as year, donor, recipient and purpose. France's basic health care grants to Togo in a year are one figure in the graph, however many projects France reported. Record-level details, such as the agency, channel and project, stay in the source.
 
-A source that reports individual records is summed into series over its coded dimensions. The CRS file, for example, has one row per reported activity, with the agency, channel, and project behind it. For the CRS, the DFO keeps seven coded columns: year, donor, recipient, flow type, finance type, modality, and purpose. It sums every record that shares all seven. France's basic health care grants to Togo in 2008 appear in the graph as one figure, however many projects France reported. A DFO figure from a record-level source is the sum of the rows that share its codes. Agency, channel, and project details remain in the source.
+Commitments, gross disbursements and grant equivalents pass through as the CRS reports them. Net disbursements subtract amounts received back from gross disbursements, so a record with a repayment but no disbursement gives a negative figure. Amounts received don't appear on their own.
 
-<!-- TODO: name the summed dimensions for each further record-level source as its pipeline loads into the graph. -->
+The graph stores amounts at their full value, scaling up any source that reports in thousands or millions, so amounts from different sources can be compared directly. The CRS reports in millions, so 1.5 in the CRS file is 1,500,000 in the graph.
 
-Every other measure passes through as the source reports it. From the CRS, the DFO calculates net disbursement. The CRS reports gross disbursements and amounts received back in separate columns, and the DFO subtracts amounts received back from gross disbursements. A record that reports a repayment without a disbursement counts as a negative net disbursement. Commitments, gross disbursements, and grant equivalents pass through as reported.
+Currency and prices stay as the source reports them, so the stored number is the one the source published. For the CRS, that is current US dollars. Any conversion is a separate step the DFO applies only on request, and [Methods](methods.md) explains how.
 
-The DFO converts currencies only when a request asks for it. [Methods](methods.md) describes conversion requests and the formula used.
+Series from Data Commons' own imports, such as the World Bank's World Development Indicators, don't pass through these steps. Their provenance begins `dc/base/`, and [Methods](methods.md) shows how to read it.
 
 ## How to check a figure against its source
 
-Start with the source's page on [Sources](/data/sources). Its "License & Updates" block gives the licence, the update cadence, and the last update, which is the day the DFO downloaded the release in the graph. The page also links to the publisher's own page for the data.
+Start with the source's page on [Sources](/data/sources). It gives the date the DFO downloaded the release now in the graph, the URL of the source data file, and a link to the publisher's own page for the data.
 
-Take a snapshot link from /data. It pins the exact rows behind the figure, so you compare against the release the DFO used.
+Take a [snapshot link](../build/share.md) from /data. It records the exact version of the rows behind the figure, so you compare against the release the DFO used.
 
-Compare the figure with the same release from the source. Keep the source's rows that match the figure's codes, sum the column for the figure's measure, and scale to whole units.
+For a CRS figure:
 
-For a CRS figure, use the CRS file from the same release and keep rows with the figure's year, donor, recipient, flow type, finance type, modality, and purpose. Sum the column for that measure: `usd_disbursement` for gross disbursements, `usd_commitment` for commitments, or `usd_grant_equiv` for grant equivalents. Multiply by a million. The result matches the DFO figure within rounding. The DFO holds each CRS amount to five decimal places in millions, the nearest ten dollars.
+1. Download the CRS file from the source data URL on its page on [Sources](/data/sources).
+1. Drop rows with `bi_multi` 2.
+1. Keep the rows that match the figure's year, donor, recipient and every CRS code in its StatVar.
+1. Sum the column for the figure's measure: `usd_disbursement` for gross disbursements, `usd_commitment` for commitments, `usd_grant_equiv` for grant equivalents, or `usd_disbursement` minus `usd_received` for net disbursements.
+1. Multiply by a million.
+
+The result matches the DFO figure within rounding. For other sources, follow the same steps with that source's codes and columns.
 
 ## How fresh the data is
 
-Each source publishes on its own calendar, and its page on [Sources](/data/sources) shows its update cadence. The OECD, for example, publishes the CRS four times a year, in April, June, September and December.
+Each source publishes on its own calendar, and its page on [Sources](/data/sources) shows its update cadence.
 
-The DFO checks each source daily for a new release. It reads the publisher's release marker, such as the version on the OECD's CRS bulk file or the release date of the IMF's World Economic Outlook. A changed marker triggers the pipeline to download the data, rerun its checks and models, and rebuild the files the graph loads. A failed check stops the release, so the graph keeps the previous release.
+The DFO checks each source regularly for a new release. It reads the publisher's release marker, such as the version on the OECD's CRS bulk file or the release date of the IMF's World Economic Outlook. A changed marker triggers the pipeline to download the data, rerun its checks and models, and rebuild the files the graph loads. A failed check stops the update, so the graph keeps the previous release.
 
-<!-- TODO: verify how long a rebuilt import takes to reach the graph, and say so here. -->
+The rebuilt files are then loaded into the graph. A [live link](../build/share.md) reruns the question against the graph, so it shows the new release as soon as the graph holds it. A snapshot reads the version it recorded, so it keeps the numbers it had.
 
-A live link reruns the question against the graph and returns the new release once the graph has loaded it. A snapshot keeps the rows it captured.
+## What you can inspect yourself
 
-## What's open
-
-The ontology is public. Every concept the graph uses, from a purpose code to a type of finance, is an item in the Wikibase at [developmentfinance.wikibase.cloud](https://developmentfinance.wikibase.cloud/wiki/Main_Page), with its definition, its place in the hierarchy, and the source code it represents. CRS purpose 12220, for example, is [Q44](https://developmentfinance.wikibase.cloud/wiki/Item:Q44). [The development finance ontology](ontology.md) explains how the items are organised.
+The ontology is public. Every concept the graph uses, from a purpose code to a type of finance, is an item in the [development finance Wikibase](https://developmentfinance.wikibase.cloud/wiki/Main_Page). Each item gives the concept's definition, its place in the hierarchy and the source code it represents. [The development finance ontology](ontology.md) explains how the items are organised.
 
 The packages the pipelines use to fetch sources are open source. The OECD's DAC statistics, including the CRS, come through the [ODA reader](../../oda_reader/index.md), and you can run the same `bulk_download_crs` call yourself. The IMF's World Economic Outlook comes through the [IMF reader](../../imf-reader/index.md). [DCP tools](../../dcp-tools/index.md) writes the files the graph loads.
 

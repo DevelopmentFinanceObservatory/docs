@@ -101,8 +101,8 @@ def _sample_repo(tmp_path: Path) -> Path:
 
 
 def _skills_repo(tmp_path: Path) -> Path:
-    """A skills repo with one skill and one reference file, so the built manifest
-    carries a `skill` page."""
+    """A skills repo with one skill and one reference file under `skills/`, so the skill
+    ships and the built manifest carries a `skill` page with a `bundle_path`."""
     repo = _make_repo(tmp_path, "skills-repo")
     skill_dir = repo / "skills" / "alpha"
     (skill_dir / "references").mkdir(parents=True)
@@ -110,6 +110,7 @@ def _skills_repo(tmp_path: Path) -> Path:
         "---\nname: alpha\ndescription: Covers alpha.\n---\n\n## Overview\n"
     )
     (skill_dir / "references" / "flow-types.md").write_text("# Flow types\n")
+    (repo / "skills" / "categories.yaml").write_text("sources:\n  - alpha\n")
     _commit_all(repo)
     return repo
 
@@ -213,6 +214,7 @@ def test_real_generator_output_validates_against_schema(tmp_path):
     assert nav_kinds == {"group", "page", "external"}
     page_kinds = {page["kind"] for page in data["pages"]}
     assert page_kinds == {"page", "external", "skill"}
+    assert any("bundle_path" in page for page in data["pages"])
 
 
 def test_manifest_missing_required_field_fails_validation():

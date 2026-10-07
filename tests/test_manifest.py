@@ -10,7 +10,10 @@ from __future__ import annotations
 import dataclasses
 import json
 import os
+import posixpath
+import re
 import subprocess
+import zipfile
 from collections.abc import Sequence
 from pathlib import Path
 
@@ -18,6 +21,7 @@ from dfo_docs.fetch import fetch_source
 from dfo_docs.manifest import build_pages, write_manifest
 from dfo_docs.models import (
     FETCHED_KINDS,
+    SCHEMA_VERSION,
     Fetched,
     HubNode,
     Manifest,
@@ -686,9 +690,10 @@ def test_nav_tree_orders_dcp_tools_after_oda_group_per_hub_yaml(tmp_path):
 # --- kind: skill ------------------------------------------------------------------
 
 
-def _skills_repo(tmp_path: Path) -> Path:
+def _skills_repo(tmp_path: Path, *, categories: str | None = None) -> Path:
     """A skills repo: `alpha` with two references, `beta` with none and its own H1,
-    and `_template`, which is never published."""
+    and `_template`, which is never published. `categories` is the text of its
+    `categories.yaml`, which None leaves out."""
     repo = _make_repo(tmp_path, "skills-repo")
     skills = repo / "skills"
     (skills / "alpha" / "references").mkdir(parents=True)
@@ -704,6 +709,8 @@ def _skills_repo(tmp_path: Path) -> Path:
         "---\nname: beta\ndescription: Covers beta\n---\n\n# beta\n\n## Overview\n"
     )
     (skills / "_template" / "SKILL.md").write_text("---\nname: _template\n---\n")
+    if categories is not None:
+        (skills / "categories.yaml").write_text(categories)
     _commit_all(repo, "init")
     return repo
 
@@ -714,13 +721,18 @@ def _skills_source(repo: Path) -> Source:
         repo=str(repo),
         kind=SourceKind.SKILL,
         docs_dir="skills",
+        internal_dir="internal/skills",
         path="skills",
         title="All skills",
     )
 
 
-def _build_skills(tmp_path: Path):
-    source = _skills_source(_skills_repo(tmp_path))
+def _build_skills(
+    tmp_path: Path, *, categories: str | None = None, repo: Path | None = None
+):
+    """Build the hub with `repo` mounted as its skills source, or `_skills_repo` with
+    `categories` when no repo is given."""
+    source = _skills_source(repo or _skills_repo(tmp_path, categories=categories))
     hub = HubNode(
         title="Hub",
         children=(
@@ -776,6 +788,41 @@ def test_skill_mount_nav_is_one_group_of_skills(tmp_path):
     )
 
 
+def test_skill_mount_nav_groups_skills_by_category(tmp_path):
+    nav, pages, _ = _build_skills(
+        tmp_path,
+        categories="sources:\n  - beta\ndomains:\n  health-financing:\n    - alpha\n",
+    )
+
+    mount = _find_node(nav, title="All skills")
+    assert mount is not None
+    sources, domains = mount.children
+    assert sources == NavNode(
+        id="group:skills/dfo-skills/sources",
+        title="Sources",
+        kind=NavKind.GROUP,
+        children=(NavNode(id="dfo-skills/beta", title="beta", kind=NavKind.PAGE),),
+    )
+    assert (domains.id, domains.title, domains.page_id) == (
+        "group:skills/dfo-skills/domains",
+        "Domains",
+        None,
+    )
+    (domain,) = domains.children
+    assert (domain.id, domain.title) == (
+        "group:skills/dfo-skills/domains/health-financing",
+        "Health financing",
+    )
+    (alpha,) = domain.children
+    assert (alpha.id, alpha.page_id, len(alpha.children)) == (
+        "group:skills/dfo-skills/domains/health-financing/alpha",
+        "dfo-skills/alpha",
+        2,
+    )
+    # A category moves a skill in the nav and leaves its address alone.
+    assert _by_id(pages, "dfo-skills/alpha").path == "skills/alpha"
+
+
 def test_skill_pages_follow_the_files(tmp_path):
     _, pages, _ = _build_skills(tmp_path)
 
@@ -806,11 +853,12 @@ def test_skill_pages_follow_the_files(tmp_path):
 
 
 def test_skill_corpus_files_carry_the_header_and_keep_links(tmp_path):
-    _, _, corpus_root = _build_skills(tmp_path)
+    _, _, corpus_root = _build_skills(tmp_path, categories="sources:\n  - alpha\n")
 
     install = (
         "To load this skill in your own agent, see [Use skills in your own agent]"
-        "(../../hub/skills/use-in-your-agent.md)."
+        "(../../hub/skills/use-in-your-agent.md). "
+        "[Download this skill as a zip](../alpha.zip)."
     )
     alpha = (corpus_root / "dfo-skills" / "alpha" / "SKILL.md").read_text()
     assert alpha == (
@@ -825,3 +873,134 @@ def test_skill_corpus_files_carry_the_header_and_keep_links(tmp_path):
         corpus_root / "dfo-skills" / "alpha" / "references" / "flow-types.md"
     ).is_file()
     assert not (corpus_root / "dfo-skills" / "_template").exists()
+
+
+# The page entry and the download link that dfo-website's sync and link resolver are
+# tested against. Both repositories hold these literals.
+_BUNDLE_PAGE = {
+    "path": "skills/oda-crs",
+    "kind": "skill",
+    "corpus_path": "corpus/dfo-skills/oda-crs/SKILL.md",
+    "bundle_path": "corpus/dfo-skills/oda-crs.zip",
+}
+_BUNDLE_LINK = "[Download this skill as a zip](../oda-crs.zip)"
+_BUNDLE_LINK_RE = re.compile(r"\[Download this skill as a zip\]\(([^)]+)\)")
+_INSTALL_SENTENCE = "To load this skill in your own agent"
+
+
+def _bundle_repo(tmp_path: Path) -> Path:
+    """A skills repo with `oda-crs` and `unlisted` under `skills/`, the first filed under
+    `sources` and the second nowhere, and `dfo-faq` under `internal/skills/` with one
+    reference file."""
+    repo = _make_repo(tmp_path, "skills-repo")
+    skills = repo / "skills"
+    internal = repo / "internal" / "skills"
+    for root, name in (
+        (skills, "oda-crs"),
+        (skills, "unlisted"),
+        (internal, "dfo-faq"),
+    ):
+        (root / name / "references").mkdir(parents=True)
+        (root / name / "SKILL.md").write_text(
+            f"---\nname: {name}\ndescription: Covers {name}. More.\n---\n\n"
+            "## Overview\n"
+        )
+    (skills / "oda-crs" / "references" / "sectors.md").write_text("# Sectors\n")
+    (skills / "oda-crs" / "attachments.yaml").write_text("datasets: []\n")
+    (internal / "dfo-faq" / "references" / "scope.md").write_text("# Scope\n")
+    (skills / "categories.yaml").write_text("sources:\n  - oda-crs\ndomains: {}\n")
+    _commit_all(repo, "init")
+    return repo
+
+
+def _manifest_pages(tmp_path: Path, nav, pages) -> dict[str, dict]:
+    """The `pages` of the manifest `write_manifest` writes, keyed by page id."""
+    out = tmp_path / "manifest.json"
+    write_manifest(
+        Manifest(
+            schema_version=SCHEMA_VERSION,
+            generated_at="2026-09-12T10:04:11Z",
+            generator_commit=None,
+            nav=tuple(nav),
+            pages=tuple(pages),
+        ),
+        out,
+    )
+    return {page["id"]: page for page in json.loads(out.read_text())["pages"]}
+
+
+def test_shipping_skill_gets_a_bundle_its_page_records_and_links_to(tmp_path):
+    repo = _bundle_repo(tmp_path)
+    nav, pages, corpus_root = _build_skills(tmp_path, repo=repo)
+
+    page = _manifest_pages(tmp_path, nav, pages)["dfo-skills/oda-crs"]
+    assert _BUNDLE_PAGE.items() <= page.items()
+
+    # The link as a reader's browser resolves it, against the page's own corpus file.
+    text = (corpus_root.parent / page["corpus_path"]).read_text()
+    assert _BUNDLE_LINK in text
+    (href,) = _BUNDLE_LINK_RE.findall(text)
+    target = posixpath.normpath(
+        posixpath.join(posixpath.dirname(page["corpus_path"]), href)
+    )
+    assert target == page["bundle_path"]
+
+    with zipfile.ZipFile(corpus_root.parent / target) as bundle:
+        assert bundle.namelist() == [
+            "oda-crs/SKILL.md",
+            "oda-crs/references/sectors.md",
+        ]
+        source_skill_md = repo / "skills" / "oda-crs" / "SKILL.md"
+        assert bundle.read("oda-crs/SKILL.md") == source_skill_md.read_bytes()
+
+
+def test_every_skill_in_the_installable_root_ships_whatever_its_category(tmp_path):
+    nav, pages, corpus_root = _build_skills(tmp_path, repo=_bundle_repo(tmp_path))
+
+    manifest_pages = _manifest_pages(tmp_path, nav, pages)
+    assert {
+        page_id: page["bundle_path"]
+        for page_id, page in manifest_pages.items()
+        if "bundle_path" in page
+    } == {
+        "dfo-skills/oda-crs": "corpus/dfo-skills/oda-crs.zip",
+        "dfo-skills/unlisted": "corpus/dfo-skills/unlisted.zip",
+    }
+    assert sorted(path.name for path in corpus_root.rglob("*.zip")) == [
+        "oda-crs.zip",
+        "unlisted.zip",
+    ]
+    text = (corpus_root / "dfo-skills" / "unlisted" / "SKILL.md").read_text()
+    assert _INSTALL_SENTENCE in text
+    assert _BUNDLE_LINK_RE.findall(text) == ["../unlisted.zip"]
+
+
+def test_internal_skill_keeps_its_address_and_gets_no_bundle(tmp_path):
+    nav, pages, corpus_root = _build_skills(tmp_path, repo=_bundle_repo(tmp_path))
+
+    manifest_pages = _manifest_pages(tmp_path, nav, pages)
+    page = manifest_pages["dfo-skills/dfo-faq"]
+    assert (page["path"], page["kind"], page["corpus_path"]) == (
+        "skills/dfo-faq",
+        "skill",
+        "corpus/dfo-skills/dfo-faq/SKILL.md",
+    )
+    assert page["source_path"] == "internal/skills/dfo-faq/SKILL.md"
+    assert "bundle_path" not in page
+    reference = manifest_pages["dfo-skills/dfo-faq/references/scope"]
+    assert (reference["path"], reference["corpus_path"]) == (
+        "skills/dfo-faq/references/scope",
+        "corpus/dfo-skills/dfo-faq/references/scope.md",
+    )
+    assert (corpus_root.parent / reference["corpus_path"]).read_text() == "# Scope\n"
+
+    text = (corpus_root.parent / page["corpus_path"]).read_text()
+    assert text.endswith("# dfo-faq\n\nCovers dfo-faq.\n\n## Overview\n")
+    assert not _BUNDLE_LINK_RE.search(text)
+    assert _INSTALL_SENTENCE not in text
+    assert not (corpus_root / "dfo-skills" / "dfo-faq.zip").exists()
+
+    # It sorts with the skills `categories.yaml` leaves out, ahead of every category.
+    mount = _find_node(nav, title="All skills")
+    assert mount is not None
+    assert [node.title for node in mount.children] == ["dfo-faq", "unlisted", "Sources"]
