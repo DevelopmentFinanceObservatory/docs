@@ -154,6 +154,10 @@
           "type": "string",
           "description": "This page's location in the corpus tree, relative to the corpus root, for example `corpus/sample/getting-started.md`. Omitted on a `kind: external` page, which carries no corpus file."
         },
+        "bundle_path": {
+          "type": "string",
+          "description": "The location in the corpus tree of a zip of the skill's source files, relative to the corpus root, for example `corpus/dfo-skills/oda-crs.zip`. Present only on a `kind: skill` page whose skill is offered for download. The zip holds `<skill>/SKILL.md` and `<skill>/references/<file>.md`."
+        },
         "url": {
           "type": "string",
           "format": "uri",

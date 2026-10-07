@@ -582,6 +582,7 @@ def _skill_sources_yaml(repo: Path) -> str:
         f"    repo: {repo}\n"
         "    kind: skill\n"
         "    docs_dir: skills\n"
+        "    internal_dir: internal/skills\n"
         "    path: skills\n"
         "    title: All skills\n"
     )
@@ -614,7 +615,43 @@ def test_skill_source_publishes_pages_assets_and_drift_warnings(chdir: Path, cap
     kinds = {page["id"]: page["kind"] for page in manifest["pages"]}
     assert kinds["dfo-skills/alpha"] == "skill"
     assert kinds["dfo-skills/alpha/references/flow-types"] == "page"
-    assert "skills/alpha/notes.md" in capsys.readouterr().out
+    report = capsys.readouterr().out
+    assert "skills/alpha/notes.md" in report
+    # The repo has no internal/skills, which the row names: one warning, and a build.
+    assert report.count("[warning] 'dfo-skills': internal_dir 'internal/skills'") == 1
+
+
+def test_internal_skill_publishes_its_pages_and_assets(chdir: Path, capsys):
+    internal = chdir / "skills-repo" / "internal" / "skills" / "beta"
+    (internal / "references").mkdir(parents=True)
+    (internal / "SKILL.md").write_text(
+        "---\nname: beta\ndescription: Covers beta.\n---\n"
+    )
+    (internal / "references" / "scope.md").write_text(
+        "# Scope\n\n![Chart](chart.png)\n"
+    )
+    (internal / "references" / "chart.png").write_bytes(_PNG_BYTES)
+    repo = _skills_repo(
+        chdir / "skills-repo",
+        {"alpha/SKILL.md": "---\nname: alpha\ndescription: Covers alpha.\n---\n"},
+    )
+    _write_registry(
+        chdir,
+        sources_yaml=_skill_sources_yaml(repo),
+        hub_yaml=_hub_yaml_mounting("dfo-skills"),
+    )
+    out_dir = chdir / "out"
+
+    exit_code = main(["--out", str(out_dir)])
+
+    assert exit_code == 0
+    corpus = out_dir / "corpus" / "dfo-skills"
+    assert (corpus / "beta" / "references" / "chart.png").read_bytes() == _PNG_BYTES
+    assert sorted(path.name for path in corpus.glob("*.zip")) == ["alpha.zip"]
+    manifest = json.loads((out_dir / "manifest.json").read_text())
+    paths = {page["id"]: page["path"] for page in manifest["pages"]}
+    assert paths["dfo-skills/beta"] == "skills/beta"
+    assert "internal_dir" not in capsys.readouterr().out
 
 
 def test_skill_directory_without_skill_md_fails_the_corpus(chdir: Path, capsys):
