@@ -173,16 +173,29 @@ def test_last_modified_returns_committed_date(tmp_path):
     assert last_modified(fetched.repo_root, "docs/index.md") == "2026-08-14T16:43:28Z"
 
 
-def test_fetch_source_clones_a_skill_source(tmp_path):
+@pytest.mark.parametrize("has_internal_dir", [True, False])
+def test_fetch_source_clones_a_skill_source(tmp_path, has_internal_dir: bool):
     repo = _make_repo(tmp_path, "skills-repo")
     (repo / "skills" / "alpha").mkdir(parents=True)
     (repo / "skills" / "alpha" / "SKILL.md").write_text("---\nname: alpha\n---\n")
+    (repo / "template").mkdir()
+    (repo / "template" / "SKILL.md").write_text("---\nname: template\n---\n")
+    if has_internal_dir:
+        (repo / "internal" / "skills" / "beta").mkdir(parents=True)
+        (repo / "internal" / "skills" / "beta" / "SKILL.md").write_text(
+            "---\nname: beta\n---\n"
+        )
     _commit_all(repo, "init")
 
-    source = _docs_source(repo, kind=SourceKind.SKILL, docs_dir="skills")
+    source = _docs_source(
+        repo, kind=SourceKind.SKILL, docs_dir="skills", internal_dir="internal/skills"
+    )
     fetched = fetch_source(source, workdir=tmp_path / "work")
 
     assert (fetched.docs_root / "alpha" / "SKILL.md").exists()
+    internal_skill = fetched.repo_root / "internal" / "skills" / "beta" / "SKILL.md"
+    assert internal_skill.exists() == has_internal_dir
+    assert not (fetched.repo_root / "template").exists()
 
 
 def test_fetch_source_rejects_an_external_source(tmp_path):

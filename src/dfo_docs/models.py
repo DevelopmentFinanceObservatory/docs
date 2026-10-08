@@ -36,9 +36,9 @@ class SourceKind(StrEnum):
     """Published on its own domain. The manifest carries a URL instead of a file."""
 
     SKILL = "skill"
-    """A repository of agent skills, one directory per skill under `docs_dir`, each with a
-    `SKILL.md` and optional `references/*.md`. Fetched like a docs source, but walked by
-    `skills.load_skills` instead of a sidecar."""
+    """A repository of agent skills, one directory per skill under `docs_dir` and, when the
+    row sets it, under `internal_dir`, each with a `SKILL.md` and optional `references/*.md`.
+    Fetched like a docs source, but walked by `skills.load_skills` instead of a sidecar."""
 
 
 # The kinds `fetch.fetch_source` clones. An external row publishes a URL and is never fetched.
@@ -93,6 +93,9 @@ class Source:
     A pattern matching nothing is an error rather than a no-op, so a pattern left behind by an
     upstream rename is reported instead of silently admitting the pages it used to hold out.
     """
+    internal_dir: str | None = None
+    """On a `kind: skill` row, a second directory of skills beside `docs_dir`. Its skills are
+    published like the rest and are not offered for install."""
 
 
 @dataclass(frozen=True)
@@ -175,6 +178,8 @@ class Page:
     `corpus_path`, the corpus-relative location of the file, which is what lets the site resolve a
     corpus-internal `.md` link target to a route. `source_path`, `source_commit`, `last_modified`,
     and `corpus_path` are all `None` for a `kind=external` entry, which carries `url` instead.
+    `bundle_path` is the corpus-relative location of a shipping skill's zip, and `None` on every
+    other page.
 
     Carries neither an ordering field nor a breadcrumb. The nav tree (`NavNode`) is the sole
     authority on where a page sits, and a consumer that needs a breadcrumb walks that tree, which
@@ -193,6 +198,7 @@ class Page:
     last_modified: str | None
     corpus_path: str | None
     url: str | None = None
+    bundle_path: str | None = None
 
 
 class NavKind(StrEnum):

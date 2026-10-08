@@ -4,7 +4,7 @@ description: Short definitions of the DFO's own terms, from bundle to Wikibase, 
 
 # Glossary
 
-This glossary defines terms used by the DFO, in alphabetical order. The [ontology](ontology.md) defines development finance terms such as ODA and grant equivalent, and the skills explain how to use them.
+This glossary defines terms used by the DFO, in alphabetical order. The [ontology](ontology.md) defines development finance terms such as ODA and grant equivalent. The skills pages explain how to use them.
 
 ## Artifact digest
 
@@ -56,7 +56,7 @@ The graph that holds every source the DFO ingests, with provenance on every obse
 
 ## Live link
 
-A share link that re-runs its query each time it opens, so it shows the latest data. The alternative is a snapshot link. See [Share live data or a snapshot](../build/share.md).
+A share link that shows the latest data each time it opens. A search link re-runs its query, and a Studio link redraws its data cards. The alternative is a snapshot link. See [Share live data or a snapshot](../build/share.md).
 
 ## Observation
 
