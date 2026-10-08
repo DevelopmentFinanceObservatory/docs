@@ -60,6 +60,7 @@ def test_disabled_rows_loaded_but_excluded():
     assert "dfo-apis" in live
     assert "dfo-ai" in live
     assert "dfo-skills" in live
+    assert sources["dfo-skills"].internal_dir == "internal/skills"
 
 
 def test_duplicate_path_rejected(tmp_path):
@@ -229,4 +230,27 @@ def test_skill_row_may_not_exclude(tmp_path: Path):
     path.write_text(_SKILL_ROW + "    exclude:\n      - _template/*\n")
 
     with pytest.raises(RegistryError, match="may not carry exclude"):
+        load_sources(path)
+
+
+def test_skill_row_internal_dir_is_optional(tmp_path: Path):
+    path = tmp_path / "sources.yaml"
+
+    path.write_text(_SKILL_ROW)
+    assert load_sources(path)["dfo-skills"].internal_dir is None
+
+    path.write_text(_SKILL_ROW + "    internal_dir: internal/skills\n")
+    assert load_sources(path)["dfo-skills"].internal_dir == "internal/skills"
+
+
+def test_only_a_skill_row_may_carry_internal_dir(tmp_path: Path):
+    path = tmp_path / "sources.yaml"
+    path.write_text(
+        "sources:\n"
+        "  - name: sample\n"
+        "    repo: org/sample\n"
+        "    internal_dir: internal/docs\n"
+    )
+
+    with pytest.raises(RegistryError, match="may not carry internal_dir"):
         load_sources(path)

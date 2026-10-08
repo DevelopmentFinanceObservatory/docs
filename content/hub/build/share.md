@@ -1,27 +1,35 @@
 ---
-description: Share /data results through live links that rerun the query, snapshots that preserve their numbers, and links to Studio canvases or cards.
+description: Share /data results and Studio canvases or cards as live links that show current data, or as snapshots that keep the numbers they had when you made the link.
 ---
 
 # Share live data or a snapshot
 
-A live link reruns your search each time someone opens it. A snapshot link shows the numbers captured when you create it. Search results on [`/data`](/data) offer both. Studio links are always snapshots.
+There are two kinds of links:
 
-Pick live when the reader should see the latest figures, as in a link a team reopens each month. Pick a snapshot when the numbers must match something you wrote down, such as a briefing or a report.
+- **Live links** rerun the query each time someone opens them, so readers always see the latest figures.
+- **Snapshot links** store the rows captured when the link was created, so the numbers never change.
 
-You need a result on `/data` (see [Get data](../get-started/get-data.md)) or a Studio canvas (see [Use DFO Studio](../get-started/use-studio.md)). Anyone can share a search as a guest. Use a signed-in account to share from Studio.
+Search results on [`/data`](/data) can be shared either way, and so can a canvas and a card in Studio.
+
+Use a live link for something a team checks regularly, such as a monthly dashboard. Use a snapshot when the numbers need to match a briefing, report or other fixed document.
+
+## Before you start
+
+You need a result on `/data` (see [Get data](../get-started/get-data.md)) or a Studio canvas (see [Use DFO Studio](../get-started/use-studio.md)). Anyone can share a search result without signing in. Sharing from Studio requires a signed-in account, and the Share button only appears once you're signed in.
 
 ## Share a search result
 
 1. Run a search on [`/data`](/data), for example "CRS disbursements to Nigeria for health".
-1. Select **Share**. For one dataset, the share box opens beside the table. For several datasets, it opens as a dialog.
-1. Choose **Live Data** or **Snapshot**. The box opens on **Live Data**, and each tab says what it does:
-   - Live Data: "Always re-runs the query for the latest data. Results may change as sources refresh."
-   - Snapshot: "Freezes the results as they are right now. The link keeps showing this exact data."
-1. Wait for "Creating link…" to turn into the link, then select the copy button beside it.
+1. Select **Share**. For a single dataset, the share panel opens next to the table. For several datasets, it opens as a dialog.
+1. Choose **Live Data** (the default) or **Snapshot**.
+1. Once the link appears in place of "Creating link…", select the copy button.
 
-The link uses `/s/` followed by an 8-character id. It opens `/data` with your question, sentence, and table.
+Links take the form `/s/<id>`, where `<id>` is 8 characters. Opening one loads [`/data`](/data) with the original query sentence and results table.
 
-A live link stores your question, and `/data` fetches the latest data each time someone opens it. A snapshot link stores the captured rows, so `/data` returns those exact rows. [Versions and snapshots](../data/versions.md) explains how the Datasets API identifies each.
+- **A live link** stores your question. `/data` fetches the latest data each time the link is opened.
+- **A snapshot link** stores the captured rows, so `/data` returns those exact rows.
+
+To see how the Datasets API identifies live queries and snapshots, see [Versions and snapshots](../data/versions.md).
 
 !!! warning
     Cite a snapshot link in a report, in the form [Cite and licence](../about/cite-and-licence.md) gives. A reader who opens a live link next year sees the latest figures, which may differ from your report.
@@ -30,31 +38,72 @@ A live link stores your question, and `/data` fetches the latest data each time 
 
 1. Sign in and open a canvas in [Studio](/studio).
 1. Choose what to share:
-   - Select the whole canvas with **Share** in the header. The dialog has three tabs. **Chat + Canvas** shares the conversation and every chart it produced. **Canvas** shares the cards without the conversation. **Data** lists each card with **CSV** and **JSON** downloads.
-   - Select one card by opening its menu (the three dots in its top-right corner) and choosing **Share**, then the **Link** tab.
-1. Select the copy button beside the link.
+   - **The whole canvas:** select **Share** in the header. The dialog has three tabs:
+     1. **Chat + Canvas:** the conversation and every chart it produced.
+     1. **Canvas:** the charts only.
+     1. **Data:** **CSV** and **JSON** downloads for each card. This tab doesn't create a link.
+   - **A single card:** open the card's **⋮** menu, choose **Share**, then the **Link** tab.
+1. On the **Canvas** tab, or on a card's **Link** or **Embed** tab, choose **Live Data** or **Snapshot**. The dialog opens on **Live Data**.
+1. For a live link, wait while the dialog shows "Checking cards…" and counts the cards it has checked. The link appears when every data card has been checked.
+1. Select the copy button next to the link.
 
-Each Studio link captures the canvas or card when you create it. The **Canvas** tab says "Read-only, frozen at this moment." Create a new link to share updated charts.
+**Chat + Canvas** has no choice. It is always a snapshot, because the conversation quotes its numbers. A canvas with no data card, and a text card, also have no choice, because nothing on them changes. Their links are snapshots.
 
-Studio links are unlisted. Anyone with a link can open it as a guest. The page sends search engines a no-index instruction.
+A snapshot link captures the canvas or card when you create it. The **Canvas** tab says "Read-only, frozen at this moment." Create a new link to share updated charts. Studio links made before live links existed are snapshots.
 
-## Verify it worked
+Studio links are unlisted. Anyone with the link can open it without signing in, and the page tells search engines not to index it.
 
-Open the link in a private browser window. A search link opens `/data` with the same sentence and table. A snapshot link shows the same values as when you copied it. A Studio link opens the canvas read-only.
+## What a Studio live link shows
+
+Each data card is redrawn on current data when someone opens the link. Titles, notes, and text cards stay as you wrote them, and the page says when that was, for example "Live data · titles and notes written 3 Oct 2026".
+
+A card whose period follows the newest data moves with each new release. When some series have no value for that period, the card names them, for example "3 series have no 2024 value: Chad, Mali, Niger". Select the line to see every series left out under "Left out" in More Info. A card that names fixed years keeps them.
+
+If one card cannot be refreshed, that card says so and the others still show current data. Its message is one of these:
+
+- "Current data is temporarily unavailable. Try again later." Select **Try again** on the card, or open the link again later.
+- "This card can no longer be refreshed."
+- "Live data is unavailable for this link."
+
+A live link holds up to 20 data cards, and it is offered only when every data card on the canvas can be refreshed. When it cannot be offered, Studio says why and offers a snapshot instead. It names each card that cannot be refreshed, or says that the canvas has more data cards than a live link holds.
+
+The **Download Data** option on a card of a live link gives the current rows. When the rows are still being prepared, it says "Current data is still being prepared. Try again in N seconds."
+
+An embed follows the mode of its link. The embed of a live link redraws its cards when the page loads, and the embed of a snapshot shows the numbers it was made with.
+
+### Turn a live link into a snapshot
+
+Under a live link, **Make this link a snapshot** stops the updates. The dialog says: "Everyone who has the link then sees the numbers as they were when you made it. This cannot be undone." The link keeps its address and loses the "Live data" line. To share live data again, make a new link.
+
+## Check the link
+
+Open the link in a private or incognito window:
+
+- A search link opens `/data` with the same query sentence and table.
+- A snapshot link shows the same values as when you created it.
+- A Studio link opens the canvas or card in read-only mode, and a live canvas shows a "Live data" line.
 
 ## Troubleshooting
 
-A snapshot can be refused. Each message points you to a live link.
+If a snapshot can't be created, the error message suggests sharing a live link instead.
 
-- "This result is too large to capture as a snapshot. Share it as live data instead, or narrow the search first." The Datasets API sets a size limit for each request, so the row limit varies. Narrow the search to fewer places, a shorter window, or a more specific measure, or share it live.
-- "This result describes a family of series rather than specific ones, so there's nothing to capture yet. Share it as live data instead." Pick a more specific measure in the sentence.
-- "The data platform can't capture this result right now." or "The data platform couldn't capture this result." Share it live, or download the file and send that.
-- "Couldn't create the link — try again." The site could not create the link. Try again.
+| Message                                                                                                      | Cause                                                                                                                              | Fix                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| "This result is too large to capture as a snapshot…"                                                         | The Datasets API caps the size of each response. The cap is on response size, not row count, so the number of rows allowed varies. | Narrow the search (fewer countries, a shorter time range or a more specific measure) or share a live link. |
+| "This result describes a family of series rather than specific ones…"                                        | The query matches a group of series, not specific data, so there's nothing to capture.                                             | Choose a more specific measure in the query sentence, or share a live link.                                |
+| "The data platform can't capture this result right now." / "The data platform couldn't capture this result." | The data platform couldn't create the snapshot.                                                                                    | Share a live link, or download the data and send the file.                                                 |
+| "Couldn't create the link — try again."                                                                      | Link creation failed.                                                                                                              | Try again.                                                                                                 |
 
-Sign in to see the **Share** button in Studio.
+Studio can decline a live link while it checks the cards. Select **Share a snapshot instead** to make a snapshot of the same canvas or card. The dialog says why:
+
+- `"{title}" cannot show live data, so this canvas has no live link.` The dialog names each card that cannot be refreshed. For one card, it reads "This card cannot show live data, so it has no live link."
+- "A live link holds up to 20 data cards and this canvas has {count}."
+- "Live data is unavailable right now."
+
+A live link can stand with a card the dialog could not check. The dialog then says "1 card could not be checked just now. It tries again when the link opens."
 
 ## Next
 
-- [Cite and licence](../about/cite-and-licence.md) shows how to cite a snapshot link.
-- [Versions and snapshots](../data/versions.md) explains the ids behind live links and snapshots, for fetching the exact rows in code.
-- [Embed a chart](embed.md) shows how to place a Studio canvas or card on your own page.
+- [Cite and licence](../about/cite-and-licence.md): how to cite a snapshot link.
+- [Versions and snapshots](../data/versions.md): the IDs behind live and snapshot links, for fetching exact rows in code.
+- [Embed a chart](embed.md): put a Studio canvas or card on your own website.

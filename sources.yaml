@@ -15,6 +15,9 @@
 # A `kind: skill` row publishes one page per directory under `docs_dir` that holds a `SKILL.md`,
 # with each file in that directory's `references/` as a child page. Directories whose names start
 # with `_` stay out. The row must set `docs_dir`, `path` and `title`, and may not set `exclude`.
+# A `categories.yaml` in `docs_dir` groups the skills in the nav and leaves their paths alone.
+# `internal_dir` names a second directory of skills. They publish at `<path>/<directory>` like
+# the skills under `docs_dir`, and only those under `docs_dir` get a zip and an install link.
 #
 # `exclude` holds pages out of the corpus that the source's own nav carries. It is the same
 # admission decision `enabled` makes for a whole repository, one level down, which is why it lives
@@ -86,6 +89,7 @@ sources:
     kind: skill
     ref: main
     docs_dir: skills
+    internal_dir: internal/skills
     path: skills
     title: All skills
 

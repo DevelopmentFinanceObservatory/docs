@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -11,10 +13,12 @@ from dfo_docs.models import Fetched, Source, SourceKind
 from dfo_docs.skills import (
     Skill,
     SkillError,
+    check_internal_dir,
     check_skill_drift,
     load_skills,
     skill_lead,
     skill_page_text,
+    write_skill_bundle,
 )
 
 # The seven published dfo-skills descriptions, as YAML parses them, and the lead each gives.
@@ -74,7 +78,7 @@ def test_lead_joins_a_description_broken_across_lines():
     assert skill_lead("Covers one\nthing. Then more.") == "Covers one thing."
 
 
-def _fetched(tmp_path: Path) -> Fetched:
+def _fetched(tmp_path: Path, *, internal_dir: str | None = None) -> Fetched:
     repo_root = tmp_path / "repo"
     docs_root = repo_root / "skills"
     docs_root.mkdir(parents=True)
@@ -85,6 +89,7 @@ def _fetched(tmp_path: Path) -> Fetched:
         docs_dir="skills",
         path="skills",
         title="All skills",
+        internal_dir=internal_dir,
     )
     return Fetched(
         source=source, repo_root=repo_root, docs_root=docs_root, commit="0" * 40
@@ -112,6 +117,51 @@ def test_load_skills_sorts_by_directory_and_skips_underscore_directories(tmp_pat
     assert skills[0].name == "alpha"
     assert skills[0].description == "Covers a thing. More."
     assert skills[0].file == "alpha/SKILL.md"
+    assert skills[0].category == ()
+
+
+def test_load_skills_files_skills_by_category_in_file_order(tmp_path):
+    fetched = _fetched(tmp_path)
+    for name in ("alpha", "beta", "gamma", "zeta"):
+        _write(fetched.docs_root / name / "SKILL.md", _skill_md(name))
+    _write(
+        fetched.docs_root / "categories.yaml",
+        "sources:\n  - zeta\n  - no-such-skill\n"
+        "domains:\n  debt:\n    - gamma\n  aid: []\n"
+        "uncategorised:\n  - beta\n",
+    )
+
+    skills = load_skills(fetched)
+
+    assert [(skill.directory, skill.category) for skill in skills] == [
+        ("alpha", ()),
+        ("beta", ()),
+        ("zeta", ("sources",)),
+        ("gamma", ("domains", "debt")),
+    ]
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        pytest.param("sources: [alpha\n", id="invalid-yaml"),
+        pytest.param("- alpha\n", id="top-level-list"),
+        pytest.param("domains:\n  - aid\n", id="domains-as-a-list"),
+        pytest.param("sources:\n", id="null-list"),
+        pytest.param("domains:\n  aid:\n    - 7\n", id="entry-not-a-string"),
+        pytest.param(
+            "sources:\n  - alpha\ndomains:\n  aid:\n    - alpha\n",
+            id="skill-listed-twice",
+        ),
+    ],
+)
+def test_bad_categories_file_fails_naming_it(tmp_path, text: str):
+    fetched = _fetched(tmp_path)
+    _write(fetched.docs_root / "alpha" / "SKILL.md", _skill_md("alpha"))
+    _write(fetched.docs_root / "categories.yaml", text)
+
+    with pytest.raises(SkillError, match=r"skills/categories\.yaml"):
+        load_skills(fetched)
 
 
 def test_load_skills_reads_sorted_references_with_titles(tmp_path):
@@ -222,10 +272,14 @@ _SKILL = Skill(
     name="alpha",
     description="Covers a thing. Use when asked.",
     references=(),
+    root=Path("skills"),
+    ships=True,
 )
+_INSTALL_LINK = "../../hub/skills/use-in-your-agent.md"
 _INSTALL = (
     "To load this skill in your own agent, see "
-    "[Use skills in your own agent](../../hub/skills/use-in-your-agent.md)."
+    "[Use skills in your own agent](../../hub/skills/use-in-your-agent.md). "
+    "[Download this skill as a zip](../alpha.zip)."
 )
 
 
@@ -233,7 +287,7 @@ def test_header_generates_an_h1_when_the_body_has_none():
     text = "---\nname: alpha\n---\n\n## Overview\n\nBody.\n"
 
     result = skill_page_text(
-        text, _SKILL, install_link="../../hub/skills/use-in-your-agent.md"
+        text, _SKILL, install_link=_INSTALL_LINK, bundle_link="../alpha.zip"
     )
 
     assert result == (
@@ -246,7 +300,7 @@ def test_header_keeps_the_bodys_own_h1_first():
     text = "---\nname: alpha\n---\n\n# Alpha skill\n\n## Overview\n"
 
     result = skill_page_text(
-        text, _SKILL, install_link="../../hub/skills/use-in-your-agent.md"
+        text, _SKILL, install_link=_INSTALL_LINK, bundle_link="../alpha.zip"
     )
 
     assert result == (
@@ -254,3 +308,115 @@ def test_header_keeps_the_bodys_own_h1_first():
         f"{_INSTALL}\n\n## Overview\n"
     )
     assert result.count("\n# ") == 1
+
+
+def test_header_stops_at_the_lead_without_a_bundle():
+    text = "---\nname: alpha\n---\n\n## Overview\n\nBody.\n"
+
+    result = skill_page_text(text, _SKILL, install_link=_INSTALL_LINK, bundle_link=None)
+
+    assert result == (
+        "---\nname: alpha\n---\n\n# alpha\n\nCovers a thing.\n\n## Overview\n\nBody.\n"
+    )
+
+
+def test_bundle_holds_the_skill_files_and_its_bytes_depend_only_on_them(tmp_path):
+    fetched = _fetched(tmp_path)
+    skill_dir = fetched.docs_root / "alpha"
+    sources = {
+        "alpha/SKILL.md": _skill_md("alpha").encode(),
+        "alpha/references/b.md": b"# B\r\n",
+        "alpha/references/a.md": b"# A\n",
+    }
+    for name, content in sources.items():
+        (fetched.docs_root / name).parent.mkdir(parents=True, exist_ok=True)
+        (fetched.docs_root / name).write_bytes(content)
+    _write(skill_dir / "attachments.yaml", "datasets: []\n")
+    _write(skill_dir / "notes.md", "# Notes\n")
+    (skill,) = load_skills(fetched)
+
+    first = write_skill_bundle(skill, dest_dir=tmp_path / "first")
+    for name in sources:
+        os.utime(fetched.docs_root / name, (1_000_000_000, 1_000_000_000))
+        (fetched.docs_root / name).chmod(0o600)
+    second = write_skill_bundle(skill, dest_dir=tmp_path / "second")
+
+    assert first == tmp_path / "first" / "alpha.zip"
+    assert first.read_bytes() == second.read_bytes()
+    with zipfile.ZipFile(first) as bundle:
+        assert bundle.namelist() == [
+            "alpha/SKILL.md",
+            "alpha/references/a.md",
+            "alpha/references/b.md",
+        ]
+        assert {name: bundle.read(name) for name in bundle.namelist()} == sources
+        assert {info.compress_type for info in bundle.infolist()} == {
+            zipfile.ZIP_STORED
+        }
+
+
+def test_load_skills_reads_both_roots_and_only_the_docs_root_ships(tmp_path):
+    fetched = _fetched(tmp_path, internal_dir="internal/skills")
+    internal = fetched.repo_root / "internal" / "skills"
+    _write(fetched.docs_root / "beta" / "SKILL.md", _skill_md("beta"))
+    _write(fetched.docs_root / "zeta" / "SKILL.md", _skill_md("zeta"))
+    _write(fetched.docs_root / "categories.yaml", "sources:\n  - zeta\n")
+    _write(internal / "alpha" / "SKILL.md", _skill_md("alpha"))
+    _write(internal / "alpha" / "references" / "scope.md", "# Scope\n")
+    _write(internal / "alpha" / "notes.md", "# Notes\n")
+
+    skills = load_skills(fetched)
+
+    assert [(skill.directory, skill.root, skill.ships) for skill in skills] == [
+        ("alpha", internal, False),
+        ("beta", fetched.docs_root, True),
+        ("zeta", fetched.docs_root, True),
+    ]
+    # A file is addressed from its own root, so its page lands where it would have
+    # from the docs root.
+    assert skills[0].file == "alpha/SKILL.md"
+    assert [ref.file for ref in skills[0].references] == ["alpha/references/scope.md"]
+    assert [finding.path for finding in check_skill_drift(fetched, skills)] == [
+        "internal/skills/alpha/notes.md"
+    ]
+    assert check_internal_dir(fetched) == []
+
+
+def test_skill_directory_in_both_roots_fails_naming_both(tmp_path):
+    fetched = _fetched(tmp_path, internal_dir="internal/skills")
+    _write(fetched.docs_root / "alpha" / "SKILL.md", _skill_md("alpha"))
+    _write(
+        fetched.repo_root / "internal" / "skills" / "alpha" / "SKILL.md",
+        _skill_md("alpha"),
+    )
+
+    with pytest.raises(SkillError) as info:
+        load_skills(fetched)
+    assert "skills/alpha and internal/skills/alpha" in str(info.value)
+
+
+def test_internal_dir_missing_from_the_checkout_warns_once_and_loads(tmp_path):
+    fetched = _fetched(tmp_path, internal_dir="internal/skills")
+    _write(fetched.docs_root / "alpha" / "SKILL.md", _skill_md("alpha"))
+
+    (finding,) = check_internal_dir(fetched)
+    skills = load_skills(fetched)
+
+    assert finding.severity is Severity.WARNING
+    assert finding.path == "internal/skills"
+    assert [(skill.directory, skill.ships) for skill in skills] == [("alpha", True)]
+    assert check_skill_drift(fetched, skills) == []
+
+
+def test_internal_dir_symlinked_outside_the_repository_fails(tmp_path):
+    fetched = _fetched(tmp_path, internal_dir="internal/skills")
+    _write(fetched.docs_root / "alpha" / "SKILL.md", _skill_md("alpha"))
+    outside = tmp_path / "elsewhere"
+    _write(outside / "evil" / "SKILL.md", _skill_md("evil"))
+    (fetched.repo_root / "internal").mkdir()
+    (fetched.repo_root / "internal" / "skills").symlink_to(
+        outside, target_is_directory=True
+    )
+
+    with pytest.raises(SkillError, match="resolves outside"):
+        load_skills(fetched)

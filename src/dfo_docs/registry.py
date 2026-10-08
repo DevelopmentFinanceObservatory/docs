@@ -28,7 +28,8 @@ def load_sources(path: Path) -> dict[str, Source]:
 
     Every row is returned, enabled or not, so a disabled row can still be reported by name. Raises
     RegistryError on a missing required field, a duplicate name, a duplicate path, an external
-    row carrying a docs_dir, or an external or skill row carrying exclude.
+    row carrying a docs_dir, an external or skill row carrying exclude, or a row that is not
+    a skill row carrying internal_dir.
     """
     raw = _read_yaml(path)
     rows = raw.get("sources", [])
@@ -101,6 +102,17 @@ def _parse_source(row: dict[str, Any]) -> Source:
             "whose name starts with '_' is already left out"
         )
 
+    internal_dir = row.get("internal_dir")
+    if internal_dir is not None and kind is not SourceKind.SKILL:
+        raise RegistryError(
+            f"source {row['name']!r} may not carry internal_dir; only a skill source "
+            "reads a second directory"
+        )
+    if internal_dir is not None and not isinstance(internal_dir, str):
+        raise RegistryError(
+            f"skill source {row['name']!r}: internal_dir must be a path"
+        )
+
     return Source(
         name=row["name"],
         repo=row["repo"],
@@ -114,6 +126,7 @@ def _parse_source(row: dict[str, Any]) -> Source:
         enabled=row.get("enabled", True),
         reason=row.get("reason"),
         exclude=tuple(exclude),
+        internal_dir=internal_dir,
     )
 
 

@@ -75,7 +75,13 @@ from dfo_docs.normalise import NormaliseError
 from dfo_docs.registry import RegistryError, enabled_sources, load_hub, load_sources
 from dfo_docs.roadmap import RoadmapError, RoadmapTrackContent, load_roadmap
 from dfo_docs.sidecar import SidecarError, load_sidecar
-from dfo_docs.skills import SkillError, check_skill_drift, load_skills
+from dfo_docs.skills import (
+    SkillError,
+    check_internal_dir,
+    check_skill_drift,
+    load_skills,
+    skill_roots,
+)
 
 _SOURCES_FILE = "sources.yaml"
 _HUB_FILE = "hub.yaml"
@@ -380,6 +386,7 @@ def _run_corpus(args: argparse.Namespace, *, repo_root: Path) -> int:
         sidecars: dict[str, Sidecar] = {}
         for item in fetched:
             if item.source.kind is SourceKind.SKILL:
+                findings.extend(check_internal_dir(item))
                 findings.extend(check_skill_drift(item, load_skills(item)))
                 continue
             sidecar = load_sidecar(item.repo_root, item.source)
@@ -413,19 +420,21 @@ def _run_corpus(args: argparse.Namespace, *, repo_root: Path) -> int:
             )
 
             # One asset pass per fetched source, reusing the sidecar already loaded
-            # above rather than reloading it (a skill source has none, and its docs
-            # root is the fetched one), plus one for the hub's own content, which is
+            # above rather than reloading it (a skill source has none, and gets one
+            # pass per root its skills are read from, each landing at the same corpus
+            # directory its pages do), plus one for the hub's own content, which is
             # not itself a `Fetched` source and would otherwise never have its images
             # carried at all.
             for item in fetched:
                 sidecar = sidecars.get(item.source.name)
-                findings.extend(
-                    copy_assets(
-                        sidecar.docs_root if sidecar else item.docs_root,
-                        staging_corpus / item.source.name,
-                        source_name=item.source.name,
+                for root in (sidecar.docs_root,) if sidecar else skill_roots(item):
+                    findings.extend(
+                        copy_assets(
+                            root,
+                            staging_corpus / item.source.name,
+                            source_name=item.source.name,
+                        )
                     )
-                )
             findings.extend(
                 copy_assets(
                     repo_root / _HUB_CONTENT_DIR,

@@ -66,15 +66,21 @@ Some skills point to others. [`oda-dataset-selection`](../../dfo-skills/oda-data
 
 ## Where skills live in the DFO
 
-The `skills/` directory of the dfo-skills repository holds the current skills, one directory each, and each `description` says what its skill covers. Each skill also has a page in this section, which shows its `SKILL.md` with its reference files as pages beneath it.
+The dfo-skills repository holds each skill in its own directory, and each `description` says what its skill covers. `skills/` holds the skills offered for install. `internal/skills/` holds the skills the DFO's own assistant uses and that are not offered for install, such as `dfo-faq`. Each skill also has a page in this section, which shows its `SKILL.md` with its reference files as pages beneath it. Sources lists the skills that each explain one dataset, such as [`oda-dac1`](../../dfo-skills/oda-dac1/SKILL.md). Domains lists the skills that explain a subject across datasets, grouped by domain, such as Sovereign debt.
 
 dfo-pipelines checks dfo-skills for new commits and publishes each skill to the [knowledge graph](../data/knowledge-graph.md) as an `AgentSkill` node. Each reference file is an `AgentSkillReference` node.
 
-Copy the skills into your own agent to use them.
+Install the skills under `skills/` in your own assistant to use them.
 
-<!-- TODO: describe how the DFO assistant picks a skill once dfo-ai has an integration contract with dfo-skills (dfo-ai docs/upstream-asks.md item 8) and SKILLS_ENABLED is on in production. -->
+## How the DFO assistant uses skills
+
+The DFO assistant is an agent too, and it reads the same skills from the knowledge graph. dfo-apis serves them through its Skills API, and data-mcp gives the assistant two tools over it: `get_skill` loads a skill's `SKILL.md` and lists its reference files, and `get_skill_file` reads one of those files.
+
+The descriptions the assistant matches against come from its data search. Skills are attached to datasets, and the search result names up to five skills attached to the datasets it found. A question about DFO itself goes straight to [`dfo-faq`](../../dfo-skills/dfo-faq/SKILL.md).
+
+An edit to a skill reaches the assistant after dfo-pipelines publishes it to the graph and the Skills API refreshes its index, which it does every 15 minutes.
 
 ## Next
 
-- [Use skills in your own agent](use-in-your-agent.md) shows how to copy the skill directories into Claude Code and ask a question that needs one.
+- [Use skills in your own agent](use-in-your-agent.md) shows how to install the skills in Claude, ChatGPT, Gemini, Codex or another agent, and ask a question that needs one.
 - [The development finance ontology](../data/ontology.md): the concepts, such as flow types and purpose codes, that the skills explain how to read.

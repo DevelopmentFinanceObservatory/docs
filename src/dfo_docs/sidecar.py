@@ -356,9 +356,10 @@ def title_from_text(text: str, stem: str) -> str:
     match = _H1_RE.search(text)
     if match:
         return match.group(1).strip()
-    return _de_kebab(stem)
+    return de_kebab(stem)
 
 
-def _de_kebab(stem: str) -> str:
+def de_kebab(stem: str) -> str:
+    """A kebab- or snake-case name as a sentence-case title, `flow-types` to `Flow types`."""
     text = " ".join(stem.replace("_", "-").split("-"))
     return text[:1].upper() + text[1:]
