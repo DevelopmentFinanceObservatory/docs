@@ -1395,6 +1395,12 @@ def _read_edits(
     run fails it, and a refusal with no quote names the error.
     """
     pushed = _pushed_text(page, state)
+    edited = apply_edits(
+        page=page.page_id, source=pushed, baseline=state.baseline, edited=export
+    )
+    # A region the editor's side refuses keeps the pushed text. The base leaves the
+    # same units alone, so the merge reads no change there and keeps the current
+    # source, rather than taking the pushed text for an edit that reverts it.
     applied = (
         None
         if state.applied_export is None
@@ -1403,10 +1409,8 @@ def _read_edits(
             source=pushed,
             baseline=state.baseline,
             edited=state.applied_export,
+            keep=edited.refused,
         )
-    )
-    edited = apply_edits(
-        page=page.page_id, source=pushed, baseline=state.baseline, edited=export
     )
     merged = merge_onto_current(
         pushed=pushed if applied is None else applied.text,

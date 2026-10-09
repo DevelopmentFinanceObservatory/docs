@@ -1,10 +1,10 @@
 ---
-description: Install the DFO skills in Claude, ChatGPT, Gemini, Codex or another assistant that reads Agent Skills.
+description: Install the DFO skills in Claude, ChatGPT, Gemini, Codex, or another assistant that reads Agent Skills.
 ---
 
 # Use skills in your own agent
 
-Install the DFO skills in the assistant you already use, and it answers development-finance questions with the DFO team's methods. Claude and Codex install every DFO skill at once, as one plugin from the DFO marketplace. Every other assistant takes one skill at a time, as a zip file you download from this site.
+Install the DFO skills in the assistant you already use, and it answers development finance questions with the DFO team's methods. Claude and Codex install every DFO skill at once, as one plugin from the DFO marketplace. Every other assistant takes one skill at a time, as a zip file you download from this site.
 
 ## In DFO Studio
 
@@ -16,11 +16,11 @@ The DFO assistant in [DFO Studio](../get-started/use-studio.md) loads and uses t
 
 The marketplace is the GitHub repository `DevelopmentFinanceObservatory/skills`. Its one plugin, `dfo`, installs every DFO skill at once.
 
-A zip installs one skill. The zip steps below install `oda-measures`, the skill on how ODA is measured, which the check at the end uses. Repeat them for each skill you need.
+A zip file installs one skill. The zip steps below install `oda-measures`, the skill on how ODA is measured, which the check at the end uses. Repeat them for each skill you need.
 
 <!-- TODO: DevelopmentFinanceObservatory/skills must be public, with a licence, before the marketplace routes work for readers outside ONE. Until then, adding the marketplace needs read access to the repository (and, in the Claude apps, the Claude GitHub App installed on it). Confirm each marketplace route below against the public repository, then delete this comment. -->
 
-The zip for a skill is on that skill's page in the Skills section of this site. Open the page, such as [`oda-measures`](../../dfo-skills/oda-measures/SKILL.md), and choose "Download this skill as a zip". A skill page without that link is for a skill the DFO does not offer for install.
+The zip file for a skill is on that skill's page in the Skills section of this site. Open the page, such as [`oda-measures`](../../dfo-skills/oda-measures/SKILL.md), and choose "Download this skill as a zip". If a skill page does not have that option, the DFO does not offer an install.
 
 ## Steps
 
@@ -105,7 +105,7 @@ An agent that reads the Agent Skills format loads a skill from a folder on your 
 
 1. Open the [`oda-measures`](../../dfo-skills/oda-measures/SKILL.md) page and choose "Download this skill as a zip".
 
-1. Unzip it into your agent's skills folder. Many agents, including Cursor, GitHub Copilot and Gemini CLI, read `~/.agents/skills/`. Run this from the folder that holds the download:
+1. Unzip it into your agent's skills folder. Many agents, including Cursor, GitHub Copilot, and Gemini CLI, read `~/.agents/skills/`. Run this from the folder that contains the download:
 
    ```bash
    mkdir -p ~/.agents/skills
@@ -128,7 +128,7 @@ Ask a question one of the skills covers, such as "Should I use grant equivalents
 
 ## Keep the skills current
 
-The DFO team revises skills as methods and datasets change. A marketplace install updates from the repository. A zip is a copy of the skill as it stood when you downloaded it.
+The DFO team revises skills as methods and datasets change. A marketplace install updates from the repository. A zip is a copy of the skill as it existed when you downloaded it.
 
 :::tabs
 
@@ -156,7 +156,7 @@ codex plugin marketplace upgrade
 
 ::tab{label="A zip"}
 
-Download the zip again from the skill's page. In Claude, ChatGPT or Gemini, delete the old skill in the skills settings and upload the new zip. For a folder on your computer, delete the old skill folder and unzip the new one in its place.
+Download the zip again from the skill's page. In Claude, ChatGPT, or Gemini, delete the old skill in the skills settings and upload the new zip. For a folder on your computer, delete the old skill folder and unzip the new one in its place.
 
 <!-- TODO: verify in Claude, ChatGPT and Gemini whether uploading a zip for a skill that is already installed replaces it, which would make the delete step unnecessary. Not tested. -->
 

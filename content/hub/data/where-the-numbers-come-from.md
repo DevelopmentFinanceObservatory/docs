@@ -4,6 +4,10 @@ description: How each DFO figure traces back to its source, what the DFO changes
 
 # Where the numbers come from
 
+Every number in the DFO comes from a file published by an official source, such as the OECD, the World Bank or the IMF. The DFO keeps the original values, adds up individual aid records into totals, and gives each country and category one consistent label so data from different sources can be combined. It checks for new releases daily, and you can trace any figure back to the source file it came from.
+
+## How data enters the DFO
+
 Every figure in the DFO starts as data its source publishes. The DFO downloads that data, checks it, prepares it, and loads the result into one [knowledge graph](knowledge-graph.md). That one graph serves search on [/data](/data), DFO Studio, the DFO API and the DFO MCP server, so the same question returns the same numbers on every surface.
 
 ```mermaid

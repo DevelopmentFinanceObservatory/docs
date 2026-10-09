@@ -4,7 +4,7 @@ description: How to cite data from the DFO, credit its original publisher, and f
 
 # Cite and licence
 
-Credit the organisation that first published the data, then cite the Development Finance Observatory as the route through which you found it.
+When you want to cite data from the DFO, credit the organisation that first published the data, then cite the Development Finance Observatory as the route through which you found it.
 
 ## Cite a result from /data
 

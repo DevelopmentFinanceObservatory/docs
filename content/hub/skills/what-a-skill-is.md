@@ -82,5 +82,5 @@ An edit to a skill reaches the assistant after dfo-pipelines publishes it to the
 
 ## Next
 
-- [Use skills in your own agent](use-in-your-agent.md) shows how to install the skills in Claude, ChatGPT, Gemini, Codex or another agent, and ask a question that needs one.
-- [The development finance ontology](../data/ontology.md): the concepts, such as flow types and purpose codes, that the skills explain how to read.
+- [Use skills in your own agent](use-in-your-agent.md) shows how to install the skills in Claude, ChatGPT, Gemini, Codex, or another agent, and how to ask a question that involves an agent.
+- [The development finance ontology](../data/ontology.md): The concepts, such as flow types and purpose codes, that the skills explain how to read.

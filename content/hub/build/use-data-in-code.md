@@ -4,6 +4,10 @@ description: Load a CSV or Parquet download from /data into pandas or R and keep
 
 # Use DFO data in your code
 
+This page is for people who analyse data by writing code in Python or R. It shows how to take a file downloaded from the DFO, open it in your code, and work with the numbers. The example uses aid for health in Nigeria: it keeps only official development assistance, totals it by year, and saves the result together with the source's citation details so your work stays traceable. If you don't write code, you can open the CSV download in Excel instead, or use DFO Studio to make charts without any code.
+
+## Example output
+
 A download from [`/data`](/data) is a ZIP file with a README, the data file, a table of code names, `SOURCES.md`, `CITATION.cff`, and `datapackage.json`. Load it into pandas or R, filter it to one flow type, and keep its citation with your results. For the Nigeria health download, the pandas script prints official development assistance (ODA) gross disbursements in millions of current US dollars.
 
 ```text
