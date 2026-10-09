@@ -12,15 +12,15 @@ The SHA-256 of one downloadable file, written `sha256:` and 64 hex characters. O
 
 ## Bundle
 
-The zip a download comes in by default: a README, the data file, a table of code names, `SOURCES.md`, `CITATION.cff` and `datapackage.json`. See [The data bundle](bundle.md).
+The zip file that is the default download. It includes a README, the data file, a table of code names, `SOURCES.md`, `CITATION.cff` and `datapackage.json`. See [The data bundle](bundle.md).
 
 ## Classification
 
-A coded list a source uses to describe its data, such as CRS purpose codes or finance types. Each code is a node in the knowledge graph, for example `CRSPurposeCode12220` for basic health care. See [The development finance ontology](ontology.md#source-codes).
+A coded list that a source uses to describe its data, such as CRS purpose codes or finance types. Each code is a node in the knowledge graph; for example, `CRSPurposeCode12220` for basic health care. See [The development finance ontology](ontology.md).
 
 ## `content_version`
 
-The identifier for one materialised result of a spec, written `cv_` and 32 hex characters, for example `cv_5b7870b8161a6995a2b87d1bde5427ab`. It changes when the rows, selected facets, graph or source revisions, or conversion inputs change. See [Versions and snapshots](versions.md).
+The identifier for one materialised result of a spec, written `cv_` and 32 hex characters; for example, `cv_5b7870b8161a6995a2b87d1bde5427ab`. It changes when the rows, selected facets, graph or source revisions, or conversion inputs change. See [Versions and snapshots](versions.md).
 
 ## Data Commons
 
@@ -28,7 +28,7 @@ The open-source graph platform, from Google, that serves the DFO knowledge graph
 
 ## dcid
 
-The id of a node in the knowledge graph, for example `country/FRA` or `CRSTypeOfFinance110`. Every entity, classification value, StatVar and provenance has one. See [The knowledge graph](knowledge-graph.md).
+The id of a node in the knowledge graph; for example, `country/FRA` or `CRSTypeOfFinance110`. Every entity, classification value, StatVar, and provenance has one. See [The knowledge graph](knowledge-graph.md).
 
 ## Definition
 
@@ -36,11 +36,11 @@ A spec fetched by its `spec_id` alone. It re-runs the question against the live 
 
 ## Entity
 
-A party an observation is about, such as a country or an organisation, named by its dcid. See [The knowledge graph](knowledge-graph.md).
+The subject of an observation, such as a country or an organisation, named by its dcid. See [The knowledge graph](knowledge-graph.md).
 
 ## Facet
 
-One edition of a number, told apart from other editions by its provenance, unit and measurement method. See [The knowledge graph](knowledge-graph.md#facets).
+One edition of a number, distinguished from other editions by its provenance, unit, and measurement method. See [The knowledge graph](knowledge-graph.md#facets).
 
 ## Frame reference
 
@@ -48,7 +48,7 @@ The pair `{spec_id, content_version}`, which identifies one saved data table. Th
 
 ## Grant equivalent
 
-A development finance measure defined in the ontology. In the graph it is the measured property `grantEquivalent`, so a CRS grant equivalent is a separate StatVar from a disbursement. See [The knowledge graph](knowledge-graph.md#what-each-column-becomes).
+A development finance measure defined in the ontology. In the knowledge graph, it is the measured property `grantEquivalent`, so a CRS grant equivalent is a separate StatVar from a disbursement. See [The knowledge graph](knowledge-graph.md#what-each-column-becomes).
 
 ## Knowledge graph
 
@@ -60,7 +60,7 @@ A share link that shows the latest data each time it opens. A search link re-run
 
 ## Observation
 
-One number in the graph: a StatVar, its entities in their roles, a date, a value and a unit. See [The knowledge graph](knowledge-graph.md#the-observation).
+One number in the graph: a StatVar, its entities in their roles, a date, a value, and a unit. See [The knowledge graph](knowledge-graph.md#the-observation).
 
 ## Ontology
 
@@ -72,7 +72,7 @@ Pinning has two meanings. In Studio, it puts a card on the canvas. On the Datase
 
 ## Price basis
 
-Whether money is in current prices, as the source reported it, or in constant prices of a base year. See [Methods](methods.md).
+Refers to whether monetary figures are provided in current prices, as the source reported it, or in constant prices of a base year. See [Methods](methods.md).
 
 ## Provenance
 
@@ -80,15 +80,15 @@ A provenance is the graph node that records a number's publisher, licence, and l
 
 ## Reproducing call
 
-The API call stored inside a bundle's `datapackage.json` that rebuilds the dataset from its `spec_id`. See [The data bundle](bundle.md#the-reproducing-call).
+The API call that is stored inside a bundle's `datapackage.json` that rebuilds the dataset from its `spec_id`. See [The data bundle](bundle.md#the-reproducing-call).
 
 ## Role
 
-The position an entity holds on an observation, such as `financingProvider` or `financingRecipient`. A spec keys roles by flow axis, `origin` or `destination`. See [The knowledge graph](knowledge-graph.md#roles).
+The position an entity holds on an observation, such as `financingProvider` or `financingRecipient`. A spec groups roles into two flow axes, `origin` and `destination`. See [The knowledge graph](knowledge-graph.md#roles).
 
 ## Skill
 
-A package of domain knowledge, such as definitions, methodological rules and analytical recipes, that an assistant can load for a development finance question. See [What a skill is](../skills/what-a-skill-is.md).
+A package of domain knowledge, such as definitions, methodological rules, and analytical recipes, that an assistant can load for a development finance question. See [What a skill is](../skills/what-a-skill-is.md).
 
 ## Slot
 
@@ -104,7 +104,7 @@ The DFO's exact reading of a data request, written as graph references. It names
 
 ## `spec_id`
 
-The id of a spec, written `spec_` and 32 hex characters, for example `spec_19e75bf0f03c57ec5445816962ae3896`. It hashes the request, so the same question always gets the same id. See [Versions and snapshots](versions.md).
+The id of a spec, written `spec_` and 32 hex characters; for example, `spec_19e75bf0f03c57ec5445816962ae3896`. It hashes the request, so the same question always gets the same id. See [Versions and snapshots](versions.md).
 
 ## StatVar
 
@@ -117,4 +117,4 @@ The public site, [developmentfinance.wikibase.cloud](https://developmentfinance.
 ## Next
 
 - [The knowledge graph](knowledge-graph.md) follows one CRS record into StatVars and observations, where most of these terms appear together.
-- [Versions and snapshots](versions.md) explains specs, content versions and artifact digests.
+- [Versions and snapshots](versions.md) explains specs, content versions, and artifact digests.
