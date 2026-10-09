@@ -132,10 +132,15 @@ class Clash:
 
 @dataclass(frozen=True)
 class EditResult:
-    """The source page with the Doc's edits applied, and what was left out."""
+    """The source page with the Doc's edits applied, and what was left out.
+
+    `refused` holds the index of every source unit in a region a `REFUSED` report
+    left unchanged, for `apply_edits`'s `keep`.
+    """
 
     text: str
     reports: tuple[Report, ...]
+    refused: frozenset[int] = frozenset()
 
 
 @dataclass(frozen=True)
@@ -150,7 +155,9 @@ class MergeResult:
     clashes: tuple[Clash, ...]
 
 
-def apply_edits(*, page: str, source: str, baseline: str, edited: str) -> EditResult:
+def apply_edits(
+    *, page: str, source: str, baseline: str, edited: str, keep: Set[int] = frozenset()
+) -> EditResult:
     """Apply the edits between `baseline` and `edited` to `source`.
 
     `source` is the page at the commit that was pushed, `baseline` the Doc's export
@@ -162,6 +169,11 @@ def apply_edits(*, page: str, source: str, baseline: str, edited: str) -> EditRe
     or removed rule is reported, never silently dropped. Each changed region (a run of
     units between unchanged ones) is applied as `_apply_region` says. When `edited`
     equals `baseline`, the result is `source` unchanged.
+
+    `keep` holds source unit indices (an `EditResult.refused` from the same `source`
+    and `baseline`) to leave as `source` has them: every changed region that holds one
+    is skipped without a report. A merge whose base and editor sides both leave those
+    units alone then reads no change there, so the current source's text stands.
 
     Raises:
         adapter.BaselineMismatchError: `baseline` does not align with `source`.
@@ -191,16 +203,28 @@ def apply_edits(*, page: str, source: str, baseline: str, edited: str) -> EditRe
     )
     plan = _Plan(source, blocks)
     deleted: list[_Unit] = []
+    refused: set[int] = set()
     for changed, positions in match.runs:
+        olds, _ = _sides([match.steps[position] for position in positions])
         if changed:
+            if not keep.isdisjoint(olds):
+                continue
+            reported = len(plan.reports)
             deleted.extend(_apply_region(plan, match, positions))
+            if any(r.kind is ReportKind.REFUSED for r in plan.reports[reported:]):
+                refused.update(olds)
             continue
         for position in positions:
             index, edited_index = match.steps[position]
             assert index is not None and edited_index is not None
-            plan.change(units[index], match.baseline[index], match.edited[edited_index])
+            if index not in keep:
+                plan.change(
+                    units[index], match.baseline[index], match.edited[edited_index]
+                )
     plan.delete(deleted)
-    return EditResult(text=plan.render(), reports=tuple(plan.reports))
+    return EditResult(
+        text=plan.render(), reports=tuple(plan.reports), refused=frozenset(refused)
+    )
 
 
 def merge_onto_current(*, pushed: str, edited: str, current: str) -> MergeResult:

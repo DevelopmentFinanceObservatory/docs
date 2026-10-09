@@ -1094,6 +1094,33 @@ def test_a_refused_edit_holds_the_doc_and_the_not_applied_column_quotes_it(
     assert "edited in Docs" in capsys.readouterr().out
 
 
+CALLOUT_PAGE = PAGE_TEXT.replace("Send a request", "!!! note\n    Send a request")
+
+
+def test_a_refused_region_keeps_the_text_an_earlier_pr_merged(world: World):
+    world.source.commit("docs/call.md", CALLOUT_PAGE)
+    page, state = _pushed_page(world)
+    _ready(world, page)
+    world.google.edit(state.doc_id, "Read the response", "Read the reply")
+    assert world.pull([page]).failures == 0
+    (first,) = world.proposals.calls
+    assert "Read the reply" in first["files"]["docs/call.md"]
+    world.merge(texts={"docs/call.md": first["files"]["docs/call.md"]})
+
+    # No push replaces the Doc, so the page keeps its first source and baseline.
+    # Removing the callout's label puts the merged paragraph beside it in a
+    # refused region, which must not read as an edit back to the pushed text.
+    page = _page(world)
+    world.google.edit(state.doc_id, "> **Note:** Send", "> Send")
+    _ready(world, page)
+    assert world.pull([page]).failures == 0
+
+    assert len(world.proposals.calls) == 1
+    row = world.google.rows[page.page_id]
+    assert row["Status"] == "Editing"
+    assert "the Note label was removed or changed" in row["Not applied"]
+
+
 def test_a_refusal_quote_is_cut_to_fit_the_not_applied_cell(world: World):
     long_note = "TODO: " + "word " * 12_000 + "end."
     world.source.commit(

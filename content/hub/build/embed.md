@@ -4,52 +4,70 @@ description: Copy the iframe code Studio gives for a canvas or a single card and
 
 # Embed a chart
 
-Studio gives you an `<iframe>` for a canvas or a single card. The frame shows the cards in their shared layout and theme, in read-only mode.
+Studio gives you iframe code for a whole canvas or a single card. Paste it into any web page to show the charts there.
+
+An embed follows one of two modes. A live embed redraws each data card on current data every time the page loads. A snapshot embed shows the data as it was when you created the embed code and doesn't update when sources refresh.
+
+## Before you start
+
+You need to be signed in to Studio and have a canvas. See [Use DFO Studio](../get-started/use-studio.md) to make one.
+
+Only Studio canvases and cards can be embedded. To share `/data` search results, use a link instead (see [Share live data or a snapshot](share.md)).
+
+## Get the embed code
+
+1. Open the embed code:
+   - **Whole canvas:** select **Share** in the Studio header, then the **Canvas** tab. The code is under **Embed**.
+   - **Single card:** open the card's **⋮** menu, select **Share**, then the **Embed** tab.
+1. When the dialog offers the choice, select **Live Data** or **Snapshot**. It opens on **Live Data**. A text card and a canvas with no data card have no choice, and they embed as a snapshot.
+1. When the code appears in place of "Creating link…", select the copy button. For a live embed, the dialog first checks that every data card can show live data.
+1. Paste the code into your page's HTML where you want the chart to appear.
+1. Adjust the height if needed. The frame fills the width of its container and is 640 pixels tall by default.
+
+The code looks like this:
 
 ```html
-<iframe src="{site}/embed/{id}" width="100%" height="640" style="border:0" title="{title}"></iframe>
+<iframe
+  src="{site}/embed/{id}"
+  width="100%"
+  height="640"
+  style="border:0"
+  title="{title}"
+></iframe>
 ```
+
+- `{site}`: the DFO site address
+- `{id}`: an 8-character share ID
+- `{title}`: the canvas or card title
+
+Keep the `title` attribute. Screen readers use it to describe the frame.
 
 <!-- TODO: replace {site} and {id} with a real embed from the production site once it is public. -->
 
-Studio fills in `{site}` with the address you are on, `{id}` with an 8-character share id, and `{title}` with the canvas title or the card title.
+## How embeds behave
 
-You need a signed-in Studio account and a canvas. [Use DFO Studio](../get-started/use-studio.md) walks through making one.
+- Embeds use the theme the canvas had when it was shared.
+- Readers can pan around a canvas and hover over charts to see values.
+- Pin buttons and card menus are hidden, so readers can't change anything.
+- The embed page tells search engines not to index it.
 
-## Steps
+In a live embed, titles, notes and text cards stay as you wrote them, and a line under the frame gives the date, for example "Live data · titles and notes written 3 Oct 2026". A card that can't be refreshed says so in its place, and the others still show current data.
 
-1. Open the embed code.
-   - For the whole canvas, select **Share** in the Studio header, then the **Canvas** tab. The code sits under the **Embed** heading, with the line "Drops the read-only canvas into any page. It follows the theme it was shared with."
-   - For one card, open the card's menu (the three dots in its top-right corner), select **Share**, then the **Embed** tab: "Drops this card, read-only, into any page."
-1. When the dialog offers the choice, select **Live Data** or **Snapshot**. It opens on **Live Data**, and an embed follows the mode you choose. A text card and a canvas with no data card have no choice, and they embed as a snapshot.
-1. Wait for "Creating link…" to turn into the code, then select the copy button. For a live embed, the dialog first checks that every data card can show live data.
-1. Paste the code into your page's HTML where the chart should appear.
-1. Set the height. The frame fills the width of its container and is 640 pixels tall. Change `height` to fit your layout.
+To update a snapshot embed on your page, create new embed code and replace the old iframe.
 
-Keep the `title` attribute. Screen readers announce it when they reach the frame.
+## Check the embed
 
-## What the embed shows
-
-The embed shows a canvas or card in the theme used when it was shared. Readers can pan the canvas and read card tooltips. The canvas is read-only, with pin buttons and card menus hidden. The embed page sends search engines a no-index instruction.
-
-A live embed redraws each data card on current data every time the page loads. Titles, notes, and text cards stay as you wrote them, and a line under the frame gives the date, for example "Live data · titles and notes written 3 Oct 2026". A card that cannot be refreshed says so in its place, and the others still show current data. [Share live data or a snapshot](share.md) covers what a live link shows.
-
-A snapshot embed shows the numbers as they stood when you copied the code. Source refreshes leave those numbers fixed. To update a chart on your page, create new embed code in Studio and replace the `<iframe>`.
-
-!!! note
-    Embed code comes from Studio. To send someone a `/data` search, share it as a live link, which shows the latest figures when they open it ([Share live data or a snapshot](share.md)).
-
-## Verify it worked
-
-Open the `src` address in a browser tab. The canvas or single card should appear on its own. Load your page and confirm the frame shows the same cards.
+Open the `src` address in a new browser tab. The canvas or card should appear on its own. Then load your page and check that the frame shows the same charts.
 
 ## Troubleshooting
 
-- Switch from **Chat + Canvas** to the **Canvas** tab for the embed code.
-- Sign in to see the **Share** button in Studio and the card **Share** row.
-- If the frame shows "not found", check that `src` contains the full `{id}`. Copy the code again if needed.
+| Problem                                                        | Fix                                                                                    |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| No embed code in the Share dialog                              | Switch from the **Chat + Canvas** tab to the **Canvas** tab.                           |
+| No Share button in Studio, or no Share option in the card menu | Sign in.                                                                               |
+| The frame shows "not found"                                    | Check that `src` includes the full 8-character ID. If it doesn't, copy the code again. |
 
 ## Next
 
-- [Share live data or a snapshot](share.md) covers live links and snapshot links, the two modes an embed can follow.
-- [Versions and snapshots](../data/versions.md) explains how snapshots identify the data they store.
+- [**Share live data or a snapshot**](share.md)**:** how live links and snapshot links, the two modes an embed can follow, differ.
+- [**Versions and snapshots**](../data/versions.md)**:** how snapshots identify the data they store.

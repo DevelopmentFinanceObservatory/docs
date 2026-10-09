@@ -4,7 +4,7 @@ description: Ask DFO Studio a question, approve its plan, and pin a chart to you
 
 # Use DFO Studio
 
-DFO Studio turns a question into charts on a canvas, a workspace where you can arrange, save and share results. This example asks for an overview of health spending in Kenya and ends with a pinned line chart of health spending per person from 2000 to 2023.
+DFO Studio turns a question into charts on a canvas, a workspace where you can arrange, save and share results. Below we lay out an example that asks for an overview of health spending in Kenya and ends with a pinned line chart of health spending per person from 2000 to 2023.
 
 It takes about ten minutes and uses two of the five prompts available without an account. Sign in first if you want to save your canvas.
 
@@ -30,7 +30,7 @@ For broad questions, Studio suggests a research plan before it fetches any data.
 
 ## Step 3: Read the chart
 
-Studio adds a line chart to the canvas, "Current Health Expenditure Per Capita in Kenya (2000-2023)". The chat answer names the source, World Development Indicators, and gives the start and end values: 75.5 international dollars in 2000, rising to 274.0 in 2023.
+DFO Studio adds a line chart to the canvas. The chat answer names the source and gives the start and end values.
 
 Results vary a little each time. The plan, chart title and wording may differ, but the data is the same.
 
@@ -40,7 +40,7 @@ Results vary a little each time. The plan, chart title and wording may differ, b
 
 ## Step 4: Pin the card
 
-When you ask a new question, Studio replaces any cards that aren't pinned. To keep the Kenya chart, click the pin icon next to the ⋮ menu.
+When you ask a new question, DFO Studio replaces any cards that aren't pinned. To keep the Kenya chart, click the pin icon next to the ⋮ menu.
 
 Try it with a follow-up: *How does Kenya compare with Uganda?* New cards appear, and your pinned chart stays where you left it.
 
