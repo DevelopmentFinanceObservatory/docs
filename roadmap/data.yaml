@@ -11,57 +11,193 @@ categories:
     label: Debt
   - id: climate
     label: Climate
+  - id: health
+    label: Health
+  - id: economy
+    label: Economy
   - id: humanitarian
     label: Humanitarian
 
 entries:
-  - id: mdb-flows
-    title: Multilateral Development Bank Flows
+  - id: oecd-crs
+    title: OECD Creditor Reporting System (CRS)
     description: >-
-      A unified view of disbursement, commitment, and project-level data from the
-      six major multilateral development banks, harmonised against the DFO sector
-      taxonomy and linked to recipient country nodes in the knowledge graph.
-    categories: [aid-oda]
-    status: in-development
-    expected: "2026-Q3"
-
-  - id: south-south-cooperation
-    title: South-South Cooperation
-    description: >-
-      Flows from non-DAC development partners, with a focus on South-South and
-      triangular cooperation. Data availability is fragmented and methodologies
-      vary, so scope and feasibility are still being assessed.
-    categories: [aid-oda]
-    status: under-consideration
-
-  - id: crs-2025
-    title: OECD DAC CRS 2025 Data
-    description: >-
-      Added 2024 data year (provisional). Revised 2022 disbursements for 7 donors
-      following OECD restatement. Updated sector imputation model to v3.
+      Development finance by provider, recipient, flow type and sector.
     categories: [aid-oda]
     status: released
-    released_on: "2026-06-12"
-    version: "4.2.0"
+    released_on: "2026-10-14"
+    provenance: provenance/OECDCreditorReportingSystem
 
-  # The two entries below are placeholders added to give the website team a worked
-  # example of every case the schema allows. They carry no commitment and are not
-  # real roadmap items; see the three entries above for those.
-
-  - id: placeholder-planned-multi-category
-    title: "Placeholder: Planned Entry With Several Categories"
+  - id: oecd-dac1
+    title: OECD DAC1 Total Flows by Provider
     description: >-
-      This is a placeholder showing the planned status paired with more than one
-      category, and it carries no commitment. It exists only so a reader can see
-      a planned entry filed under two filter chips at once.
-    categories: [climate, humanitarian]
+      Each provider's total ODA and other flows by type of aid, including ODA as
+      a share of GNI.
+    categories: [aid-oda]
+    status: released
+    released_on: "2026-10-14"
+    provenance: provenance/OECDDAC1
+
+  - id: oecd-dac2a
+    title: OECD DAC2A ODA by Provider and Recipient
+    description: >-
+      ODA disbursements by provider and recipient, including imputed
+      multilateral ODA.
+    categories: [aid-oda]
+    status: released
+    released_on: "2026-10-14"
+    provenance: provenance/OECDDAC2A
+
+  - id: oecd-dac2b
+    title: OECD DAC2B Other Official Flows by Provider and Recipient
+    description: >-
+      Other official flows and export credits by provider and recipient.
+    categories: [aid-oda]
+    status: released
+    released_on: "2026-10-14"
+    provenance: provenance/OECDDAC2B
+
+  - id: one-conversion-tables-dac
+    title: ONE Conversion Tables (DAC)
+    description: >-
+      Exchange rates and deflators for converting OECD data to other currencies and
+      constant prices.
+    categories: [aid-oda, economy]
+    status: released
+    released_on: "2026-10-14"
+    provenance: provenance/ONEConversionTablesDAC
+
+  - id: one-imputed-multilateral-sectors
+    title: ONE Imputed Multilateral Sectors
+    description: >-
+      ONE's estimate of how providers' core contributions to multilaterals are
+      spent, by recipient and sector.
+    categories: [aid-oda]
+    status: released
+    released_on: "2026-10-14"
+    provenance: provenance/ONEImputedMultilateralSectors
+
+  - id: world-bank-ids
+    title: World Bank International Debt Statistics (IDS)
+    description: >-
+      External debt of low- and middle-income countries by debtor and creditor.
+    categories: [debt]
+    status: released
+    released_on: "2026-10-14"
+    provenance: provenance/WorldBankInternationalDebtStatistics
+
+  - id: imf-weo
+    title: IMF World Economic Outlook (WEO)
+    description: >-
+      GDP, savings, capital formation and output gap figures and projections for
+      countries and country groups.
+    categories: [economy]
+    status: released
+    released_on: "2026-10-14"
+    provenance: provenance/IMFWorldEconomicOutlook
+
+  - id: one-conversion-tables-imf
+    title: ONE Conversion Tables (IMF)
+    description: >-
+      Exchange rates and deflators for converting IMF and World Bank data to other
+      currencies and constant prices.
+    categories: [economy]
+    status: released
+    released_on: "2026-10-14"
+    provenance: provenance/ONEConversionTablesIMF
+
+  - id: iati
+    title: International Aid Transparency Initiative (IATI)
+    description: >-
+      Semi-aggregate development finance data from key providers reporting to IATI.
+    categories: [aid-oda]
+    status: in-development
+    expected: "2026-Q4"
+    url: https://iatistandard.org/en/
+
+  - id: who-ghed
+    title: WHO Global Health Expenditure Database (GHED)
+    description: >-
+      Health spending by country and source, including government, out-of-pocket and
+      external funding.
+    categories: [health]
     status: planned
     expected: "2026-Q4"
+    url: https://apps.who.int/nha/database
 
-  - id: placeholder-no-categories
-    title: "Placeholder: Entry With No Categories"
+  - id: oecd-cpa
+    title: OECD Country Programmable Aid (CPA)
     description: >-
-      This is a placeholder showing an entry that names no category, and it
-      carries no commitment. It exists only so a reader can see an entry that
-      appears under the All filter only.
+      The share of ODA that recipient countries can plan and program, by provider
+      and recipient.
+    categories: [aid-oda]
+    status: planned
+    expected: "2026-Q4"
+    url: https://www.oecd.org/en/data/insights/data-explainers/2025/02/country-programmable-aid-in-official-development-assistance.html
+
+  - id: tossd
+    title: Total Official Support for Sustainable Development (TOSSD)
+    description: >-
+      Official support for sustainable development beyond ODA, including South-South
+      providers and global public goods.
+    categories: [aid-oda]
+    status: planned
+    expected: "2026-Q4"
+    url: https://tossd.online/
+
+  - id: one-climate-finance-files
+    title: ONE Climate Finance Files
+    description: >-
+      ONE's estimates of bilateral and multilateral climate finance by provider and
+      recipient.
+    categories: [climate]
+    status: planned
+    expected: "2026-Q4"
+    url: https://data.one.org/climate-finance-files
+
+  - id: oecd-total-use-multilateral-system
+    title: OECD Providers' Total Use of the Multilateral System
+    description: >-
+      Each provider's core and earmarked contributions to multilateral
+      organisations.
+    categories: [aid-oda]
+    status: planned
+    expected: "2026-Q4"
+    url: https://www.oecd.org/en/data/dashboards/use-of-the-multilateral-development-system-by-dac-members.html
+
+  - id: african-debt-database
+    title: African Debt Database
+    description: >-
+      Domestic and external debt instruments issued by African governments, by
+      creditor, currency, maturity and interest rate.
+    categories: [debt]
     status: under-consideration
+    url: https://africandebtdatabase.com
+
+  - id: world-bank-remittances
+    title: World Bank Remittance Flows
+    description: >-
+      Migrant remittance inflows and outflows by country, including flows between
+      pairs of countries.
+    categories: [economy]
+    status: under-consideration
+    url: https://www.knomad.org/data/remittances
+
+  - id: oda-nowcasting
+    title: ODA nowcasting
+    description: >-
+      Develop and test a method for estimating aid before official figures arrive,
+      starting with a case study of health ODA. Publish estimates if the method
+      proves viable.
+    categories: [aid-oda, health]
+    status: planned
+    expected: "2027-Q1"
+
+  - id: humanitarian-funding
+    title: Humanitarian funding
+    description: >-
+      Reported humanitarian funding by crisis, provider, and year, using OCHA's
+      Financial Tracking Service.
+    categories: [humanitarian]
+    status: under-consideration
+    url: https://fts.unocha.org/

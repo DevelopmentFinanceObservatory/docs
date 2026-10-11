@@ -20,7 +20,7 @@ A coded list that a source uses to describe its data, such as CRS purpose codes 
 
 ## `content_version`
 
-The identifier for one materialised result of a spec, written `cv_` and 32 hex characters; for example, `cv_5b7870b8161a6995a2b87d1bde5427ab`. It changes when the rows, selected facets, graph or source revisions, or conversion inputs change. See [Versions and snapshots](versions.md).
+The identifier for one materialised result of a spec, written `cv_` and 32 hex characters; for example, `cv_5b7870b8161a6995a2b87d1bde5427ab`. It changes when the rows change, including the unit, method, or provenance on any row. A graph, source, or conversion change that leaves every row the same keeps it. See [Versions and snapshots](versions.md).
 
 ## Data Commons
 

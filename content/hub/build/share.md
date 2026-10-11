@@ -11,7 +11,7 @@ There are two kinds of links:
 
 Search results on [`/data`](/data) can be shared either way, and so can a canvas and a card in Studio.
 
-Use a live link for something a team checks regularly, such as a monthly dashboard. Use a snapshot when the numbers need to match a briefing, report or other fixed document.
+Use a live link for something a team checks regularly, such as a monthly dashboard. Use a snapshot when the numbers need to match a briefing, report, or other static document.
 
 ## Before you start
 
@@ -19,7 +19,7 @@ You need a result on `/data` (see [Get data](../get-started/get-data.md)) or a D
 
 ## Share a search result
 
-1. Run a search on [`/data`](/data), for example "CRS disbursements to Nigeria for health".
+1. Run a search on [`/data`](/data); for example, "CRS disbursements to Nigeria for health".
 1. Select **Share**. For a single dataset, the share panel opens next to the table. For several datasets, it opens as a dialog.
 1. Choose **Live Data** (the default) or **Snapshot**.
 1. Once the link appears in place of "Creating link…", select the copy button.
@@ -32,7 +32,7 @@ Opening a link loads [`/data`](/data) with the original query sentence and resul
 To see how the Datasets API identifies live queries and snapshots, see [Versions and snapshots](../data/versions.md).
 
 !!! warning
-    Cite a snapshot link in a report, in the form [Cite and licence](../about/cite-and-licence.md) gives. A reader who opens a live link next year sees the latest figures, which may differ from your report.
+    Cite a snapshot link in a report, in the form [Cite and licence](../about/cite-and-licence.md) provides. A reader who opens a live link next year will see the latest figures, which may differ from your report.
 
 ## Share from Studio
 
@@ -104,6 +104,6 @@ A live link can stand with a card the dialog could not check. The dialog then sa
 
 ## Next
 
-- [Cite and licence](../about/cite-and-licence.md): how to cite a snapshot link.
-- [Versions and snapshots](../data/versions.md): the IDs behind live and snapshot links, for fetching exact rows in code.
-- [Embed a chart](embed.md): put a Studio canvas or card on your own website.
+- [Cite and licence](../about/cite-and-licence.md): How to cite a snapshot link.
+- [Versions and snapshots](../data/versions.md): The IDs behind live and snapshot links, for fetching exact rows in code.
+- [Embed a chart](embed.md): Put a Studio canvas or card on your own website.

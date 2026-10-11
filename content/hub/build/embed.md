@@ -69,5 +69,5 @@ Open the `src` address in a new browser tab. The canvas or card should appear on
 
 ## Next
 
-- [**Share live data or a snapshot**](share.md)**:** how live links and snapshot links, the two modes an embed can follow, differ.
-- [**Versions and snapshots**](../data/versions.md)**:** how snapshots identify the data they store.
+- [**Share live data or a snapshot**](share.md)**:** How live links and snapshot links, the two modes an embed can follow, differ.
+- [**Versions and snapshots**](../data/versions.md)**:** How snapshots identify the data they store.
