@@ -4,9 +4,11 @@ description: Ask DFO Studio a question, approve its plan, and pin a chart to you
 
 # Use DFO Studio
 
-DFO Studio turns a question into charts on a canvas, a workspace where you can arrange, save and share results. Below we lay out an example that asks for an overview of health spending in Kenya and ends with a pinned line chart of health spending per person from 2000 to 2023.
+DFO Studio turns a question into charts on a canvas, a workspace where you can arrange, save, and share results.
 
-It takes about ten minutes and uses two of the five prompts available without an account. Sign in first if you want to save your canvas.
+Below, we illustrate how to use Studio, using an example that asks for an overview of health spending in Kenya and produces a pinned line chart of health spending per person from 2000 to 2023.
+
+Doing so takes about ten minutes and uses two of the five prompts available without an account. Sign in first if you want to save your canvas or ask more than five queries.
 
 <!-- TODO: verify the chart title, plan and answer against the staging site; they come from the recorded Studio session dfo-ai docs/transcripts/studio_transcript_plan.jsonl. -->
 
@@ -46,5 +48,5 @@ Try it with a follow-up: *How does Kenya compare with Uganda?* New cards appear,
 
 ## Next
 
-- [Embed a chart](../build/embed.md): put a pinned card or the whole canvas into your own web page.
+- [Embed a chart](../build/embed.md): Put a pinned card or the whole canvas into your own web page.
 - [Share live data or a snapshot](../build/share.md) explains how to share a canvas or card as a live link, which shows current data, or as a snapshot, which keeps the numbers it had when you made it.
