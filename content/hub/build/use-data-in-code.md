@@ -4,7 +4,7 @@ description: Load a CSV or Parquet download from /data into pandas or R and keep
 
 # Use DFO data in your code
 
-This page is for people who analyse data by writing code in Python or R. It shows how to take a file downloaded from the DFO, open it in your code, and work with the numbers. The example uses aid for health in Nigeria: it keeps only official development assistance, totals it by year, and saves the result together with the source's citation details so your work stays traceable. If you don't write code, you can open the CSV download in Excel instead, or use DFO Studio to make charts without any code.
+This page is for people who analyse data by writing code in Python or R. It shows how to take a file downloaded from the DFO, open it in your code, and work with the numbers. The example uses aid for health in Nigeria: It keeps only official development assistance, totals it by year, and saves the result together with the source's citation details so your work stays traceable. If you don't write code, you can open the CSV download in Excel instead, or use DFO Studio to make charts without any code.
 
 ## Example output
 
@@ -64,7 +64,7 @@ The file name carries the sources, the date the DFO first prepared the version, 
 
    Each row in this CRS download represents one donor, one year, and one series. `value` uses the currency named in `unit`, here `CurrencyUSD`. The `stat_var_crs…` columns describe the series' purpose, modality, type of finance, and type of flow. `data/codes.csv` gives the plain name of each code, such as `country/KEN` for Kenya, and `SOURCES.md` gives each source's licence and the steps the DFO applied.
 
-1. Keep the citation with your results. The script in step 2 copies `CITATION.cff` next to `nga-health-oda.csv`. To cite the data in a report, use a snapshot link in the form [Cite and licence](../about/cite-and-licence.md) gives.
+1. Keep the citation with your results. The script in step 2 copies `CITATION.cff` next to `nga-health-oda.csv`. To cite the data in a report, use a snapshot link in the form [Cite and licence](../about/cite-and-licence.md) indicates.
 
 ### Load the CSV instead
 
@@ -121,6 +121,6 @@ The script creates `nga-health-oda.csv` and `nga-health-oda.CITATION.cff` in the
 
 ## Next
 
-- [The data bundle](../data/bundle.md) lists every file in the zip and every field in `datapackage.json`, and the ways to get the same dataset again without a key.
+- [The data bundle](../data/bundle.md) lists every file in the zip and every field in `datapackage.json`, and explains how to get the same dataset again without a key.
 - The API quickstart fetches the same dataset directly, so you can skip the download.
   <!-- TODO: link when the API quickstart is public -->

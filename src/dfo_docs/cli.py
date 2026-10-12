@@ -354,6 +354,8 @@ def _roadmap_entry_json(entry: RoadmapEntry) -> dict[str, object]:
         "expected": entry.expected,
         "released_on": entry.released_on,
         "version": entry.version,
+        "provenance": entry.provenance,
+        "url": entry.url,
     }
     return {key: value for key, value in raw.items() if value is not None}
 

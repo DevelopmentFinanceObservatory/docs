@@ -33,6 +33,7 @@ _ID_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 _EXPECTED_RE = re.compile(r"^[0-9]{4}-Q[1-4]$")
 _DATE_RE = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 _ENTRY_ID_MAX_LENGTH = 64
+_PROVENANCE_RE = re.compile(r"^provenance/[A-Za-z0-9]+$")
 
 _INDEX_FILE = "index.yaml"
 _INDEX_REQUIRED_FIELDS = ("id", "label")
@@ -75,10 +76,11 @@ def load_roadmap(
     itself does not exist, on malformed YAML, a missing required field, an `id` that
     is not lowercase-hyphen (or, for an entry id, exceeds 64 characters), a `status`
     outside the four-value enum, an `expected` that is not `YYYY-QN`, a `released_on`
-    that is not an ISO 8601 date, or a status/field combination the published track
-    schema's conditional rules forbid: a `released` entry must carry `released_on`
-    and must not carry `expected`; any other entry must carry neither `released_on`
-    nor `version`; a `planned` or `in-development` entry must carry `expected`.
+    that is not an ISO 8601 date, a `provenance` that is not a provenance dcid, a `url`
+    that is not https://, or a status/field combination the published track schema's conditional rules forbid: a
+    `released` entry must carry `released_on` and must not carry `expected`; any other
+    entry must carry none of `released_on`, `version` and `provenance`; a `planned` or
+    `in-development` entry must carry `expected`.
     """
     if not roadmap_dir.is_dir():
         raise RoadmapError(f"{roadmap_dir}: no such directory")
@@ -198,6 +200,19 @@ def _parse_entry(path: Path, row: Any) -> RoadmapEntry:
 
     version = row.get("version")
 
+    provenance = row.get("provenance")
+    if provenance is not None and not _PROVENANCE_RE.match(str(provenance)):
+        raise RoadmapError(
+            f"{path}: entry {entry_id!r} has provenance {provenance!r}, "
+            "which is not a provenance dcid such as provenance/OECDDAC1"
+        )
+
+    url = row.get("url")
+    if url is not None and not str(url).startswith("https://"):
+        raise RoadmapError(
+            f"{path}: entry {entry_id!r} has url {url!r}, which is not an https:// URL"
+        )
+
     if status is EntryStatus.RELEASED:
         if released_on is None:
             raise RoadmapError(
@@ -218,6 +233,11 @@ def _parse_entry(path: Path, row: Any) -> RoadmapEntry:
                 f"{path}: entry {entry_id!r} is {status.value} and must not carry "
                 "version"
             )
+        if provenance is not None:
+            raise RoadmapError(
+                f"{path}: entry {entry_id!r} is {status.value} and must not carry "
+                "provenance"
+            )
         if (
             status in (EntryStatus.PLANNED, EntryStatus.IN_DEVELOPMENT)
             and expected is None
@@ -237,6 +257,8 @@ def _parse_entry(path: Path, row: Any) -> RoadmapEntry:
         expected=expected,
         released_on=released_on,
         version=version,
+        provenance=provenance,
+        url=url,
     )
 
 

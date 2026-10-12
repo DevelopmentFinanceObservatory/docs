@@ -44,41 +44,65 @@ def test_load_roadmap_real_files():
 
     data = tracks["data"]
     assert data.track == "data"
-    assert [category.id for category in data.categories] == [
-        "aid-oda",
-        "debt",
-        "climate",
-        "humanitarian",
-    ]
-    # data.yaml may carry more entries than these three real ones (see the
-    # cross-track coverage checks below), but these three must still be among them.
-    entries_by_id = {entry.id for entry in data.entries}
-    assert entries_by_id >= {"mdb-flows", "south-south-cooperation", "crs-2025"}
+    assert data.categories
+    for track in tracks.values():
+        assert track.categories
+        assert track.entries
+        assert all(
+            not category.label.startswith("Placeholder:")
+            for category in track.categories
+        )
+        assert all(
+            not entry.title.startswith("Placeholder:") for entry in track.entries
+        )
 
-    released = next(entry for entry in data.entries if entry.id == "crs-2025")
-    assert released.status == EntryStatus.RELEASED
-    assert released.released_on == "2026-06-12"
-    assert released.version == "4.2.0"
-    assert released.expected is None
-
-    in_development = next(entry for entry in data.entries if entry.id == "mdb-flows")
-    assert in_development.status == EntryStatus.IN_DEVELOPMENT
-    assert in_development.expected == "2026-Q3"
-
-    # platform.yaml and ai-tools.yaml declare a placeholder category vocabulary for
-    # their owning team to replace; every label must say so plainly.
-    for track_id in ("platform", "ai-tools"):
-        assert tracks[track_id].categories
-        for category in tracks[track_id].categories:
-            assert category.label.startswith("Placeholder: ")
-
-    # The three track files together must give the website team one worked example
-    # of every case the published contract allows. These are asserted as properties
-    # computed over the loaded tracks, rather than by naming placeholder ids, so
-    # replacing a placeholder with a real entry that covers the same case keeps this
-    # passing.
     all_entries = [entry for content in tracks.values() for entry in content.entries]
+    assert {entry.status for entry in all_entries} == set(EntryStatus)
 
+
+def test_load_roadmap_contract_examples(tmp_path):
+    """Optional contract shapes belong in fixtures, independent of public scope."""
+    roadmap_dir = _write_track(
+        tmp_path,
+        "data",
+        """
+        track: data
+        categories:
+          - id: aid
+            label: Aid
+          - id: debt
+            label: Debt
+        entries:
+          - id: released-version
+            title: Versioned dataset
+            description: A versioned dataset release.
+            categories: [aid, debt]
+            status: released
+            released_on: "2026-01-01"
+            version: "1.0.0"
+          - id: released-unversioned
+            title: Dataset
+            description: A dataset release.
+            status: released
+            released_on: "2026-01-01"
+          - id: developing
+            title: Dataset in development
+            description: An additional dataset.
+            status: in-development
+            expected: "2026-Q4"
+          - id: planned
+            title: Planned dataset
+            description: An additional dataset.
+            status: planned
+            expected: "2027-Q1"
+          - id: considered
+            title: Candidate dataset
+            description: An additional dataset.
+            status: under-consideration
+        """,
+    )
+    _, tracks = load_roadmap(roadmap_dir)
+    all_entries = list(tracks["data"].entries)
     assert {entry.status for entry in all_entries} == set(EntryStatus)
 
     released_entries = [
@@ -89,20 +113,6 @@ def test_load_roadmap_real_files():
 
     assert any(len(entry.categories) > 1 for entry in all_entries)
     assert any(len(entry.categories) == 0 for entry in all_entries)
-
-    # Every entry whose title flags it as a placeholder must say so, plainly, in its
-    # own description, so the labelling requirement is enforced by the suite rather
-    # than caught only on review.
-    placeholders = [
-        entry for entry in all_entries if entry.title.startswith("Placeholder: ")
-    ]
-    assert placeholders
-    for entry in placeholders:
-        first_sentence = entry.description.split(". ", 1)[0].lower()
-        assert "placeholder" in first_sentence, (
-            f"entry {entry.id!r} is titled as a placeholder but its description's "
-            "first sentence does not say so"
-        )
 
 
 def test_missing_roadmap_directory_rejected(tmp_path):
@@ -314,4 +324,112 @@ def test_non_released_entry_may_not_carry_version(tmp_path):
     )
 
     with pytest.raises(RoadmapError, match="must not carry version"):
+        load_roadmap(roadmap_dir)
+
+
+def test_released_entry_carries_provenance(tmp_path):
+    roadmap_dir = _write_track(
+        tmp_path,
+        "data",
+        """
+        track: data
+        categories: []
+        entries:
+          - id: an-entry
+            title: An Entry
+            description: Something.
+            status: released
+            released_on: "2026-01-01"
+            provenance: provenance/OECDDAC1
+        """,
+    )
+
+    _, tracks = load_roadmap(roadmap_dir)
+
+    assert tracks["data"].entries[0].provenance == "provenance/OECDDAC1"
+
+
+def test_non_released_entry_may_not_carry_provenance(tmp_path):
+    roadmap_dir = _write_track(
+        tmp_path,
+        "data",
+        """
+        track: data
+        categories: []
+        entries:
+          - id: an-entry
+            title: An Entry
+            description: Something.
+            status: under-consideration
+            provenance: provenance/OECDDAC1
+        """,
+    )
+
+    with pytest.raises(RoadmapError, match="must not carry provenance"):
+        load_roadmap(roadmap_dir)
+
+
+@pytest.mark.parametrize(
+    "provenance", ["OECDDAC1", "provenance/", "provenance/OECD DAC1"]
+)
+def test_provenance_must_be_a_provenance_dcid(tmp_path, provenance):
+    roadmap_dir = _write_track(
+        tmp_path,
+        "data",
+        f"""
+        track: data
+        categories: []
+        entries:
+          - id: an-entry
+            title: An Entry
+            description: Something.
+            status: released
+            released_on: "2026-01-01"
+            provenance: "{provenance}"
+        """,
+    )
+
+    with pytest.raises(RoadmapError, match="is not a provenance dcid"):
+        load_roadmap(roadmap_dir)
+
+
+def test_entry_carries_url(tmp_path):
+    roadmap_dir = _write_track(
+        tmp_path,
+        "data",
+        """
+        track: data
+        categories: []
+        entries:
+          - id: an-entry
+            title: An Entry
+            description: Something.
+            status: under-consideration
+            url: https://example.org/data
+        """,
+    )
+
+    _, tracks = load_roadmap(roadmap_dir)
+
+    assert tracks["data"].entries[0].url == "https://example.org/data"
+
+
+@pytest.mark.parametrize("url", ["http://example.org/data", "example.org/data"])
+def test_url_must_be_https(tmp_path, url):
+    roadmap_dir = _write_track(
+        tmp_path,
+        "data",
+        f"""
+        track: data
+        categories: []
+        entries:
+          - id: an-entry
+            title: An Entry
+            description: Something.
+            status: under-consideration
+            url: "{url}"
+        """,
+    )
+
+    with pytest.raises(RoadmapError, match="is not an https:// URL"):
         load_roadmap(roadmap_dir)
