@@ -12,7 +12,7 @@ The graph holds each amount in the currency and prices its source reports. CRS a
 
 The CRS also publishes each flow in constant US dollars and in the provider's own currency. The DFO doesn't store those. It converts on request, so you choose the currency and the base year. The OECD's constant dollars don't record their base year, and the OECD moves it with each release. Converting a CRS amount to the provider's currency gives the OECD's own national-currency figure from 1999 onwards.
 
-This request asks for France's grants to Togo from 2019 to 2022 in euros at constant 2023 prices. Each row comes back with `currency` `EUR`, `price_basis` `constant` and `base_year` `2023`, and the response names the recipe that converted them:
+The example below asks for France's grants to Togo from 2019 to 2022 in euros at constant 2023 prices. Each row comes back with `currency` `EUR`, `price_basis` `constant` and `base_year` `2023`, and the response names the recipe that converted them:
 
 ```
 "ConversionRecipeDAC"
@@ -58,7 +58,7 @@ This request gives each recipient's amounts in its own currency. Set the request
 
 A source's provenance names its conversion recipe, and the recipe says which tables convert the source's series. The DFO publishes two tables, ONE Conversion Tables (DAC) and ONE Conversion Tables (IMF), and their pages on [Sources](/data/sources) give the full method, for example the [DAC table's Transformation Log](/data/sources/provenance/ONEConversionTablesDAC?tab=log).
 
-- The DAC recipe converts OECD DAC data, such as the CRS, with the DAC table. Its deflators come from the DAC, and the deflator belongs to the provider, so a French grant is deflated with France's deflator. A provider missing from the table takes the DAC countries total instead. The euro takes EU Institutions' rate.
+- The DAC recipe converts OECD DAC data, such as the CRS, with the DAC table. Its deflators come from the DAC, and the deflator belongs to the provider, so a French grant is deflated with France's deflator. A provider missing from the table takes the DAC countries total instead. The euro uses EU Institutions' rate.
 - The IMF recipe converts the IMF's World Economic Outlook with the IMF table, whose rates and deflators come from the WEO, using each country's own rows.
 - The IDS recipe converts the World Bank's International Debt Statistics with the IMF table, deflating each amount by the debtor's prices.
 
@@ -74,7 +74,7 @@ D is the recipe's US-dollar deflator, and X is the exchange rate in currency uni
 
 The DAC and IDS recipes convert financial flows and obligations, and the IMF recipe converts GDP, so a request to convert anything else, such as a stock, is refused. The API also refuses with:
 
-- `recipe_not_declared` when the requested unit falls outside the recipes the series declare, for example when a series isn't marked `Nominal` or its provenance names no recipe.
+- `recipe_not_declared` when the requested unit falls outside the recipes the series declares; for example, when a series isn't marked `Nominal` or its provenance names no recipe.
 - `rate_coverage_gap` when the exchange rates cover only part of the requested years, or the deflators leave no row to convert.
 - `facet_binding_unsupported` when this deployment can't convert on the requested axis.
 
@@ -84,7 +84,7 @@ Converted values differ from the stored ones, so a converted dataset gets its ow
 
 ## Where a series comes from
 
-Every observation carries a provenance, the node that records the publisher, licence, and last refresh date. The provenance dcid shows who loaded the series into the graph. Series the DFO's own pipelines build carry a provenance minted under `provenance/`. Looking up the CRS's provenance returns its publisher, licence and the date of its latest refresh:
+Every observation carries a provenance, the node that records the publisher, licence, and last refresh date. The provenance dcid shows who loaded the series into the graph. Series that the DFO's own pipelines build carry a provenance minted under `provenance/`. Looking up the CRS's provenance returns its publisher, licence, and the date of its latest refresh:
 
 ```json
 {
@@ -113,7 +113,7 @@ A downloaded dataset names each provenance in its citation. [The data bundle](bu
 
 <!-- TODO: every dataset carries the warning processing_level_undeclared because no StatVar in the graph declares a processing level. Explain the warning here once StatVars declare one. -->
 
-The [Sources](/data/sources) page lists the graph's sources with their publisher, licence and coverage.
+The [Sources](/data/sources) page lists the graph's sources with their publisher, licence, and coverage.
 
 ## Next
 

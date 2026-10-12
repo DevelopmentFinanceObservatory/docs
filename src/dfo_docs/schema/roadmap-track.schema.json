@@ -116,6 +116,16 @@
         "version": {
           "type": "string",
           "description": "The version that shipped, without a leading v, such as `4.2.0`. Present only on a released entry, and absent where the thing released carries no version."
+        },
+        "provenance": {
+          "type": "string",
+          "pattern": "^provenance/[A-Za-z0-9]+$",
+          "description": "The dcid of the provenance the dataset was released under, such as `provenance/OECDCreditorReportingSystem`. Its page on Sources is `/data/sources/` followed by this dcid. Present only on a released entry, and absent where the thing released is not a dataset."
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https://",
+          "description": "The landing page of the thing an entry describes, outside the DFO, such as a source's own data page for a dataset not yet released, so a reader can see what the entry means. A released dataset links to its page on Sources through `provenance` instead, so a consumer that finds both prefers `provenance`."
         }
       },
       "required": [
@@ -158,6 +168,11 @@
                 {
                   "required": [
                     "version"
+                  ]
+                },
+                {
+                  "required": [
+                    "provenance"
                   ]
                 }
               ]

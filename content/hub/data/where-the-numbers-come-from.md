@@ -4,11 +4,11 @@ description: How each DFO figure traces back to its source, what the DFO changes
 
 # Where the numbers come from
 
-Every number in the DFO comes from a file published by an official source, such as the OECD, the World Bank or the IMF. The DFO keeps the original values, adds up individual aid records into totals, and gives each country and category one consistent label so data from different sources can be combined. It checks for new releases daily, and you can trace any figure back to the source file it came from.
+Every number in the DFO comes from a file published by an official source, such as the OECD, World Bank, or IMF. The DFO keeps the original values, adds up individual aid records into totals, and gives each country and category one consistent label so that data from different sources can be combined. It checks for new releases daily, and every figure can be traced back to its source file.
 
 ## How data enters the DFO
 
-Every figure in the DFO starts as data its source publishes. The DFO downloads that data, checks it, prepares it, and loads the result into one [knowledge graph](knowledge-graph.md). That one graph serves search on [/data](/data), DFO Studio, the DFO API and the DFO MCP server, so the same question returns the same numbers on every surface.
+Every figure in the DFO starts as data its source publishes. The DFO downloads that data, checks it, prepares it, and loads the result into one [knowledge graph](knowledge-graph.md). That one graph serves search on [/data](/data), DFO Studio, the DFO API, and the DFO MCP server, so the same question returns the same numbers on every interface.
 
 ```mermaid
 flowchart TD
@@ -35,7 +35,7 @@ The Transformation Log on each source's page on [Sources](/data/sources) lists e
 
 Each pipeline keeps only the rows its source's figures should be built from, leaving out series outside the DFO's scope and rows that would count the same money twice. For the CRS, that means excluding donors' core contributions to multilateral organisations (`bi_multi` 2), which the multilateral reports again when it spends it.
 
-Each source's codes map to shared concepts, so the same country or purpose has one identifier across sources. In the CRS, purpose 12220 becomes `CRSPurposeCode12220`, and OECD Development Assistance Committee (DAC) donor code 4 becomes `country/FRA`. [The development finance ontology](ontology.md) explains how a source code becomes a graph identifier and where to look codes up.
+Each source's codes map to shared concepts, so the same country or purpose has one identifier across sources. In the CRS, purpose 12220 becomes `CRSPurposeCode12220`, and OECD Development Assistance Committee (DAC) donor code 4 becomes `country/FRA`. [The development finance ontology](ontology.md) explains how a source code becomes a graph identifier and where to look up codes.
 
 Some sources, such as the CRS, report individual records, one row per activity with the agency, channel and project behind it. The graph holds one number per series and year, not one per project, so the DFO sums the records that share every coded column, such as year, donor, recipient and purpose. France's basic health care grants to Togo in a year are one figure in the graph, however many projects France reported. Record-level details, such as the agency, channel and project, stay in the source.
 
@@ -49,7 +49,7 @@ Series from Data Commons' own imports, such as the World Bank's World Developmen
 
 ## How to check a figure against its source
 
-Start with the source's page on [Sources](/data/sources). It gives the date the DFO downloaded the release now in the graph, the URL of the source data file, and a link to the publisher's own page for the data.
+Start with the source's page on [Sources](/data/sources). It states the date the DFO downloaded the release now in the graph, the URL of the source data file, and a link to the publisher's own page for the data.
 
 Take a [snapshot link](../build/share.md) from /data. It records the exact version of the rows behind the figure, so you compare against the release the DFO used.
 
@@ -65,11 +65,11 @@ The result matches the DFO figure within rounding. For other sources, follow the
 
 ## How fresh the data is
 
-Each source publishes on its own calendar, and its page on [Sources](/data/sources) shows its update cadence.
+Each source publishes on its own calendar; its update cadence can be viewed on the [Sources](/data/sources) page.
 
 The DFO checks each source regularly for a new release. It reads the publisher's release marker, such as the version on the OECD's CRS bulk file or the release date of the IMF's World Economic Outlook. A changed marker triggers the pipeline to download the data, rerun its checks and models, and rebuild the files the graph loads. A failed check stops the update, so the graph keeps the previous release.
 
-The rebuilt files are then loaded into the graph. A [live link](../build/share.md) reruns the question against the graph, so it shows the new release as soon as the graph holds it. A snapshot reads the version it recorded, so it keeps the numbers it had.
+The rebuilt files are then loaded into the graph. A [live link](../build/share.md) reruns the question against the graph, so it shows the new release as soon as the graph holds it. A snapshot link reads the version it recorded, so it retains the numbers it had.
 
 ## What you can inspect yourself
 

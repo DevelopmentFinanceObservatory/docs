@@ -297,8 +297,9 @@ class RoadmapEntry:
     survive that move. `title` and `description` carry no version and no date, even once
     released; the site composes those from `version` and `released_on`. `expected` is required
     on a `planned` or `in-development` entry and forbidden on `released`, which carries
-    `released_on` (required) and `version` (optional) instead; an `under-consideration` entry may
-    carry none of the three, being by definition unscheduled. The track schema enforces these
+    `released_on` (required), `version` (optional) and `provenance` (optional) instead; an
+    `under-consideration` entry may carry none of `expected`, `released_on` and `version`,
+    being by definition unscheduled. Any entry may carry `url`. The track schema enforces these
     combinations; this dataclass only carries the fields, so a caller that skips the loader's
     validation can still construct a shape the schema would reject.
     """
@@ -311,6 +312,8 @@ class RoadmapEntry:
     expected: str | None = None
     released_on: str | None = None
     version: str | None = None
+    provenance: str | None = None
+    url: str | None = None
 
 
 @dataclass(frozen=True)

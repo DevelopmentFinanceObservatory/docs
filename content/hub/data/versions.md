@@ -6,7 +6,7 @@ description: What spec_id and content_version name, how a definition differs fro
 
 A StatVar defines one kind of number, and a dcid identifies a graph node. [The knowledge graph](knowledge-graph.md) explains both.
 
-Every DFO dataset carries two ids. The `spec_id` names the question. The `content_version` names one answer to it, the exact rows retrieved at one moment. Share links, downloads and analysis tools use both. The examples on this page use the dataset for France's basic health care grants to Togo:
+Every DFO dataset carries two ids. The `spec_id` names the question. The `content_version` names one answer to it, the exact rows retrieved at one moment. Share links, downloads, and analysis tools use both. The examples on this page use the dataset for France's basic health care grants to Togo:
 
 ```
 spec_19e75bf0f03c57ec5445816962ae3896   ODA standard grants for basic health care, France to Togo
@@ -60,15 +60,17 @@ for q in "ODA standard grants for basic health care from France to Togo" \
 done
 ```
 
-The hash leaves out the StatVars the spec resolves to, the years with data and the facet the platform picks, so the id stays stable when a source adds a year or the graph gains a StatVar. Here `requested_window` is `all`, so the same `spec_id` covers each new year the CRS publishes.
+The hash leaves out the StatVars the spec resolves to, the years with data, and the facet the platform picks, so the id stays stable when a source adds a year or the graph gains a StatVar. Here `requested_window` is `all`, so the same `spec_id` covers each new year the CRS publishes.
 
-Searching only computes a `spec_id`. The first download, share link or explicit registration writes the definition to the registry, where anyone can fetch it by id.
+Searching only computes a `spec_id`. The first download, share link, or explicit registration writes the definition to the registry, where anyone can fetch it by id.
 
 ## The `content_version`
 
-A `content_version` is `cv_` followed by 32 hex characters. It digests the materialised rows, the facet chosen on each axis, the graph and source revisions read, and any currency conversion applied with its rate-table versions. If none of those change, fetching the spec again returns the same `content_version`. When the OECD revises a figure, or the DFO changes how it processes one, the next fetch returns a new one.
+A `content_version` is `cv_` followed by 32 hex characters. It digests the materialised rows: each row's variable, roles, period, value and unit, and the method and provenance of the facet it came from. Fetching the spec again returns the same `content_version` whenever the rows come out the same, even if the graph, a source, a rate table, or the DFO's software changed in between. When the OECD revises a figure, or a processing change alters a row, the next fetch returns a new one.
 
-One `spec_id` collects many `content_version`s over time. One `content_version` can be rendered as CSV, Excel, Parquet or a zipped [bundle](bundle.md), and each rendering is a separate file identified by its own `artifact_digest` (`sha256:` and 64 hex characters).
+A snapshot keeps the lineage of the run that first produced its rows: the graph and source revisions it read and any conversion inputs. A later run that yields the same rows returns the same `content_version` and leaves that record as it was.
+
+One `spec_id` collects many `content_version`s over time. One `content_version` can be rendered as CSV, Excel, Parquet, or a zipped [bundle](bundle.md), and each rendering is a separate file identified by its own `artifact_digest` (`sha256:` and 64 hex characters).
 
 <!-- TODO: the dev deployment reports graph_revision as "unavailable:dfo-dcp-revision-endpoint-absent" with a revision_unavailable warning in every manifest. Describe graph_revision here once the revision endpoint exists. -->
 
@@ -93,7 +95,7 @@ curl -s "$DFO_API/api/datasets/spec_19e75bf0f03c57ec5445816962ae3896" |
   jq '{content_version, window: .coverage.window}'
 ```
 
-A snapshot is the pair. Fetching it serves the stored record and files exactly as they were first made, without querying the graph. In practice you keep the `content_version` from an earlier fetch or download, and fetch the snapshot with it later. The snapshot for this dataset returns:
+A snapshot is the pair. Fetching it serves the stored record and files exactly as they were first made, without querying the graph. In practice, you keep the `content_version` from an earlier fetch or download, and fetch the snapshot with it later. The snapshot for this dataset returns:
 
 ```json
 {
@@ -104,7 +106,7 @@ A snapshot is the pair. Fetching it serves the stored record and files exactly a
     {
       "artifact_digest": "sha256:bf9d2f707dcee31f8ac5040666f1041c53968446bd099d1ab738af936419f57a",
       "tier": "working",
-      "url_expires_at": "2026-10-06T12:01:29.901464+00:00"
+      "url": "/api/datasets/spec_19e75bf0f03c57ec5445816962ae3896/cv_bb41020eae566cb1de761425ac5cd493/files/sha256:bf9d2f707dcee31f8ac5040666f1041c53968446bd099d1ab738af936419f57a"
     },
     …
   ]
@@ -114,26 +116,26 @@ A snapshot is the pair. Fetching it serves the stored record and files exactly a
 ```bash
 CV=$(curl -s "$DFO_API/api/datasets/spec_19e75bf0f03c57ec5445816962ae3896" | jq -r .content_version)
 curl -s "$DFO_API/api/datasets/spec_19e75bf0f03c57ec5445816962ae3896/$CV" |
-  jq '{spec_id: .definition.spec_id, content_version, rows: .coverage.rows, artifacts: [.artifacts[] | {artifact_digest, tier, url_expires_at}]}'
+  jq '{spec_id: .definition.spec_id, content_version, rows: .coverage.rows, artifacts: [.artifacts[] | {artifact_digest, tier, url}]}'
 ```
 
-Each artifact carries a signed download URL that lasts 15 minutes. Fetch the snapshot again for a fresh one.
+Each artifact carries a `url`, a download link that never expires. It is a path on the API host. A `GET` on it answers `302`, redirecting to the file at a signed storage URL that lasts 5 minutes, so fetch the link when you want the file and follow the redirect.
 
 Snapshot files live in one of two tiers. The working tier keeps them for 30 days from when they were stored, and downloading them doesn't reset the clock. After that, the snapshot returns `410` with code `artifact_expired`, pointing to the definition. Pinning copies a file to the pinned tier, where it never expires. Only the DFO's own site can pin.
 
 ## Where the ids appear
 
-- Share links on `/data` are short `/s/…` links. A live link stores the `spec_id` and replays the definition each time it opens. A snapshot link stores the `spec_id` and `content_version`, and the site pins the snapshot when it can. A Studio canvas or card link is live or a snapshot, as its owner chose, and the choice is on the link and its embed. Existing Studio links are snapshots. [Share live data or a snapshot](../build/share.md) covers the choice.
+- Share links on `/data` are short `/s/…` links. A live link stores the `spec_id` and replays the definition each time it opens. A snapshot link stores the `spec_id` and `content_version`, and the site pins the snapshot when it can. A Studio canvas or card link is live or a snapshot, as its owner chose, and the choice is reflected in the link and its embed. Existing Studio links are snapshots. [Share live data or a snapshot](../build/share.md) covers the choice.
 - A download is named `dfo_<sources>_<YYYY-MM-DD>_<format>_<version>.zip`, where `<version>` is the first six characters of the `content_version` after `cv_`. Its `datapackage.json` carries the full `spec_id`. [The data bundle](bundle.md) lists each file and name.
 - The DFO MCP server's `get_data` tool returns a frame reference, the pair `{spec_id, content_version}`, and every analysis tool takes one. <!-- TODO: link the DFO MCP server guide when it is public. -->
 
 ## Reproduce the exact rows in code
 
-Keep both ids with a script, notebook or replication package. The `content_version` fetches the exact rows you used for as long as the snapshot is kept. The `spec_id` reruns your question on current data after the snapshot expires, and those rows may differ from the ones you used.
+Keep both ids with a script, notebook, or replication package. The `content_version` fetches the exact rows you used for as long as the snapshot is kept. The `spec_id` reruns your question on current data after the snapshot expires, and those rows may differ from the ones you used.
 
 Use a snapshot link to cite the data in a report. [Cite and licence](../about/cite-and-licence.md) shows the format.
 
 ## Next
 
 - [The data bundle](bundle.md) lists what a download contains, including the call that reproduces it.
-- [Share live data or a snapshot](../build/share.md) shows how to pick between the two kinds of link on `/data`.
+- [Share live data or a snapshot](../build/share.md) shows how to pick between the two kinds of links on `/data`.
