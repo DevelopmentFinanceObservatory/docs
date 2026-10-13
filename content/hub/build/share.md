@@ -44,7 +44,7 @@ To see how the Datasets API identifies live queries and snapshots, see [Versions
      1. **Data:** **CSV** and **JSON** downloads for each card. This tab doesn't create a link.
    - **A single card:** open the card's **⋮** menu, choose **Share**, then the **Link** tab.
 1. On the **Canvas** tab, or on a card's **Link** or **Embed** tab, choose **Live Data** or **Snapshot**. The dialog opens on **Live Data**.
-1. For a live link, wait while the dialog shows "Checking cards…" and counts the cards it has checked. The link appears when every data card has been checked.
+1. For a live link, wait while the dialog shows "Checking cards…" and counts the cards it has checked. The link appears when the dialog has tried every data card. A card it could not check does not hold the link back.
 1. Select the copy button next to the link.
 
 **Chat + Canvas** has no choice. It is always a snapshot, because the conversation quotes its numbers. A canvas with no data card, and a text card, also have no choice, because nothing on them changes. Their links are snapshots.
@@ -65,7 +65,7 @@ If one card cannot be refreshed, that card says so and the others still show cur
 - "This card can no longer be refreshed."
 - "Live data is unavailable for this link."
 
-A live link holds up to 20 data cards, and it is offered only when every data card on the canvas can be refreshed. When it cannot be offered, Studio says why and offers a snapshot instead. It names each card that cannot be refreshed, or says that the canvas has more data cards than a live link holds.
+A live link holds up to 20 data cards, and it is offered unless the check finds a data card that cannot be refreshed. When it cannot be offered, Studio says why and offers a snapshot instead. It names each card that cannot be refreshed, or says that the canvas has more data cards than a live link holds.
 
 The **Download Data** option on a card of a live link gives the current rows. When the rows are still being prepared, it says "Current data is still being prepared. Try again in N seconds."
 
@@ -99,6 +99,8 @@ Studio can decline a live link while it checks the cards. Select **Share a snaps
 - `"{title}" cannot show live data, so this canvas has no live link.` The dialog names each card that cannot be refreshed. For one card, it reads "This card cannot show live data, so it has no live link."
 - "A live link holds up to 20 data cards and this canvas has {count}."
 - "Live data is unavailable right now."
+
+The dialog fills in {title} with the card title and {count} with the number of data cards.
 
 A live link can stand with a card the dialog could not check. The dialog then says "1 card could not be checked just now. It tries again when the link opens."
 

@@ -4,14 +4,13 @@ description: Load a CSV or Parquet download from /data into pandas or R and keep
 
 # Use DFO data in your code
 
-This page is for people who analyse data by writing code in Python or R. It shows how to take a file downloaded from the DFO, open it in your code, and work with the numbers. The example uses aid for health in Nigeria: It keeps only official development assistance, totals it by year, and saves the result together with the source's citation details so your work stays traceable. If you don't write code, you can open the CSV download in Excel instead, or use DFO Studio to make charts without any code.
+This page is for people who analyse data by writing code in Python or R. It shows how to take a file downloaded from the DFO, open it in your code, and work with the numbers. The example uses aid for health in Nigeria. It keeps only official development assistance, totals it by year, and saves the result together with the source's citation details so your work stays traceable. If you don't write code, you can open the CSV download in Excel instead, or use DFO Studio to make charts without any code.
 
 ## Example output
 
 A download from [`/data`](/data) is a ZIP file with a README, the data file, a table of code names, `SOURCES.md`, `CITATION.cff`, and `datapackage.json`. Load it into pandas or R, filter it to one flow type, and keep its citation with your results. For the Nigeria health download, the pandas script prints official development assistance (ODA) gross disbursements in millions of current US dollars.
 
 ```text
-(2177, 13)
 time_period
 2020     592.4
 2021     753.4
@@ -23,10 +22,10 @@ Name: value, dtype: float64
 
 ## Before you start
 
-- Python with `pandas` and `pyarrow`, or R with `arrow`, `readr` and `dplyr`.
+- Python with `pandas` and `pyarrow`, or R with `arrow`, `readr`, and `dplyr`.
 - A download. On `/data`, search for "CRS disbursements to Nigeria for health". Open **Download options**, the arrow beside the download button, choose **Parquet** under **Format**, and leave **README** and **Sources & Citations** ticked. Select **Download Parquet**. [Get data](../get-started/get-data.md) walks through the search.
 
-The file name carries the sources, the date the DFO first prepared the version, the format, and the first six characters of the `content_version`. Your numbers match this page when your file is `dfo_oecd-creditor-reporting-system_<YYYY-MM-DD>_parquet_b785be.zip`. A different last part marks a source refresh. [The data bundle](../data/bundle.md#file-names) explains each part.
+The file name carries the sources, the date the DFO first prepared the version, the format, and the first six characters of the `content_version`, the id of the exact rows in the file. Your numbers match this page when your file is `dfo_oecd-creditor-reporting-system_<YYYY-MM-DD>_parquet_b785be.zip`. A different last part means the rows changed, whether the source was revised or the DFO's processing changed. [The data bundle](../data/bundle.md#file-names) explains each part.
 
 ## Steps
 
@@ -52,9 +51,8 @@ The file name carries the sources, the date the DFO first prepared the version, 
 
    bundle = Path("nga-health")
    df = pd.read_parquet(bundle / "data" / "oecd-creditor-reporting-system.parquet")
-   print(df.shape)
 
-   oda = df[df["stat_var_crsTypeOfFlow"] == "official development assistance"]
+   oda = df[df["crsTypeOfFlow"] == "CRSTypeOfFlow10"]
    by_year = oda.groupby("time_period")["value"].sum().div(1e6).round(1)
    print(by_year.tail(5))
 
@@ -62,13 +60,13 @@ The file name carries the sources, the date the DFO first prepared the version, 
    shutil.copy(bundle / "CITATION.cff", "nga-health-oda.CITATION.cff")
    ```
 
-   Each row in this CRS download represents one donor, one year, and one series. `value` uses the currency named in `unit`, here `CurrencyUSD`. The `stat_var_crs…` columns describe the series' purpose, modality, type of finance, and type of flow. `data/codes.csv` gives the plain name of each code, such as `country/KEN` for Kenya, and `SOURCES.md` gives each source's licence and the steps the DFO applied.
+   Each row in this CRS download represents one donor, one year, and one series. `value` uses the currency named in `unit`, here `CurrencyUSD`. The `crs…` columns (`crsPurpose`, `crsCooperationModality`, `crsTypeOfFinance`, and `crsTypeOfFlow`) hold the codes for the series' purpose, modality, type of finance, and type of flow, and each has a `_label` column beside it with the code's name. `CRSTypeOfFlow10` is official development assistance. `data/codes.csv` gives the plain name of each code, such as `country/KEN` for Kenya, and `SOURCES.md` gives each source's licence and the steps the DFO applied.
 
 1. Keep the citation with your results. The script in step 2 copies `CITATION.cff` next to `nga-health-oda.csv`. To cite the data in a report, use a snapshot link in the form [Cite and licence](../about/cite-and-licence.md) indicates.
 
 ### Load the CSV instead
 
-Choose **CSV** under **Format** and select **Download CSV**. The zip name ends `_csv_b785be.zip`, and it holds `data/oecd-creditor-reporting-system.csv` in place of the Parquet file. Unzip it with `-d nga-health-csv`. Read `time_period` as text because the Parquet file and `datapackage.json` type it that way.
+Choose **CSV** under **Format** and select **Download CSV**. The zip name ends `_csv_b785be.zip`, and it holds `data/oecd-creditor-reporting-system.csv` in place of the Parquet file. Unzip it with `-d nga-health-csv`.
 
 ```python
 import pandas as pd
@@ -97,7 +95,7 @@ library(dplyr)
 df <- read_parquet("nga-health/data/oecd-creditor-reporting-system.parquet")
 
 df |>
-  filter(stat_var_crsTypeOfFlow == "official development assistance") |>
+  filter(crsTypeOfFlow == "CRSTypeOfFlow10") |>
   group_by(time_period) |>
   summarise(value_musd = round(sum(value) / 1e6, 1)) |>
   tail(5)

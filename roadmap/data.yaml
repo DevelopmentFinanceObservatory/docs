@@ -122,7 +122,7 @@ entries:
       external funding.
     categories: [health]
     status: planned
-    expected: "2026-Q4"
+    expected: "2027-Q1"
     url: https://apps.who.int/nha/database
 
   - id: oecd-cpa
@@ -131,8 +131,7 @@ entries:
       The share of ODA that recipient countries can plan and program, by provider
       and recipient.
     categories: [aid-oda]
-    status: planned
-    expected: "2026-Q4"
+    status: under-consideration
     url: https://www.oecd.org/en/data/insights/data-explainers/2025/02/country-programmable-aid-in-official-development-assistance.html
 
   - id: tossd
@@ -151,8 +150,7 @@ entries:
       ONE's estimates of bilateral and multilateral climate finance by provider and
       recipient.
     categories: [climate]
-    status: planned
-    expected: "2026-Q4"
+    status: under-consideration
     url: https://data.one.org/climate-finance-files
 
   - id: oecd-total-use-multilateral-system
@@ -161,8 +159,7 @@ entries:
       Each provider's core and earmarked contributions to multilateral
       organisations.
     categories: [aid-oda]
-    status: planned
-    expected: "2026-Q4"
+    status: under-consideration
     url: https://www.oecd.org/en/data/dashboards/use-of-the-multilateral-development-system-by-dac-members.html
 
   - id: african-debt-database

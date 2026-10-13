@@ -6,15 +6,15 @@ description: Ask DFO Studio a question, approve its plan, and pin a chart to you
 
 DFO Studio turns a question into charts on a canvas, a workspace where you can arrange, save, and share results.
 
-Below, we illustrate how to use Studio, using an example that asks for an overview of health spending in Kenya and produces a pinned line chart of health spending per person from 2000 to 2023.
+This example asks for an overview of health spending in Kenya and produces a pinned line chart of health spending per person from 2000 to 2023.
 
-Doing so takes about ten minutes and uses two of the five prompts available without an account. Sign in first if you want to save your canvas or ask more than five queries.
+The walkthrough takes about ten minutes and uses two of the five queries available without an account. Sign in first if you want to save your canvas or ask more than five queries.
 
 <!-- TODO: verify the chart title, plan and answer against the staging site; they come from the recorded Studio session dfo-ai docs/transcripts/studio_transcript_plan.jsonl. -->
 
 ## Step 1: Ask a question
 
-Go to [/studio](/studio). Under the question box, click "Give me a comprehensive overview of health spending in Kenya", or type it and click **Start**.
+Go to [/studio](/studio), type "Give me a comprehensive overview of health spending in Kenya" in the question box, and click **Start**. The examples under the box change with each visit, so if this one is among them you can click it instead.
 
 A chat opens next to a blank canvas.
 
@@ -38,7 +38,7 @@ Results vary a little each time. The plan, chart title and wording may differ, b
 
 - Hover over the line to see the value for each year.
 - Drag or resize the card to rearrange the canvas.
-- Open the **⋮** menu in the card's corner to download the data, share the chart, ask a follow-up, add a note or remove the card.
+- Open the **⋮** menu in the card's corner to download the data, share the chart, ask a follow-up, add a note, or remove the card.
 
 ## Step 4: Pin the card
 

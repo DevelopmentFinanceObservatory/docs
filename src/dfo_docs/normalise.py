@@ -373,8 +373,21 @@ def convert_admonitions(text: str) -> str:
     An admonition with no body at all (marker followed immediately by a heading,
     fence, another marker, or end of file) still renders the title, since dropping it
     silently would lose text the author wrote.
+
+    An admonition nested in a list item converts in place. Its marker is indented to
+    the item's content, and its body is read in the indented shape only, at the
+    marker's indentation plus four spaces. Every line of the alert carries the marker's
+    indentation, so the alert stays inside the list item, the list keeps its numbering,
+    and a fenced code block in the body stays a fence inside the blockquote. A nested
+    marker with no indented body renders its title alone.
+
+    A CommonMark parser (markdown-it-py) tells a nested marker from code: an indented
+    marker converts only when its line opens a paragraph that is a direct child of a
+    list item. An indented `!!!` line that CommonMark reads as an indented code block,
+    as part of a fence, or as the continuation of another paragraph is left untouched.
     """
     lines = text.split("\n")
+    nested_markers = _list_item_paragraph_lines(text)
     out_lines: list[str] = []
     in_fence = False
     i = 0
@@ -389,7 +402,10 @@ def convert_admonitions(text: str) -> str:
             i += 1
             continue
 
-        match = _ADMONITION_MARKER_RE.match(line) if not in_fence else None
+        indent = line[: len(line) - len(line.lstrip(" "))]
+        match = None
+        if not in_fence and (not indent or i in nested_markers):
+            match = _ADMONITION_MARKER_RE.match(line[len(indent) :])
         alert_kind = (
             _ADMONITION_TYPES.get(match.group("type").lower()) if match else None
         )
@@ -399,33 +415,64 @@ def convert_admonitions(text: str) -> str:
             i += 1
             continue
 
-        body_lines, next_i = _extract_admonition_body(lines, i)
-        out_lines.extend(_render_alert(alert_kind, match.group("title"), body_lines))
+        body_lines, next_i = _extract_admonition_body(lines, i, indent=indent)
+        out_lines.extend(
+            f"{indent}{alert_line}"
+            for alert_line in _render_alert(
+                alert_kind, match.group("title"), body_lines
+            )
+        )
         i = next_i
 
     return "\n".join(out_lines)
 
 
+def _list_item_paragraph_lines(text: str) -> set[int]:
+    """Return the line numbers that open a paragraph directly inside a list item."""
+    lines: set[int] = set()
+    parents: list[str] = []
+    for token in _MARKDOWN.parse(text):
+        if token.nesting == -1:
+            parents.pop()
+            continue
+        if (
+            token.type == "paragraph_open"
+            and token.map is not None
+            and parents
+            and parents[-1] == "list_item_open"
+        ):
+            lines.add(token.map[0])
+        if token.nesting == 1:
+            parents.append(token.type)
+    return lines
+
+
 def _extract_admonition_body(
-    lines: list[str], marker_index: int
+    lines: list[str], marker_index: int, *, indent: str = ""
 ) -> tuple[list[str], int]:
-    """Return the admonition body after `lines[marker_index]`, and where it ends."""
+    """Return the admonition body after `lines[marker_index]`, and where it ends.
+
+    `indent` is the marker's own indentation, empty for a marker at column 0.
+    """
     n = len(lines)
+    body_indent = indent + _INDENT
 
     peek = marker_index + 1
     while peek < n and lines[peek].strip() == "":
         peek += 1
-    if peek >= n or not lines[peek].startswith(_INDENT):
-        return _extract_unindented_body(lines, marker_index)
-    return _extract_indented_body(lines, marker_index)
+    if peek < n and lines[peek].startswith(body_indent):
+        return _extract_indented_body(lines, marker_index, body_indent=body_indent)
+    if indent:
+        return [], marker_index + 1
+    return _extract_unindented_body(lines, marker_index)
 
 
 def _extract_indented_body(
-    lines: list[str], marker_index: int
+    lines: list[str], marker_index: int, *, body_indent: str
 ) -> tuple[list[str], int]:
     n = len(lines)
     end = marker_index + 1
-    while end < n and (lines[end].strip() == "" or lines[end].startswith(_INDENT)):
+    while end < n and (lines[end].strip() == "" or lines[end].startswith(body_indent)):
         end += 1
 
     raw = lines[marker_index + 1 : end]
@@ -435,7 +482,7 @@ def _extract_indented_body(
         raw.pop()
         end -= 1  # leave trailing blank lines for the outer loop to re-emit as-is
 
-    body = [line[len(_INDENT) :] if line.startswith(_INDENT) else line for line in raw]
+    body = [line.removeprefix(body_indent) for line in raw]
     return body, end
 
 
