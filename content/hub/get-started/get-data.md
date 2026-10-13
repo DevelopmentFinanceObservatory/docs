@@ -29,7 +29,7 @@ The sentence now reads:
 Only the years change. The place and measure stay the same.
 
 !!! tip
-    **Why these results?** under the sentence shows how /data interpreted your question and which data it matched. **Start New** clears the page.
+    The **Why these results?** line under the sentence shows how /data interpreted your question and which data it matched. **Start New** clears the page.
 
 ## Step 3: check the results
 
@@ -38,7 +38,7 @@ Scroll to **Results Preview**. The table shows the year and value, ten rows at a
 The panel next to the table shows the number of observations. Click **Details** to see the measure, place and dates covered.
 
 !!! note
-    The panel counts observations across all four sources: 60 for 2000 to 2024. The download contains one source, World Development Indicators, so it has 25 rows, one per year.
+    The panel counts 60 observations across all four sources for 2000 to 2024. The download contains one source, World Development Indicators, so it has 25 rows, one per year.
 
     <!-- TODO: verify on the staging site that the panel shows 60 for this window; the figure comes from the Search API's coverage.observation_count on 28 September 2026. -->
 
@@ -69,7 +69,7 @@ Places and measures appear as codes, such as `country/KEN` for Kenya. `data/code
 
 To change what's included, click the arrow next to the download button:
 
-- **Format:** CSV, Excel or Parquet.
+- **Format:** CSV, Excel, or Parquet.
 - **README** and **Sources & Citations:** included by default. Untick them to leave those files out.
 - **Additional Options:** extra columns, such as ISO3 country codes.
 

@@ -12,9 +12,9 @@ Connect your assistant to the DFO through the Model Context Protocol (MCP), whic
 
 An assistant that answers from DFO data and names its source:
 
-> Health expenditure per person in Kenya rose from 75.5 international dollars in 2000 to 274.0 in 2023, according to World Development Indicators.
+> Health expenditure per person in Kenya rose between 2000 and 2023, according to World Development Indicators.
 
-<!-- TODO: verify when the MCP endpoint is public. The figures come from a recorded DFO Studio session (dfo-ai docs/transcripts/studio_transcript_plan.jsonl), which calls the same search and get_data tools; rerun the question through each client below and quote its answer. -->
+<!-- TODO: verify when the MCP endpoint is public. Ask the question through each client below and quote its answer. -->
 
 ## What you'll learn
 
