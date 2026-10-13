@@ -12,15 +12,15 @@ The SHA-256 of one downloadable file, written `sha256:` and 64 hex characters. O
 
 ## Bundle
 
-The zip file that is the default download. It includes a README, the data file, a table of code names, `SOURCES.md`, `CITATION.cff` and `datapackage.json`. See [The data bundle](bundle.md).
+The zip file that is the default download. It includes a README, the data file, a table of code names, `SOURCES.md`, `CITATION.cff`, and `datapackage.json`. See [The data bundle](bundle.md).
 
 ## Classification
 
-A coded list that a source uses to describe its data, such as CRS purpose codes or finance types. Each code is a node in the knowledge graph; for example, `CRSPurposeCode12220` for basic health care. See [The development finance ontology](ontology.md).
+A coded list that a source uses to describe its data, such as CRS purpose codes or finance types. Each code is a node in the knowledge graph, such as `CRSPurposeCode12220` for basic health care. See [The development finance ontology](ontology.md).
 
 ## `content_version`
 
-The identifier for one materialised result of a spec, written `cv_` and 32 hex characters; for example, `cv_5b7870b8161a6995a2b87d1bde5427ab`. It changes when the rows change, including the unit, method, or provenance on any row. A graph, source, or conversion change that leaves every row the same keeps it. See [Versions and snapshots](versions.md).
+The identifier for one materialised result of a spec, written `cv_` and 32 hex characters, such as `cv_5b7870b8161a6995a2b87d1bde5427ab`. It changes when the rows change, including the unit, method, or provenance on any row. A graph, source, or conversion change that leaves every row the same keeps it. See [Versions and snapshots](versions.md).
 
 ## Data Commons
 
@@ -28,7 +28,7 @@ The open-source graph platform, from Google, that serves the DFO knowledge graph
 
 ## dcid
 
-The id of a node in the knowledge graph; for example, `country/FRA` or `CRSTypeOfFinance110`. Every entity, classification value, StatVar, and provenance has one. See [The knowledge graph](knowledge-graph.md).
+The id of a node in the knowledge graph, such as `country/FRA` or `CRSTypeOfFinance110`. Every entity, classification value, StatVar, and provenance has one. See [The knowledge graph](knowledge-graph.md).
 
 ## Definition
 
@@ -44,7 +44,7 @@ One edition of a number, distinguished from other editions by its provenance, un
 
 ## Frame reference
 
-The pair `{spec_id, content_version}`, which identifies one saved data table. The Data MCP's `get_data` tool returns one and the analysis tools take one. See [Versions and snapshots](versions.md).
+The pair `{spec_id, content_version}`, which identifies one saved data table. The DFO MCP server's `get_data` tool returns one and the analysis tools take one. See [Versions and snapshots](versions.md).
 
 ## Grant equivalent
 
@@ -80,7 +80,7 @@ A provenance is the graph node that records a number's publisher, licence, and l
 
 ## Reproducing call
 
-The API call that is stored inside a bundle's `datapackage.json` that rebuilds the dataset from its `spec_id`. See [The data bundle](bundle.md#the-reproducing-call).
+The API call that is stored inside a bundle's `datapackage.json` that rebuilds the dataset from its `spec_id`. See [The data bundle](bundle.md#datapackagejson).
 
 ## Role
 
@@ -104,7 +104,7 @@ The DFO's exact reading of a data request, written as graph references. It names
 
 ## `spec_id`
 
-The id of a spec, written `spec_` and 32 hex characters; for example, `spec_19e75bf0f03c57ec5445816962ae3896`. It hashes the request, so the same question always gets the same id. See [Versions and snapshots](versions.md).
+The id of a spec, written `spec_` and 32 hex characters, such as `spec_19e75bf0f03c57ec5445816962ae3896`. It hashes the request, so the same question always gets the same id. See [Versions and snapshots](versions.md).
 
 ## StatVar
 

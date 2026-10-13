@@ -20,7 +20,7 @@ A zip file installs one skill. The zip steps below install `oda-measures`, the s
 
 <!-- TODO: DevelopmentFinanceObservatory/skills must be public, with a licence, before the marketplace routes work for readers outside ONE. Until then, adding the marketplace needs read access to the repository (and, in the Claude apps, the Claude GitHub App installed on it). Confirm each marketplace route below against the public repository, then delete this comment. -->
 
-The zip file for a skill is on that skill's page in the Skills section of this site. Open the page, such as [`oda-measures`](../../dfo-skills/oda-measures/SKILL.md), and choose "Download this skill as a zip". If a skill page does not have that option, the DFO does not offer an install.
+The zip file for a skill is on that skill's page in the Skills section of this site. Open the page, such as [`oda-measures`](../../dfo-skills/oda-measures/SKILL.md), and choose "Download this skill as a zip". Only a skill whose page has that option can be installed this way.
 
 ## Steps
 

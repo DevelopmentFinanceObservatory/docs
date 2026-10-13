@@ -17,10 +17,10 @@ OECD Creditor Reporting System (2026), via the Development Finance Observatory
 Use the full form in a reference list:
 
 ```
-OECD, Creditor Reporting System (2026), via the Development Finance Observatory. "Gross disbursements (nominal) for basic health care for standard grant for official development assistance to Togo from France" [dataset]. Retrieved 28 September 2026 from https://{host}/s/{id} (snapshot, data as of 28 Sep 2026).
+OECD, Creditor Reporting System (2026), via the Development Finance Observatory. "Gross disbursements (nominal) for basic health care for standard grant for official development assistance to Togo from France" [dataset]. Retrieved 28 September 2026 from https://developmentfinance.org/s/{id} (snapshot, data as of 28 Sep 2026).
 ```
 
-<!-- TODO: replace {host} and {id} with a real snapshot link once the site's production host is configured. -->
+<!-- TODO: replace {id} with the id of a real snapshot link once the production site is public. -->
 
 <!-- TODO: verify whether a source's "Last Update" on /data/sources is the publisher's release date or the day the DFO last pulled the file, and state which year the citation uses. -->
 

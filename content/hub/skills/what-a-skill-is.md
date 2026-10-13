@@ -10,15 +10,8 @@ Each DFO skill opens with front matter. Here is the front matter for [`oda-measu
 ---
 name: oda-measures
 description: >-
-  Covers how ODA is measured and reported by the OECD DAC, including which
-  flow type to use (gross disbursements, net disbursements, grant equivalents,
-  or commitments), whether to use current or constant prices, and how grants,
-  concessional loans, and private sector instruments are counted. Use when a
-  question involves choosing a measure, comparing ODA figures across years,
-  explaining what a specific ODA figure represents, or assessing how a
-  financing instrument is counted in ODA. Do not use for questions about which
-  sectors or countries ODA is allocated to (use the CRS purpose codes or
-  recipient lists instead).
+  How the OECD DAC measures and reports ODA. Covers the flow types (gross disbursements, net disbursements, grant equivalents, and commitments) and which questions each fits, current and constant prices, DAC deflators and base years, and the 2018 switch to the grant-equivalent headline. Also covers how grants, concessional loans, and private sector instruments (PSI) qualify as ODA and are counted, including grant elements, discount rates, additionality, the institutional and instrument approaches, PSI transition arrangements, and the policy debate on loan and PSI measurement. Relevant to choosing a measure, comparing ODA across donors or years, explaining what an ODA figure represents, and assessing how a financing instrument counts in ODA.
+license: CC-BY-4.0
 ---
 ```
 
@@ -37,7 +30,7 @@ oda-measures/
     └── price-basis.md
 ```
 
-`SKILL.md` holds YAML front matter with two fields. `name` matches the directory name. `description` says what the skill covers and when to load it, and it's the text an agent matches a question against. Below the front matter, the body lists the reference files and says when to read each one.
+`SKILL.md` holds YAML front matter with three fields. `name` matches the directory name. `description` says what the skill covers and when to load it, and it's the text an agent matches a question against. `license` names the licence, `CC-BY-4.0` for every DFO skill. Below the front matter, the body lists the reference files and says when to read each one.
 
 `references/` holds the long material: definitions, method notes, defaults. The dfo-skills repository adds two rules of its own, checked in CI by `scripts/validate_skills.py`:
 
@@ -74,7 +67,7 @@ Install the skills under `skills/` in your own assistant to use them.
 
 ## How the DFO assistant uses skills
 
-The DFO assistant is an agent too, and it reads the same skills from the knowledge graph. dfo-apis serves them through its Skills API, and data-mcp gives the assistant two tools over it: `get_skill` loads a skill's `SKILL.md` and lists its reference files, and `get_skill_file` reads one of those files.
+The DFO assistant is an agent too, and it reads the same skills from the knowledge graph. dfo-apis serves them through its Skills API, and the DFO MCP server gives the assistant two tools over it: `get_skill` loads a skill's `SKILL.md` and lists its reference files, and `get_skill_file` reads one of those files.
 
 The descriptions the assistant matches against come from its data search. Skills are attached to datasets, and the search result names up to five skills attached to the datasets it found. A question about DFO itself goes straight to [`dfo-faq`](../../dfo-skills/dfo-faq/SKILL.md).
 

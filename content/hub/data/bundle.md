@@ -4,7 +4,7 @@ description: The files in a DFO dataset download, what each one holds, and how t
 
 # The data bundle
 
-The examples come from one download of ODA standard grants for basic health care from France to Togo, `spec_19e75bf0f03c57ec5445816962ae3896` at `cv_bb41020eae566cb1de761425ac5cd493`. [Versions and snapshots](versions.md) explains the two ids. The `content_version` changes whenever the data behind it does, so a fetch today may return a different one.
+The examples come from one download of ODA standard grants for basic health care from France to Togo, `spec_19e75bf0f03c57ec5445816962ae3896` at `cv_bb41020eae566cb1de761425ac5cd493`. [Versions and snapshots](versions.md) explains the two ids.
 
 A bundle is a zip file that contains the data file and the documents a reader needs to understand, cite, and fetch again. It follows the [Frictionless Data Package v2](https://datapackage.org/) standard, which describes a dataset's files, fields, and sources in `datapackage.json`. Downloads are bundled by default. On `/data`, the "README" and "Sources & Citations" checkboxes in the download menu switch the bundle on and off together. On the Datasets API, the switch is the `bundle` option. Neither needs an API key. The CSV bundle for this dataset holds these files:
 
@@ -19,8 +19,8 @@ dfo_oecd-creditor-reporting-system_<YYYY-MM-DD>_csv_bb4102.zip
 ```
 
 ```bash
-DFO_API=https://dfo-dev-apis-zms5lj4zhq-nn.a.run.app
-LINK=$(curl -s "$DFO_API/api/datasets/spec_19e75bf0f03c57ec5445816962ae3896?format=csv&bundle=true" |
+DFO_API=https://developmentfinance.org
+LINK=$(curl -s "$DFO_API/api/v1/datasets/spec_19e75bf0f03c57ec5445816962ae3896?format=csv&bundle=true" |
   jq -r 'first(.artifacts[] | select(.rendering.bundle == true and .rendering.format == "csv")) | .url')
 curl -s -L -OJ "$DFO_API$LINK"
 unzip -l dfo_*_csv_*.zip
@@ -47,7 +47,7 @@ Start here. It says what the data is, describes each file and column, gives the 
 
 ## `data/<slug>.<ext>`
 
-Each row is one observation. The file is `.csv`, `.xlsx` or `.parquet`, depending on the `format` option, and `<slug>` comes from the source names. Each role, classification, unit, method, and provenance column has a `_label` column beside it with the code's name. The README describes every column of the file it ships with.
+Each row is one observation. The file is `.csv`, `.xlsx`, or `.parquet`, depending on the `format` option, and `<slug>` comes from the source names. Each role, classification, unit, method, and provenance column has a `_label` column beside it with the code's name. The README describes every column of the file it ships with.
 
 ```
 stat_var,financingProvider,financingProvider_label,financingRecipient,financingRecipient_label,crsCooperationModality,crsCooperationModality_label,…,time_period,value,unit,unit_label,currency,price_basis,base_year,measurementMethod,measurementMethod_label,provenance,provenance_label
@@ -98,16 +98,16 @@ A [Citation File Format](https://citation-file-format.github.io/) (CFF) 1.2.0 fi
 
 ## Licences
 
-`SOURCES.md` gives each source's licence, and `datapackage.json` records it on the resource and in the package-level `licenses`. A source's licence is also on its page on [Sources](/data/sources). The CRS, for example, is covered by the [OECD Terms and Conditions](https://www.oecd.org/en/about/terms-conditions.html).
+`SOURCES.md` gives each source's licence, and `datapackage.json` records it on the resource and in the package-level `licenses`. A source's licence is also on its page on [Sources](/data/sources). The OECD Creditor Reporting System (CRS), for example, is covered by the [OECD Terms and Conditions](https://www.oecd.org/en/about/terms-conditions.html).
 
 ## Get the data again
 
 The README lists the ways to get the data again. None needs a key.
 
 - On the website, the dataset page for this version. The README prints the link when the bundle is for a single dataset and the website serves it. The website keeps that version's rows as Parquet, so the link keeps working after the API's copy of the files is gone.
-- The exact version, from the snapshot route `GET /api/datasets/{spec_id}/{content_version}`, which lists a download link for each file. The DFO keeps files fetched through the API for 30 days from when they were made, and a download does not extend that.
-- The latest data for the same definition, from `GET /api/datasets/{spec_id}`, with the bundle's options as query parameters.
-- A rebuild, by sending the request body the README prints to `POST /api/datasets`.
+- The exact version, from the snapshot route `GET /api/v1/datasets/{spec_id}/{content_version}`, which lists a download link for each file. The DFO keeps files fetched through the API for 30 days from when they were made, and a download in that time does not extend it. A link fetched after that renews the file while the DFO still holds its stored rows.
+- The latest data for the same definition, from `GET /api/v1/datasets/{spec_id}`, with the bundle's options as query parameters.
+- A rebuild, by sending the request body the README prints to `POST /api/v1/datasets`.
 
 `dfo.reproducing_call` in `datapackage.json` names the latest-data route and its options. Run it as a GET to get the latest `content_version`:
 
@@ -116,7 +116,7 @@ The README lists the ways to get the data again. None needs a key.
 ```
 
 ```bash
-curl -s "$DFO_API/api/datasets/spec_19e75bf0f03c57ec5445816962ae3896?format=csv&bundle=true" | jq .content_version
+curl -s "$DFO_API/api/v1/datasets/spec_19e75bf0f03c57ec5445816962ae3896?format=csv&bundle=true" | jq .content_version
 ```
 
 The call fetches the definition and runs it against the live graph. If it returns the bundle's `content_version`, the data is unchanged. [Versions and snapshots](versions.md) explains what a different one means.
