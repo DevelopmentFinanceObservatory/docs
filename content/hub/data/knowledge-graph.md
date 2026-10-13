@@ -35,7 +35,8 @@ The other four coded columns become classification values. Each value is a node 
 
 ```json
 {
-  "dcid": "CRSPurposeCode12220",
+  "ref": "CRSPurposeCode12220",
+  "kind": "code",
   "label": "basic health care (CRS Purpose)",
   "types": [
     "CRSPurposeCodeEnum"
@@ -44,11 +45,9 @@ The other four coded columns become classification values. Each value is a node 
 ```
 
 ```bash
-DFO_API=https://dfo-dev-apis-zms5lj4zhq-nn.a.run.app
-curl -s "$DFO_API/api/graph/node/CRSPurposeCode12220" | jq '{dcid, label, types}'
+DFO_API=https://developmentfinance.org
+curl -s "$DFO_API/api/v1/graph/node/CRSPurposeCode12220" | jq '{ref, kind, label, types}'
 ```
-
-<!-- TODO: replace the dev base URL when the API has a public one. -->
 
 <!-- TODO: link the Graph API lookup how-to when the API guide is public. -->
 
@@ -71,7 +70,7 @@ The graph returns this StatVar.
 
 ```json
 {
-  "dcid": "Amount_FinancialFlow_Gross_Disbursement_CRSTypeOfFlow10_CRSTypeOfFinance110_CRSCooperationModalityC01_CRSPurposeCode12220_Nominal",
+  "ref": "Amount_FinancialFlow_Gross_Disbursement_CRSTypeOfFlow10_CRSTypeOfFinance110_CRSCooperationModalityC01_CRSPurposeCode12220_Nominal",
   "label": "Official development assistance gross disbursements for basic health care (standard grant, project-type intervention)",
   "roles": [
     "financingProvider",
@@ -82,8 +81,8 @@ The graph returns this StatVar.
 ```
 
 ```bash
-curl -s "$DFO_API/api/graph/node/Amount_FinancialFlow_Gross_Disbursement_CRSTypeOfFlow10_CRSTypeOfFinance110_CRSCooperationModalityC01_CRSPurposeCode12220_Nominal" |
-  jq '{dcid, label, roles, population_type}'
+curl -s "$DFO_API/api/v1/graph/node/Amount_FinancialFlow_Gross_Disbursement_CRSTypeOfFlow10_CRSTypeOfFinance110_CRSCooperationModalityC01_CRSPurposeCode12220_Nominal" |
+  jq '{ref, label, roles: .stat_var.definition.roles, population_type: .stat_var.definition.population_type.ref}'
 ```
 
 The observation supplies the donor, recipient, and year, and the StatVar carries the modality. So a question that leaves modality open, such as "ODA standard grants for basic health care from France to Togo", matches several StatVars: one for each modality France used, plus one for records with no modality.
@@ -106,13 +105,13 @@ A dataset spec names the same entities by flow axis, with the provider as `origi
 
 ## Facets
 
-The same number can exist in more than one edition, reported by a different source, in a different unit, or measured by a different method. Each edition is a facet. A facet has three axes: `provenance`, `unit` and `measurementMethod`. The 2008 row above has one facet, provenance `provenance/OECDCreditorReportingSystem` in `CurrencyUSD`.
+The same number can exist in more than one edition, reported by a different source, in a different unit, or measured by a different method. Each edition is a facet. A facet has three axes: `provenance`, `unit`, and `measurementMethod`. The 2008 row above has one facet, provenance `provenance/OECDCreditorReportingSystem` in `CurrencyUSD`.
 
-A provenance node records who published the data and on what terms. The CRS provenance node names the OECD (`dc/s/OrganisationForEconomicCo-operationAndDevelopmentOecd`) as publisher, the OECD terms and conditions as its licence, and the date of its last refresh. Where two facets cover the same observation, the Datasets API picks one by a default policy. <!-- TODO: link Get a dataset when the API guide is public. -->
+A provenance node records who published the data and on what terms. The CRS provenance node names the OECD (`dc/s/OrganisationForEconomicCo-operationAndDevelopmentOecd`) as publisher, the OECD terms and conditions as its licence, and the date of its last refresh. Where two facets cover the same observation, the Datasets API picks one. It uses the default the graph declares for the StatVar where one exists. Otherwise it prefers the DFO's own facet when that facet covers at least as many of the requested places as the broadest base Data Commons facet, and otherwise serves the facet that covers more places. <!-- TODO: link Get a dataset when the API guide is public. -->
 
 ## Who builds what
 
-The pipelines build the StatVars and observations. For the CRS, a set of dbt models maps each coded column to its dcid, sums matching records, mints the StatVar dcid and name, and writes observations and a provenance node for loading into the graph. Every other source follows the same pattern with its own columns.
+The pipelines build the StatVars and observations. For the CRS, a set of dbt (data build tool) SQL models maps each coded column to its dcid, sums matching records, mints the StatVar dcid and name, and writes observations and a provenance node for loading into the graph. Every other source follows the same pattern with its own columns.
 
 The concepts those pipelines use, such as the class `FinancialFlow`, the property `crsPurpose` and the value `CRSPurposeCode12220`, come from the DFO ontology. [The development finance ontology](ontology.md) explains where they are defined and how source codes map to them.
 

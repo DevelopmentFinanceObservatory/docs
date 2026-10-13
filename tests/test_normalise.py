@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 
 import pytest
+from markdown_it import MarkdownIt
 
 from dfo_docs.normalise import (
     NormaliseError,
@@ -81,6 +82,75 @@ def test_admonition_inside_fence_is_not_converted():
     # The real admonition outside the fence still converts.
     assert "> [!NOTE]" in result
     assert "> **Real one.** This one is outside the fence and should convert." in result
+
+
+@pytest.mark.parametrize(
+    ("text", "expected", "blocks"),
+    [
+        pytest.param(
+            "3. Apply the code.\n"
+            "\n"
+            '    !!! warning "Both roles"\n'
+            "        A provider name resolves.\n"
+            "\n"
+            "        ```python\n"
+            "        import tossd_reader as tossd\n"
+            "\n"
+            "        print(tossd.codes)\n"
+            "        ```\n"
+            "\n"
+            "4. Next step.\n",
+            "3. Apply the code.\n"
+            "\n"
+            "    > [!WARNING]\n"
+            "    > **Both roles.** A provider name resolves.\n"
+            "    >\n"
+            "    > ```python\n"
+            "    > import tossd_reader as tossd\n"
+            "    >\n"
+            "    > print(tossd.codes)\n"
+            "    > ```\n"
+            "\n"
+            "4. Next step.\n",
+            [("blockquote_open", 2), ("fence", 3)],
+            id="titled-with-fence",
+        ),
+        pytest.param(
+            "- Filter by sector.\n"
+            "\n"
+            "  !!! note\n"
+            "      The column holds codes.\n"
+            "\n"
+            "- Verify the result.\n",
+            "- Filter by sector.\n"
+            "\n"
+            "  > [!NOTE]\n"
+            "  > The column holds codes.\n"
+            "\n"
+            "- Verify the result.\n",
+            [("blockquote_open", 2)],
+            id="untitled-before-next-item",
+        ),
+        pytest.param(
+            "Some prose.\n\n    !!! note\n        Shown as code.\n\nMore prose.\n",
+            "Some prose.\n\n    !!! note\n        Shown as code.\n\nMore prose.\n",
+            [],
+            id="indented-code-outside-a-list",
+        ),
+    ],
+)
+def test_admonition_indented_in_a_list_item_converts_in_place(text, expected, blocks):
+    result = convert_admonitions(text)
+
+    assert result == expected
+    # CommonMark reads the alert, and a fence in its body, inside the one list item.
+    tokens = MarkdownIt("commonmark").parse(result)
+    assert [
+        (token.type, token.level)
+        for token in tokens
+        if token.type in {"blockquote_open", "fence"}
+    ] == blocks
+    assert sum(token.type.endswith("_list_open") for token in tokens) == bool(blocks)
 
 
 def test_fence_tags_py_becomes_python():

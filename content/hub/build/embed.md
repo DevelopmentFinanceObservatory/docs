@@ -4,7 +4,7 @@ description: Copy the iframe code Studio gives for a canvas or a single card and
 
 # Embed a chart
 
-Studio gives you iframe code for a whole canvas or a single card. Paste it into any web page to show the charts there.
+Studio gives you iframe code, a snippet that shows another web page inside your own, for a whole canvas or a single card. Paste it into any web page to show the charts there.
 
 An embed follows one of two modes. A live embed redraws each data card on current data every time the page loads. A snapshot embed shows the data as it was when you created the embed code and doesn't update when sources refresh.
 
@@ -28,7 +28,7 @@ The code looks like this:
 
 ```html
 <iframe
-  src="{site}/embed/{id}"
+  src="https://developmentfinance.org/embed/{id}"
   width="100%"
   height="640"
   style="border:0"
@@ -36,13 +36,12 @@ The code looks like this:
 ></iframe>
 ```
 
-- `{site}`: the DFO site address
 - `{id}`: an 8-character share ID
 - `{title}`: the canvas or card title
 
 Keep the `title` attribute. Screen readers use it to describe the frame.
 
-<!-- TODO: replace {site} and {id} with a real embed from the production site once it is public. -->
+<!-- TODO: replace {id} with a real embed from the production site once it is public. -->
 
 ## How embeds behave
 
