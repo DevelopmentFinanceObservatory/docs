@@ -2,7 +2,7 @@
 
 `Git` runs one git command in a checkout with a fixed environment. `command_env` builds
 that environment: the process environment plus, when a token is given, a credential
-helper for github.com that reads the token from `DFO_BOT_TOKEN`, so the token never
+helper for github.com that reads the token from `DFO_DOCSYNC_TOKEN`, so the token never
 reaches a config file or a remote URL.
 """
 
@@ -16,9 +16,9 @@ from pathlib import Path
 
 # The environment variable the credential helper reads the token from, and the one
 # `prs.propose_edits` reads the push token from when none is passed. CI sets it to a
-# dfo-bot installation token; local runs leave it unset and use the user's own git and
+# dfo-docsync installation token; local runs leave it unset and use the user's own git and
 # gh credentials.
-TOKEN_ENV = "DFO_BOT_TOKEN"
+TOKEN_ENV = "DFO_DOCSYNC_TOKEN"
 
 _TOKEN_HELPER = (
     '!f() { test "$1" = get || return 0; echo username=x-access-token; '
@@ -83,9 +83,9 @@ class Git:
 def command_env(token: str | None) -> dict[str, str]:
     """The environment for git and gh, carrying `token` when one is given.
 
-    The token goes in `DFO_BOT_TOKEN` and `GH_TOKEN`. GIT_CONFIG_COUNT entries, appended
+    The token goes in `DFO_DOCSYNC_TOKEN` and `GH_TOKEN`. GIT_CONFIG_COUNT entries, appended
     after any the caller already set, first clear the helpers git reads from config
-    files and then add one for github.com that answers `get` from `DFO_BOT_TOKEN`.
+    files and then add one for github.com that answers `get` from `DFO_DOCSYNC_TOKEN`.
     """
     env = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GH_PROMPT_DISABLED": "1"}
     if token is None:

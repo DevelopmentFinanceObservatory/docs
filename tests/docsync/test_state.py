@@ -30,7 +30,7 @@ BRANCH = "docsync-state"
 GUIDE = PageState(
     page_id="hub/guide/index",
     doc_id="doc-guide",
-    repo="ONEcampaign/dfo-docs",
+    repo="DevelopmentFinanceObservatory/docs",
     ref="main",
     path="docs/guide/index.md",
     source_commit="a" * 40,
@@ -39,14 +39,14 @@ GUIDE = PageState(
 API = PageState(
     page_id="apis/use",
     doc_id="doc-api",
-    repo="ONEcampaign/dfo-apis",
+    repo="DevelopmentFinanceObservatory/apis",
     ref="main",
     path="docs/use.md",
     source_commit="b" * 40,
     baseline="# Use\n",
     applied_export="# Use\n\nFirst edit.\n",
     pulled_export="# Use\n\nEdited.\n",
-    pr_url="https://github.com/ONEcampaign/dfo-apis/pull/7",
+    pr_url="https://github.com/DevelopmentFinanceObservatory/apis/pull/7",
 )
 
 

@@ -373,7 +373,7 @@ def test_hub_pages_land_at_corpus_root(tmp_path):
     assert home.title == "Home"
     assert home.description == "The hub landing page."
     assert home.corpus_path == "corpus/hub/index.md"
-    assert home.source_repo == "ONEcampaign/dfo-docs"
+    assert home.source_repo == "DevelopmentFinanceObservatory/docs"
     assert home.source_commit is None
     assert home.last_modified is None
     assert (corpus_root / "hub" / "index.md").is_file()

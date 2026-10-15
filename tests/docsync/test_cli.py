@@ -40,9 +40,9 @@ from dfo_docs.docsync.state import (
 ROOT = "root-folder"
 DRIVE = "drive-1"
 SHEET = "sheet-1"
-REPO = "ONEcampaign/dfo-apis"
-PR_URL = "https://github.com/ONEcampaign/dfo-apis/pull/7"
-PR_URL_2 = "https://github.com/ONEcampaign/dfo-apis/pull/8"
+REPO = "DevelopmentFinanceObservatory/apis"
+PR_URL = "https://github.com/DevelopmentFinanceObservatory/apis/pull/7"
+PR_URL_2 = "https://github.com/DevelopmentFinanceObservatory/apis/pull/8"
 
 PAGE_TEXT = """\
 ---
@@ -411,7 +411,7 @@ def world(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> World:
         sheet_id=SHEET,
         pull_request=github.pull_request,
         open_pull_requests=github.open_pull_requests,
-        pr_author="app/dfo-bot",
+        pr_author="app/dfo-docsync",
         now="2026-10-01 09:00 UTC",
     )
     return World(fake, MemoryStore(), proposals, source, github, ctx)
@@ -808,9 +808,11 @@ def test_pull_skips_rows_not_ready(world: World):
     assert world.proposals.calls == []
 
 
-def test_pull_hub_pages_target_main(world: World):
+def test_pull_hub_pages_target_dev(world: World):
     page, state = _pushed_page(world)
-    hub = replace(page, page_id="hub/call", repo="ONEcampaign/dfo-docs", ref="feat")
+    hub = replace(
+        page, page_id="hub/call", repo="DevelopmentFinanceObservatory/docs", ref="feat"
+    )
     world.store.states["hub/call"] = replace(state, page_id="hub/call")
     world.google.rows["hub/call"] = {
         "Page id": "hub/call",
@@ -820,7 +822,7 @@ def test_pull_hub_pages_target_main(world: World):
 
     world.pull([hub])
 
-    assert world.proposals.calls[0]["base"] == "main"
+    assert world.proposals.calls[0]["base"] == "dev"
 
 
 def test_pull_refuses_doc_with_open_suggestions(
@@ -1263,9 +1265,12 @@ def test_dry_run_writes_files_and_no_state_or_sheet(
     log = world.pull([page], dry_run_dir=out)
 
     assert log.failures == 0
-    written = out / "ONEcampaign__dfo-apis" / "files" / "docs" / "call.md"
+    written = out / "DevelopmentFinanceObservatory__apis" / "files" / "docs" / "call.md"
     assert written.read_text() == PAGE_TEXT.replace("your token", "your API token")
-    assert "Owner: `Ana`" in (out / "ONEcampaign__dfo-apis" / "pr.md").read_text()
+    assert (
+        "Owner: `Ana`"
+        in (out / "DevelopmentFinanceObservatory__apis" / "pr.md").read_text()
+    )
     assert world.store.states[page.page_id] == state
     assert world.store.saves == ["docsync push: 1 pages"]
     assert len(world.google.upserts) == upserts
@@ -1697,7 +1702,9 @@ def test_main_exits_2_on_missing_folder(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
 ):
     config = tmp_path / "docsync.yaml"
-    config.write_text("sources: [hub]\ndrive_folder_id: nope\npr_author: app/dfo-bot\n")
+    config.write_text(
+        "sources: [hub]\ndrive_folder_id: nope\npr_author: app/dfo-docsync\n"
+    )
     monkeypatch.setenv(cli.ACCESS_TOKEN_ENV, "ya29.token")
 
     class NoFolder:
@@ -1867,7 +1874,7 @@ def test_pull_writes_settled_rows_when_a_later_page_crashes(
         GitError(["git", "push"], "rejected"),
         StateConflictError("docsync-state moved"),
         cli.GoogleApiError(status=500, message="boom", method="GET", url="u"),
-        HubCheckoutError("HEAD is not origin/main"),
+        HubCheckoutError("HEAD is not origin/dev"),
     ],
 )
 def test_main_exits_2_on_named_errors(
@@ -2119,9 +2126,9 @@ def test_restore_refuses_a_malformed_file_and_saves_nothing(
 # Hub checkout, page selection, Sheet layout
 
 
-def test_hub_pages_need_head_at_origin_main(tmp_path: Path):
+def test_hub_pages_need_head_at_origin_dev(tmp_path: Path):
     origin = Source(tmp_path / "origin")
-    origin.git("checkout", "-q", "-b", "main")
+    origin.git("checkout", "-q", "-b", "dev")
     origin.commit("content/hub/index.md", "# Home\n")
     clone = tmp_path / "clone"
     subprocess.run(
@@ -2131,7 +2138,7 @@ def test_hub_pages_need_head_at_origin_main(tmp_path: Path):
     )
     git = Git(root=clone, env=command_env(None))
 
-    cli.require_hub_at_main(git)
+    cli.require_hub_at_base(git)
 
     git.run(
         "-c",
@@ -2144,8 +2151,8 @@ def test_hub_pages_need_head_at_origin_main(tmp_path: Path):
         "-m",
         "local",
     )
-    with pytest.raises(HubCheckoutError, match="is not origin/main"):
-        cli.require_hub_at_main(git)
+    with pytest.raises(HubCheckoutError, match="is not origin/dev"):
+        cli.require_hub_at_base(git)
 
 
 @pytest.mark.parametrize(
@@ -2216,7 +2223,7 @@ class Wired:
 def wired(world: World, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Wired:
     config = tmp_path / "docsync.yaml"
     config.write_text(
-        "sources: [dfo-apis]\ndrive_folder_id: unused\npr_author: app/dfo-bot\n"
+        "sources: [dfo-apis]\ndrive_folder_id: unused\npr_author: app/dfo-docsync\n"
     )
     monkeypatch.setenv(cli.TOKEN_ENV, "bot-token")
     monkeypatch.setattr(cli, "open_session", lambda: None)
@@ -2310,7 +2317,9 @@ def test_pull_command_dry_run_writes_files_only(
     assert cli.main(["pull", *wired.args, "--dry-run", str(tmp_path / "dry")]) == 0
 
     (call,) = world.proposals.calls
-    assert call["dry_run_dir"] == tmp_path / "dry" / "ONEcampaign__dfo-apis"
+    assert (
+        call["dry_run_dir"] == tmp_path / "dry" / "DevelopmentFinanceObservatory__apis"
+    )
     assert len(world.store.saves) == saves
     assert world.status(page) == "Ready for review"
 

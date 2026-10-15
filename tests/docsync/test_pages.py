@@ -146,7 +146,7 @@ def _site(tmp_path: Path) -> Path:
 
 def _config(*sources: str) -> DocsyncConfig:
     return DocsyncConfig(
-        sources=sources, drive_folder_id="folder", pr_author="app/dfo-bot"
+        sources=sources, drive_folder_id="folder", pr_author="app/dfo-docsync"
     )
 
 
@@ -210,7 +210,7 @@ def test_each_page_carries_raw_text_at_its_commit_in_a_live_clone(tmp_path):
 
     hub = pages["hub/build/share"]
     assert hub.clone_root == site
-    assert hub.repo == "ONEcampaign/dfo-docs"
+    assert hub.repo == "DevelopmentFinanceObservatory/docs"
     assert hub.ref == "main"
     assert hub.commit == _git(site, "rev-parse", "HEAD").strip()
     assert hub.path == "content/hub/build/share.md"
@@ -280,7 +280,7 @@ def test_load_config_reads_the_repository_docsync_yaml():
     config = load_config(DFO_DOCS_ROOT / "docsync.yaml")
     assert config.sources == ("hub", "dfo-apis", "dfo-ai", "dfo-skills")
     assert config.drive_folder_id == "1DL_BWEeo92oksJEr28xlXFD46xQxFQG1"
-    assert config.pr_author == "app/dfo-bot"
+    assert config.pr_author == "app/dfo-docsync"
 
 
 def test_the_repository_allowlist_names_publishable_sources():

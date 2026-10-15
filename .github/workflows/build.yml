@@ -25,28 +25,20 @@
 # if, which bash does not treat as a failure, captures the build's three-way exit status
 # and lychee's, below.
 #
-# Private sources: the build clones with a short-lived, read-only installation token for the
-# `dfo-reader` GitHub App, minted each run from the `READER_APP_CLIENT_ID` variable and the
-# `READER_APP_PRIVATE_KEY` secret. The token reaches git through a credential helper set
-# in the environment of the build step alone. Git asks a helper only when the server
-# challenges, so public sources still clone anonymously. To admit a private repository,
-# install `dfo-reader` on it and add its name to the `repositories:` input of the "Mint a
-# read-only token for private sources" step below. A missing secret fails the run at that
-# step, and nothing falls back to an anonymous clone.
+# Sources: every registered repository is public, so the build clones them all anonymously
+# and the job holds no secret beyond the workflow token that publishes the `corpus` branch.
 #
-# Every run, pull requests included, is ONEcampaign-only. The job mints a `dfo-reader`
-# token, which the DevelopmentFinanceObservatory copy of the repository keeps only in
-# main-limited environments, and the `corpus` branch it publishes is consumed only by
-# ONEcampaign. The copy skips the workflow.
+# Branches: `dev` is the integration branch and the only one that publishes. A pull request
+# into `dev` or `main` runs everything except the publish step.
 #
 # A draft pull request skips the build; marking it ready starts the run.
 name: Build and publish corpus
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
   pull_request:
-    branches: [main]
+    branches: [dev, main]
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
     inputs:
@@ -75,12 +67,7 @@ permissions:
 
 jobs:
   build:
-    # Mints a dfo-reader token, which prod keeps only in main-limited
-    # environments, so this runs in ONEcampaign only. The identical tree
-    # ran it here before it was synced.
-    if: >-
-      github.repository_owner == 'ONEcampaign' &&
-      github.event.pull_request.draft != true
+    if: github.event.pull_request.draft != true
     runs-on: ubuntu-latest
     env:
       # Every place the publish branch's name is needed reads this rather than a literal
@@ -103,51 +90,10 @@ jobs:
       - name: Run tests
         run: uv run pytest -q
 
-      # An unset variable or secret expands to an empty string, so this step names which
-      # one is missing before the token action runs.
-      - name: Check the dfo-reader credentials are configured
-        env:
-          READER_APP_CLIENT_ID: ${{ vars.READER_APP_CLIENT_ID }}
-          READER_APP_PRIVATE_KEY: ${{ secrets.READER_APP_PRIVATE_KEY }}
-        run: |
-          missing=0
-          if [ -z "$READER_APP_CLIENT_ID" ]; then
-            echo "::error::The READER_APP_CLIENT_ID variable is not set or not available to this run; private sources cannot be cloned."
-            missing=1
-          fi
-          if [ -z "$READER_APP_PRIVATE_KEY" ]; then
-            echo "::error::The READER_APP_PRIVATE_KEY secret is not set or not available to this run; private sources cannot be cloned."
-            missing=1
-          fi
-          exit "$missing"
-
-      # `permission-contents: read` narrows the token below what the App itself holds, so
-      # the build can read these repositories and write nothing to them.
-      - name: Mint a read-only token for private sources
-        id: reader
-        uses: actions/create-github-app-token@v3
-        with:
-          client-id: ${{ vars.READER_APP_CLIENT_ID }}
-          private-key: ${{ secrets.READER_APP_PRIVATE_KEY }}
-          owner: ONEcampaign
-          repositories: dfo-apis,dfo-ai,dfo-skills
-          permission-contents: read
-
       - name: Build the roadmap and the corpus
         id: build
         # This step runs under bash -e, so the build's exit code (0, 1, or 2; see
         # src/dfo_docs/cli.py's main()) is read from an if rather than from a bare $?.
-        #
-        # GIT_CONFIG_COUNT and its KEY/VALUE pairs add a credential helper for
-        # github.com to every git command in this step and in no other. The helper
-        # answers only `get`, reads the token from the environment, and so never
-        # writes it to a config file or a remote URL.
-        env:
-          READER_APP_TOKEN: ${{ steps.reader.outputs.token }}
-          GIT_CONFIG_COUNT: "1"
-          GIT_CONFIG_KEY_0: credential.https://github.com.helper
-          GIT_CONFIG_VALUE_0: >-
-            !f() { test "$1" = get || return 0; echo username=x-access-token; echo "password=$READER_APP_TOKEN"; }; f
         run: |
           set -uo pipefail
           if uv run python scripts/build.py --out published; then
@@ -184,9 +130,10 @@ jobs:
 
       # A pull request build runs every step above this one, so the build, the guards and
       # the link check all gate the merge. This step is the only one that writes, and a
-      # pull request must not move the branch the site pins, so it stops here.
+      # pull request or a run from another branch must not move the branch the site pins,
+      # so it stops there.
       - name: Publish
-        if: steps.build.outputs.status != '1' && github.event_name != 'pull_request'
+        if: steps.build.outputs.status != '1' && github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
