@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-15T10:50:46Z",
-  "generator_commit": "e8acdab510e45bdefbf447b3998d0f5c8221150f",
+  "generated_at": "2026-10-15T18:48:28Z",
+  "generator_commit": "5f897a0962855deb06e0df1d8fbbe2a1e8aa6198",
   "nav": [
     {
       "id": "hub",
@@ -1512,7 +1512,7 @@
       "description": "Connect the DFO to Claude, ChatGPT, or Gemini so your assistant can look up development finance data. Developers can also connect Claude Code, Codex, or Gemini CLI.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/connect.md",
-      "source_commit": "ff19ec5a93544f61d490e1dd6b334a35c0e82c65",
+      "source_commit": "17d8b109c6448e180c4a265b2ced3727507def3a",
       "last_modified": "2026-10-14T10:50:14Z",
       "corpus_path": "corpus/dfo-ai/connect.md"
     },
@@ -1524,7 +1524,7 @@
       "description": "How a question to the DFO MCP server becomes a cited answer, and the limits and refusals that bound it.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/what-you-can-ask.md",
-      "source_commit": "ff19ec5a93544f61d490e1dd6b334a35c0e82c65",
+      "source_commit": "17d8b109c6448e180c4a265b2ced3727507def3a",
       "last_modified": "2026-10-13T15:07:51Z",
       "corpus_path": "corpus/dfo-ai/what-you-can-ask.md"
     },
