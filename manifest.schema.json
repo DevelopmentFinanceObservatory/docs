@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/ONEcampaign/dfo-docs/corpus/manifest.schema.json",
+  "$id": "https://raw.githubusercontent.com/DevelopmentFinanceObservatory/docs/corpus/manifest.schema.json",
   "title": "dfo-docs manifest envelope",
   "description": "The published manifest.json envelope: a versioned nav tree and the pages it points at. Generate types from this schema rather than reverse-engineering shapes from an example; the two do not always agree, and this file is the one that is kept honest by a test that validates a real generator run against it.",
   "type": "object",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/ONEcampaign/dfo-docs/corpus/roadmap-track.schema.json",
+  "$id": "https://raw.githubusercontent.com/DevelopmentFinanceObservatory/docs/corpus/roadmap-track.schema.json",
   "title": "dfo-docs roadmap track",
   "description": "One roadmap track, published at the path roadmap.json gives for it, such as roadmap/data.json. Holds that track's own category vocabulary and every entry in it, upcoming and released. Each track is authored and reviewed by the team that owns it, and a track publishes even when another track's document fails to build. Generate types from this schema rather than from an example. Votes are live, per-viewer state that changes without a rebuild, so they live in the site's own store keyed by entry id rather than in this file.",
   "type": "object",

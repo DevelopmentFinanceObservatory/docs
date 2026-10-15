@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/ONEcampaign/dfo-docs/corpus/roadmap.schema.json",
+  "$id": "https://raw.githubusercontent.com/DevelopmentFinanceObservatory/docs/corpus/roadmap.schema.json",
   "title": "dfo-docs roadmap index",
   "description": "The published roadmap.json names the roadmap tracks and says where to fetch each one. It carries no entries. Each track is a separate document validated by roadmap-track.schema.json and owned by the team that owns that part of the product, so a track is edited, reviewed, and published without touching the others. Fetch this file first, render the tabs from it in array order, and load a track's own document when its tab is opened.",
   "type": "object",
