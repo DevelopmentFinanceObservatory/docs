@@ -120,14 +120,14 @@ Then register the repository in `sources.yaml`:
 
 ```yaml
   - name: dfo-apis
-    repo: ONEcampaign/dfo-apis
+    repo: DevelopmentFinanceObservatory/apis
     ref: dev
     docs_dir: docs/guide
     path: api
     title: API
 ```
 
-In `sources.yaml`, `docs_dir` sets which folder the build checks out. Match it to the sidecar's `docs_dir`. Set `path` to `extra.dfo.path`. The build fails if they differ. Add a `mount` entry in `hub.yaml` that names the source row. To register a repository before publication, set `enabled: false` with a `reason` and leave it out of `hub.yaml`. A mount for a disabled source fails the build. A private repository also needs the `dfo-reader` GitHub App installed on it and its name added to the token steps in the build and registry-health workflows, as the README describes. The README covers `exclude`, `kind: external`, `kind: skill`, and each build failure.
+In `sources.yaml`, `docs_dir` sets which folder the build checks out. Match it to the sidecar's `docs_dir`. Set `path` to `extra.dfo.path`. The build fails if they differ. Add a `mount` entry in `hub.yaml` that names the source row. To register a repository before publication, set `enabled: false` with a `reason` and leave it out of `hub.yaml`. A mount for a disabled source fails the build. Every registered repository must be public. The README covers `exclude`, `kind: external`, `kind: skill`, and each build failure.
 
 Before opening a pull request in the source repository, check its nav against its pages from a dfo-docs checkout. Then check links from the source repository's docs folder:
 
@@ -145,4 +145,4 @@ uv run python scripts/build.py --out /tmp/dfo-docs-build
 lychee --config lychee.toml /tmp/dfo-docs-build/corpus/
 ```
 
-The build clones every enabled source over HTTPS. Public sources need no credentials, and private ones use whatever GitHub credentials your git already has, so you need read access to them.
+The build clones every enabled source over HTTPS without credentials.

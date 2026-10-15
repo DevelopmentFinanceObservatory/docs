@@ -12,7 +12,7 @@ A row with `kind: skill` publishes a repository of agent skills, such as dfo-ski
 
 If the repository needs to sit under a grouping heading, or nest alongside another package, add it to `hub.yaml`'s nav as a `mount` (or `external`) entry. A grouping heading such as `bblocks` or `ODA` lives only in `hub.yaml`, since no source repository declares it.
 
-A private repository in the ONEcampaign organisation clones with a read-only token for the `dfo-reader` GitHub App. To admit one, install `dfo-reader` on the repository, then add its name to the `repositories:` input of the token step in `.github/workflows/build.yml` and to `READER_REPOSITORIES` in `.github/workflows/registry-health.yml`. Both workflows read the App's client id from the `READER_APP_CLIENT_ID` repository variable and its private key from the `READER_APP_PRIVATE_KEY` repository secret, and fail if either is missing.
+Every source repository is public, and the build and the registry-health workflow clone and query them without credentials. A private repository cannot be registered.
 
 To register a repository without building it yet, set `enabled: false` and a `reason`. A disabled row still loads and is reported by name. Turning it on means enabling the row and adding its `hub.yaml` mount, since a mount whose source is disabled fails the build.
 
@@ -25,9 +25,9 @@ uv sync
 uv run python scripts/build.py
 ```
 
-The build clones every enabled repository over HTTPS, normalises what it finds, and writes `corpus/` and `manifest.json`. Public repositories need no credentials. The private ones clone with whatever GitHub credentials your git already uses, so a local build needs read access to them.
+The build clones every enabled repository over HTTPS without credentials, normalises what it finds, and writes `corpus/` and `manifest.json`.
 
-`corpus/` and `manifest.json` are generated output that lives on the `corpus` branch. A push to `main` runs the same build in CI and commits the result there, and that branch is what the DFO site pins and reads.
+`corpus/` and `manifest.json` are generated output that lives on the `corpus` branch. A push to `dev` runs the same build in CI and commits the result there, and that branch is what the DFO site pins and reads. A pull request into `dev` or `main` runs the build and publishes nothing.
 
 ## Editing in Google Docs
 
@@ -47,21 +47,21 @@ uv run dfo-docsync pull
 - "Discard my edits" is a Status an editor sets. The next `push` resets the page's Doc from GitHub, even with open comments, and sets the page to "Editing". It refuses while the Doc has open suggestions, and waits while the page's pull request is open. When that pull request merged into a branch the page is not read from, the discard goes ahead. The page's state records the discard until a `push` reads another Status, so when the Sheet write after a discard fails, the next `push` only sets the page to "Editing" and keeps what the editor typed since.
 - A Doc that was trashed or deleted is recreated on the next `push`, unless the page's pull request is open.
 
-`--page <id>` limits `push` or `pull` to one page and can be repeated. A page id is the manifest's, such as `hub/build/share`. `pull --dry-run <dir>` writes the edited files and pull request bodies under `<dir>` and changes nothing in git, the Sheet, or the state. `docsync.yaml` sets `pr_author`, the author `gh` lists open docsync pull requests by; it is `app/dfo-bot` for the pull requests CI opens. For a local run that opens pull requests under your own login, pass `--pr-author @me` to `push` and `pull`.
+`--page <id>` limits `push` or `pull` to one page and can be repeated. A page id is the manifest's, such as `hub/build/share`. `pull --dry-run <dir>` writes the edited files and pull request bodies under `<dir>` and changes nothing in git, the Sheet, or the state. `docsync.yaml` sets `pr_author`, the author `gh` lists open docsync pull requests by; it is `app/dfo-docsync` for the pull requests CI opens. For a local run that opens pull requests under your own login, pass `--pr-author @me` to `push` and `pull`.
 
-Hub pages (`hub/...`) run only from a checkout of dfo-docs `main` that is at `origin/main`.
+Hub pages (`hub/...`) run only from a checkout of dfo-docs `dev` that is at `origin/dev`.
 
-A maintainer runs a sync from a `main` checkout at `origin/main`, signed in to Google with a one.org account. `.github/workflows/docsync.yml` (daily `pull` then `push`, or one command on dispatch) is disabled: a Markdown upload made by its service account loses code blocks, and every page with one then fails to align. Its job runs only in the ONEcampaign organisation, so a copy of the repository elsewhere never writes to Google Docs. The token lasts about an hour. Without it, the command uses Application Default Credentials.
+A maintainer runs a sync from a `dev` checkout at `origin/dev`, signed in to Google with a one.org account. `.github/workflows/docsync.yml` (daily `pull` then `push`, or one command on dispatch) is disabled: a Markdown upload made by its service account loses code blocks, and every page with one then fails to align. Its job runs only on `dev`, in the `docsync` environment, which is where the `dfo-docsync` App key and the Google workload identity settings live (see the workflow's header). The token lasts about an hour. Without it, the command uses Application Default Credentials.
 
 ```
-git switch main && git pull
+git switch dev && git pull
 gcloud auth login --enable-gdrive-access
 export DOCSYNC_ACCESS_TOKEN=$(gcloud auth print-access-token)
 uv run dfo-docsync pull --pr-author @me
 uv run dfo-docsync push --pr-author @me
 ```
 
-`pull` opens a pull request for each source repository with pages set to Ready for review. `push` refreshes each Doc whose page changed in its source repository, the pages of merged docsync pull requests included, and adds a Doc for each new page. Run the sequence again after docsync pull requests merge. A merge to dfo-docs `main` rebuilds the corpus the site reads at once. A merge in another source repository reaches it at the 06:00 UTC build, or sooner with `gh workflow run build.yml --repo ONEcampaign/dfo-docs`.
+`pull` opens a pull request for each source repository with pages set to Ready for review. `push` refreshes each Doc whose page changed in its source repository, the pages of merged docsync pull requests included, and adds a Doc for each new page. Run the sequence again after docsync pull requests merge. A merge to dfo-docs `dev` rebuilds the corpus the site reads at once. A merge in another source repository reaches it at the 06:00 UTC build, or sooner with `gh workflow run build.yml --repo DevelopmentFinanceObservatory/docs --ref dev`.
 
 Each page's state (Doc, source commit, baseline export, pull request) is a `state/<page id>.json` file on the orphan branch `docsync-state`, with one commit for each run. These guards hold a page back, and the run reports the reason and carries on:
 
@@ -77,7 +77,7 @@ Each page's state (Doc, source commit, baseline export, pull request) is a `stat
 
 The exit code is 1 when a page fails. It is 2 when the run stops: no credentials, folder, or Sheet; a git, `gh`, or Google error outside a page; a Page id listed twice, or a missing Page id or Status column, in the Sheet; or a state save that fails. A failed save writes the changed page states to `docsync-unsaved-states-<stamp>.json` in the working directory. In CI the workflow uploads it as the `docsync-unsaved-states` artifact. Run `uv run dfo-docsync restore <file>` to save those states over the stored ones before the next run. `--state-dir <dir>` restores into a local state directory. `restore` refuses when the state has moved since the failed run, because a later run may have saved newer states. Pass `--page <id>` (repeatable) to restore chosen pages, or `--force` to overwrite every page in the file.
 
-To add a source, append its name to `sources` in `docsync.yaml`. It must be an enabled `docs` or `skill` row in `sources.yaml` that `hub.yaml` mounts. For another repository, install `dfo-bot` on it and add its name to the `repositories:` input of the "Mint a token for dfo-bot" step in `.github/workflows/docsync.yml`. Then run `push`. [CONTRIBUTING.md](CONTRIBUTING.md) covers writing the pages.
+To add a source, append its name to `sources` in `docsync.yaml`. It must be an enabled `docs` or `skill` row in `sources.yaml` that `hub.yaml` mounts. For another repository, install the `dfo-docsync` GitHub App on it and add its name to the `repositories:` input of the "Mint a token for dfo-docsync" step in `.github/workflows/docsync.yml`. Then run `push`. [CONTRIBUTING.md](CONTRIBUTING.md) covers writing the pages.
 
 To try a change away from the real folder, make a scratch folder in the shared drive, share it with your account, and point each command at it. A Doc pushed under one folder belongs to that folder alone.
 
@@ -104,7 +104,7 @@ Run `uv run pre-commit install` once. Pre-commit then blocks a commit that fails
 
 The build checks every enabled repository before it exits, so the log names every failure in one run.
 
-**A source repository cannot be cloned.** The repository was renamed, made private, or deleted, or it is private and `dfo-reader` cannot read it. Fix the `repo` field in `sources.yaml`, admit the private repository as described under [Adding a repository](#adding-a-repository), or disable the row.
+**A source repository cannot be cloned.** The repository was renamed, made private, or deleted. Fix the `repo` field in `sources.yaml`, or disable the row.
 
 **An empty docs directory.** The source repository renamed its `docs_dir`. Update `docs_dir` in `sources.yaml` to match.
 

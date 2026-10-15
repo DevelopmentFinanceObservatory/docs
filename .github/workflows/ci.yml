@@ -1,12 +1,12 @@
 name: CI
 
 # A draft pull request runs nothing; marking it ready starts the run. The push to
-# main is the only test of the merged tree.
+# dev or main is the only test of the merged tree.
 on:
   push:
-    branches: [main]
+    branches: [dev, main]
   pull_request:
-    branches: [main]
+    branches: [dev, main]
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:

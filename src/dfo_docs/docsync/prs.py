@@ -274,7 +274,7 @@ def propose_edits(
 ) -> str:
     """Push `files` as one commit on the new branch `branch` and open a PR from it.
 
-    The commit sits on the tip of `base` on `remote`. For hub pages pass `main`, the
+    The commit sits on the tip of `base` on `remote`. For hub pages pass `dev`, the
     branch edits are proposed against, whatever `clone_root` has checked out. The push
     is a plain push of a branch that does not exist yet, so it can never replace
     commits on an existing branch. If `branch` exists, the remote rejects it.
@@ -300,7 +300,7 @@ def propose_edits(
             `list_open_pull_requests`.
         identity: Author and committer of the commit. When `None`, git resolves them
             from its own environment variables and config.
-        token: A GitHub token for the push and for gh. When `None`, the `DFO_BOT_TOKEN`
+        token: A GitHub token for the push and for gh. When `None`, the `DFO_DOCSYNC_TOKEN`
             environment variable is used if set, else the user's own git and gh
             credentials. The token reaches git through a credential helper set in the
             command environment, and gh through `GH_TOKEN`, so it is never written to
@@ -382,7 +382,7 @@ def list_open_pull_requests(
 
     Args:
         repo: The GitHub repository as `owner/name`.
-        author: The gh `--author` value: `app/dfo-bot` for the bot, or a login.
+        author: The gh `--author` value: `app/dfo-docsync` for the bot, or a login.
         token: A GitHub token for gh, handled as in `propose_edits`.
 
     Raises:

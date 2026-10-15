@@ -38,12 +38,12 @@ from dfo_docs.docsync.prs import (
     view_pull_request,
 )
 
-REPO = "ONEcampaign/dfo-apis"
-PR_URL = "https://github.com/ONEcampaign/dfo-apis/pull/7"
-BOT = GitIdentity(name="dfo-bot[bot]", email="dfo-bot@users.noreply.github.com")
+REPO = "DevelopmentFinanceObservatory/apis"
+PR_URL = "https://github.com/DevelopmentFinanceObservatory/apis/pull/7"
+BOT = GitIdentity(name="dfo-docsync[bot]", email="dfo-docsync@users.noreply.github.com")
 BRANCH = edits_branch("20261001T090000Z")
 WJ = "\u2060"
-AUTHOR = "app/dfo-bot"
+AUTHOR = "app/dfo-docsync"
 
 _FAKE_GH = f"""#!{sys.executable}
 import json, os, sys
@@ -198,7 +198,7 @@ def test_creates_branch_one_commit_over_base_and_opens_pr(
     ]
     author = _git(remote, "log", "-1", "--format=%an <%ae>|%cn|%s", BRANCH)
     assert author == (
-        "dfo-bot[bot] <dfo-bot@users.noreply.github.com>|dfo-bot[bot]|"
+        "dfo-docsync[bot] <dfo-docsync@users.noreply.github.com>|dfo-docsync[bot]|"
         "Docs edits from Google Docs"
     )
 
@@ -509,7 +509,7 @@ def test_list_open_pull_requests_keeps_the_authors_docsync_branches(
         )
     )
 
-    listed = list_open_pull_requests(REPO, author="app/dfo-bot", token="ghs_secret")
+    listed = list_open_pull_requests(REPO, author="app/dfo-docsync", token="ghs_secret")
 
     assert listed == (
         OpenPullRequest(
@@ -521,14 +521,14 @@ def test_list_open_pull_requests_keeps_the_authors_docsync_branches(
     assert args[:2] == ["pr", "list"]
     assert args[args.index("--repo") + 1] == REPO
     assert args[args.index("--state") + 1] == "open"
-    assert args[args.index("--author") + 1] == "app/dfo-bot"
+    assert args[args.index("--author") + 1] == "app/dfo-docsync"
     assert call["gh_token"] == "ghs_secret"
 
 
 def test_list_open_pull_requests_refuses_output_that_is_not_a_list(gh: Path) -> None:
     (gh / "reply.json").write_text("{}")
     with pytest.raises(GhError, match="no JSON list"):
-        list_open_pull_requests(REPO, author="app/dfo-bot")
+        list_open_pull_requests(REPO, author="app/dfo-docsync")
 
 
 def test_view_pull_request_reads_state_files_and_merge_commit(gh: Path) -> None:
@@ -639,7 +639,7 @@ def test_render_pr_body_neutralises_sheet_and_doc_text() -> None:
 
 def test_render_pr_body_fences_clash_text_unchanged() -> None:
     text = (
-        "Fixes https://github.com/o/r/issues/1, closes ONEcampaign/dfo-docs#42, "
+        "Fixes https://github.com/o/r/issues/1, closes DevelopmentFinanceObservatory/docs#42, "
         "cc @ONEcampaign/data"
     )
     body = render_pr_body(

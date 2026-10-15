@@ -136,7 +136,7 @@ SHEET_ROLE = "tracking-sheet"
 ROOT_PROPERTY = "dfo_root"
 
 PR_TITLE = "Apply edits from Google Docs"
-HUB_BASE = "main"
+HUB_BASE = "dev"
 HUB_REMOTE = "origin"
 DOC_URL = "https://docs.google.com/document/d/{doc_id}/edit"
 
@@ -399,7 +399,7 @@ def _run(args: argparse.Namespace) -> int:
 
     sheet_id = find_sheet(session, drive_id=drive_id, folder_id=folder_id)
     if HUB in config.sources:
-        require_hub_at_main(Git(root=repo_root, env=command_env(github_token)))
+        require_hub_at_base(Git(root=repo_root, env=command_env(github_token)))
     pr_author = args.pr_author or config.pr_author
     ctx = Context(
         session=session,
@@ -465,23 +465,23 @@ def open_session() -> requests.Session:
         ) from exc
 
 
-def require_hub_at_main(git: Git) -> None:
-    """Refuse unless the dfo-docs checkout's `HEAD` is the remote's `main`.
+def require_hub_at_base(git: Git) -> None:
+    """Refuse unless the dfo-docs checkout's `HEAD` is the remote's `HUB_BASE` branch.
 
-    Hub pages are read at `HEAD` and their edits proposed against `main`, so any other
+    Hub pages are read at `HEAD` and their edits proposed against `HUB_BASE`, so any other
     commit would publish unmerged text or carry unrelated changes into the pull request.
 
     Raises:
-        HubCheckoutError: `HEAD` differs from the freshly fetched `origin/main`.
+        HubCheckoutError: `HEAD` differs from the freshly fetched `origin/dev`.
         GitError: the fetch failed.
     """
     git.run("fetch", "-q", HUB_REMOTE, f"refs/heads/{HUB_BASE}")
-    main = git.run("rev-parse", "--verify", "FETCH_HEAD^{commit}").strip()
+    base = git.run("rev-parse", "--verify", "FETCH_HEAD^{commit}").strip()
     head = git.run("rev-parse", "--verify", "HEAD^{commit}").strip()
-    if head != main:
+    if head != base:
         raise HubCheckoutError(
             f"{git.root}: HEAD {head[:12]} is not {HUB_REMOTE}/{HUB_BASE}"
-            f" {main[:12]}; check out {HUB_BASE} and pull before syncing hub pages"
+            f" {base[:12]}; check out {HUB_BASE} and pull before syncing hub pages"
         )
 
 
