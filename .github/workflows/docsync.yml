@@ -18,7 +18,7 @@
 # Google access: `google-github-actions/auth` exchanges the run's OIDC token for the
 # `DOCSYNC_SERVICE_ACCOUNT` service account (dfo-docs-sync) through the workload identity
 # provider `GCP_WIF_PROVIDER`, and writes a credentials file whose path it exports as
-# GOOGLE_APPLICATION_CREDENTIALS. The service account's binding in dfo-infra accepts
+# GOOGLE_APPLICATION_CREDENTIALS. The service account's binding in infra accepts
 # `refs/heads/dev` together with the `docsync` environment. `dfo-docsync` finds the
 # credentials through Application Default Credentials, so no Google token is passed
 # explicitly.
@@ -61,7 +61,7 @@ permissions:
 
 jobs:
   sync:
-    # The WIF binding in dfo-infra and the environment's branch policy both admit only dev,
+    # The WIF binding in infra and the environment's branch policy both admit only dev,
     # and the guard keeps the dfo-docsync write token off branch runs.
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest

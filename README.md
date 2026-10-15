@@ -49,9 +49,9 @@ uv run dfo-docsync pull
 
 `--page <id>` limits `push` or `pull` to one page and can be repeated. A page id is the manifest's, such as `hub/build/share`. `pull --dry-run <dir>` writes the edited files and pull request bodies under `<dir>` and changes nothing in git, the Sheet, or the state. `docsync.yaml` sets `pr_author`, the author `gh` lists open docsync pull requests by; it is `app/dfo-docsync` for the pull requests CI opens. For a local run that opens pull requests under your own login, pass `--pr-author @me` to `push` and `pull`.
 
-Hub pages (`hub/...`) run only from a checkout of dfo-docs `dev` that is at `origin/dev`.
+Hub pages (`hub/...`) run only from a checkout of this repository's `dev` that is at `origin/dev`.
 
-A maintainer runs a sync from a `dev` checkout at `origin/dev`, signed in to Google with a one.org account. `.github/workflows/docsync.yml` (one command on dispatch, with no schedule) stays unused: a Markdown upload made by its service account loses code blocks, and every page with one then fails to align. Its job runs only on `dev`, in the `docsync` environment, which is where the `dfo-docsync` App key and the Google workload identity settings live (see the workflow's header). The token lasts about an hour. Without it, the command uses Application Default Credentials.
+A maintainer runs a sync from a `dev` checkout at `origin/dev`, signed in to Google with a one.org account. `.github/workflows/docsync.yml` (one command on dispatch, with no schedule) is not used: a Markdown upload made by its service account loses code blocks, and every page with one then fails to align. Its job runs only on `dev`, in the `docsync` environment, which is where the `dfo-docsync` App key and the Google workload identity settings live (see the workflow's header). The token lasts about an hour. Without it, the command uses Application Default Credentials.
 
 ```
 git switch dev && git pull
@@ -61,9 +61,9 @@ uv run dfo-docsync pull --pr-author @me
 uv run dfo-docsync push --pr-author @me
 ```
 
-`pull` opens a pull request for each source repository with pages set to Ready for review. `push` refreshes each Doc whose page changed in its source repository, the pages of merged docsync pull requests included, and adds a Doc for each new page. Run the sequence again after docsync pull requests merge. A merge to dfo-docs `dev` rebuilds the corpus the site reads at once. A merge in another source repository reaches it at the 06:00 UTC build, or sooner with `gh workflow run build.yml --repo DevelopmentFinanceObservatory/docs --ref dev`.
+`pull` opens a pull request for each source repository with pages set to Ready for review. `push` refreshes each Doc whose page changed in its source repository, the pages of merged docsync pull requests included, and adds a Doc for each new page. Run the sequence again after docsync pull requests merge. A merge to this repository's `dev` rebuilds the corpus the site reads at once. A merge in another source repository reaches it at the 06:00 UTC build, or sooner with `gh workflow run build.yml --repo DevelopmentFinanceObservatory/docs --ref dev`.
 
-The `docsync-state` branch starts empty in a new repository, while the Docs already exist under the folder, so the first `push` after a move stops with `StatelessDocsError`. Run it once as `uv run dfo-docsync push --adopt --pr-author @me` from a `dev` checkout at `origin/dev`. `--adopt` takes over each Doc that carries a page id and whose settled export aligns with the source, and records the current `dev` commit as its baseline; it needs no earlier commit. A Doc that differs from the source holds an editor's unsent work, so its page fails and the Doc stays. Resolve those by hand, then rerun `push --adopt`. Later runs need no flag.
+When the `docsync-state` branch is empty but Docs already exist under the folder, `push` stops with `StatelessDocsError`. Run it once as `uv run dfo-docsync push --adopt --pr-author @me` from a `dev` checkout at `origin/dev`. `--adopt` takes over each Doc that carries a page id and whose settled export aligns with the source, and records the current `dev` commit as its baseline, so it needs no earlier commit. A Doc that differs from the source holds an editor's unsent work, so its page fails and the Doc stays. Resolve those by hand, then rerun `push --adopt`. Later runs need no flag.
 
 Each page's state (Doc, source commit, baseline export, pull request) is a `state/<page id>.json` file on the orphan branch `docsync-state`, with one commit for each run. These guards hold a page back, and the run reports the reason and carries on:
 
