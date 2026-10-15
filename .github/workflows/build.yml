@@ -130,9 +130,10 @@ jobs:
 
       # A pull request build runs every step above this one, so the build, the guards and
       # the link check all gate the merge. This step is the only one that writes, and a
-      # pull request must not move the branch the site pins, so it stops here.
+      # pull request or a run from another branch must not move the branch the site pins,
+      # so it stops there.
       - name: Publish
-        if: steps.build.outputs.status != '1' && github.event_name != 'pull_request'
+        if: steps.build.outputs.status != '1' && github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

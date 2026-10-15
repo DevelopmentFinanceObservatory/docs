@@ -2,15 +2,14 @@
 # requests, by running `dfo-docsync` (see src/dfo_docs/docsync/cli.py's module docstring
 # for what each command does).
 #
-# A `workflow_dispatch` run takes one command. `init` creates the tracking Sheet, `push`
-# publishes the pages, and `pull` opens pull requests from Doc edits. The daily `schedule`
-# run, at 04:00 UTC before editors start work, runs `pull` and then `push`, so edits reach
-# the repositories before a push replaces the Docs. It reads the source repositories
-# directly, so it does not wait for the build workflow. A page that fails does not stop
-# the run. The job keeps each command's exit code and fails if any command exited
-# non-zero (1 when a page or repository failed, 2 when the run could not start). A pull
-# that exits 2 skips the push. When its state save failed, the unsaved-states file must be
-# restored before another run saves state over it.
+# Only a `workflow_dispatch` run starts it, with one command. `init` creates the tracking
+# Sheet, `push` publishes the pages, and `pull` opens pull requests from Doc edits. Run
+# `pull` before `push`, so edits reach the repositories before a push replaces the Docs.
+# It reads the source repositories directly, so it does not wait for the build workflow.
+# A page that fails does not stop the run. The job fails if the command exited non-zero
+# (1 when a page or repository failed, 2 when the run could not start). When its state
+# save failed, the unsaved-states file must be restored before another run saves state
+# over it.
 #
 # The job runs from `dev` in the `docsync` environment, which holds everything it needs:
 # the variables `GCP_WIF_PROVIDER`, `DOCSYNC_SERVICE_ACCOUNT` and `DOCSYNC_APP_CLIENT_ID`,
@@ -49,8 +48,6 @@ on:
         options: [init, push, pull]
         required: false
         default: push
-  schedule:
-    - cron: "0 4 * * *"
 
 # Runs queue behind each other. A cancelled push or pull could stop half way through
 # writing Docs, the Sheet or the state branch.
@@ -162,38 +159,11 @@ jobs:
             !f() { test "$1" = get || return 0; echo username=x-access-token; echo "password=$DFO_DOCSYNC_TOKEN"; }; f
         run: |
           set -uo pipefail
-          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
-            commands=(pull push)
-          else
-            commands=("$COMMAND")
+          args=()
+          if [ "$COMMAND" != "init" ]; then
+            args+=(--pr-author "app/$APP_SLUG")
           fi
-
-          # Each command's exit status is read from an if, because the step runs under
-          # bash -e. A pull that exits 1 still lets the push run, one that exits 2 stops
-          # the loop, and the worst status wins.
-          worst=0
-          for command in "${commands[@]}"; do
-            echo "::group::dfo-docsync $command"
-            args=()
-            if [ "$command" != "init" ]; then
-              args+=(--pr-author "app/$APP_SLUG")
-            fi
-            if uv run dfo-docsync "$command" "${args[@]}"; then
-              status=0
-            else
-              status=$?
-            fi
-            echo "::endgroup::"
-            echo "dfo-docsync $command exited $status."
-            if [ "$status" -gt "$worst" ]; then
-              worst=$status
-            fi
-            if [ "$command" = "pull" ] && [ "$status" -gt 1 ]; then
-              echo "::error::dfo-docsync pull exited $status, so push is skipped."
-              break
-            fi
-          done
-          exit "$worst"
+          uv run dfo-docsync "$COMMAND" "${args[@]}"
 
       # Baselines and Doc ids of unsaved states, with no tokens. Restore a file with
       # `uv run dfo-docsync restore FILE`, adding --state-dir DIR for a local state directory.
