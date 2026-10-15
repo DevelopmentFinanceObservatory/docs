@@ -32,7 +32,7 @@ oda-measures/
 
 `SKILL.md` holds YAML front matter with three fields. `name` matches the directory name. `description` says what the skill covers and when to load it, and it's the text an agent matches a question against. `license` names the licence, `CC-BY-4.0` for every DFO skill. Below the front matter, the body lists the reference files and says when to read each one.
 
-`references/` holds the long material: definitions, method notes, defaults. The dfo-skills repository adds two rules of its own, checked in CI by `scripts/validate_skills.py`:
+`references/` holds the long material: definitions, method notes, defaults. The `skills` repository adds two rules of its own, checked in CI by `scripts/validate_skills.py`:
 
 - Pointers stay one level deep. `SKILL.md` names every reference file, and no reference file sends the agent on to another.
 - Keep each paragraph and list item on one line.
@@ -59,19 +59,19 @@ Some skills point to others. [`oda-dataset-selection`](../../dfo-skills/oda-data
 
 ## Where skills live in the DFO
 
-The dfo-skills repository holds each skill in its own directory, and each `description` says what its skill covers. `skills/` holds the skills offered for install. `internal/skills/` holds the skills the DFO's own assistant uses and that are not offered for install, such as `dfo-faq`. Each skill also has a page in this section, which shows its `SKILL.md` with its reference files as pages beneath it. Sources lists the skills that each explain one dataset, such as [`oda-dac1`](../../dfo-skills/oda-dac1/SKILL.md). Domains lists the skills that explain a subject across datasets, grouped by domain, such as Sovereign debt.
+The `skills` repository holds each skill in its own directory, and each `description` says what its skill covers. `skills/` holds the skills offered for install. `internal/skills/` holds the skills the DFO's own assistant uses and that are not offered for install, such as `dfo-faq`. Each skill also has a page in this section, which shows its `SKILL.md` with its reference files as pages beneath it. Sources lists the skills that each explain one dataset, such as [`oda-dac1`](../../dfo-skills/oda-dac1/SKILL.md). Domains lists the skills that explain a subject across datasets, grouped by domain, such as Sovereign debt.
 
-dfo-pipelines checks dfo-skills for new commits and publishes each skill to the [knowledge graph](../data/knowledge-graph.md) as an `AgentSkill` node. Each reference file is an `AgentSkillReference` node.
+The `pipelines` repository checks the `skills` repository for new commits and publishes each skill to the [knowledge graph](../data/knowledge-graph.md) as an `AgentSkill` node. Each reference file is an `AgentSkillReference` node.
 
 Install the skills under `skills/` in your own assistant to use them.
 
 ## How the DFO assistant uses skills
 
-The DFO assistant is an agent too, and it reads the same skills from the knowledge graph. dfo-apis serves them through its Skills API, and the DFO MCP server gives the assistant two tools over it: `get_skill` loads a skill's `SKILL.md` and lists its reference files, and `get_skill_file` reads one of those files.
+The DFO assistant is an agent too, and it reads the same skills from the knowledge graph. The `apis` repository serves them through its Skills API, and the DFO MCP server gives the assistant two tools over it: `get_skill` loads a skill's `SKILL.md` and lists its reference files, and `get_skill_file` reads one of those files.
 
 The descriptions the assistant matches against come from its data search. Skills are attached to datasets, and the search result names up to five skills attached to the datasets it found. A question about DFO itself goes straight to [`dfo-faq`](../../dfo-skills/dfo-faq/SKILL.md).
 
-An edit to a skill reaches the assistant after dfo-pipelines publishes it to the graph and the Skills API refreshes its index, which it does every 15 minutes.
+An edit to a skill reaches the assistant after `pipelines` publishes it to the graph and the Skills API refreshes its index, which it does every 15 minutes.
 
 ## Next
 

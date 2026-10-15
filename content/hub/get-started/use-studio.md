@@ -10,7 +10,7 @@ This example asks for an overview of health spending in Kenya and produces a pin
 
 The walkthrough takes about ten minutes and uses two of the five queries available without an account. Sign in first if you want to save your canvas or ask more than five queries.
 
-<!-- TODO: verify the chart title, plan and answer against the staging site; they come from the recorded Studio session dfo-ai docs/transcripts/studio_transcript_plan.jsonl. -->
+<!-- TODO: verify the chart title, plan and answer against the staging site; they come from the recorded Studio session in the `ai` repository, docs/transcripts/studio_transcript_plan.jsonl. -->
 
 ## Step 1: Ask a question
 

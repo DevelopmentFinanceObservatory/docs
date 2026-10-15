@@ -21,7 +21,7 @@ from dfo_docs.skills import (
     write_skill_bundle,
 )
 
-# The seven published dfo-skills descriptions, as YAML parses them, and the lead each gives.
+# The seven published skill descriptions, as YAML parses them, and the lead each gives.
 REAL_DESCRIPTIONS = [
     (
         "dfo-faq",

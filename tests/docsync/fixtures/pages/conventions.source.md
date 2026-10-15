@@ -38,7 +38,7 @@ A proxy in front of every route enforces three limits before the request reaches
 
 | Status | Meaning                                                                                                                         |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------- |
-| `429`  | Too many requests. <!-- TODO: rate-limit thresholds; set in proxy config, not recorded in dfo-apis. -->                         |
+| `429`  | Too many requests. <!-- TODO: rate-limit thresholds; set in proxy config, not recorded in the apis repository. -->              |
 | `413`  | Request body too large. <!-- TODO: byte ceiling; set in proxy config. -->                                                       |
 | `415`  | The media type is unsupported. Send `Content-Type: application/json`. <!-- TODO: accepted media types; set in proxy config. --> |
 

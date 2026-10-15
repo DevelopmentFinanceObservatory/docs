@@ -44,7 +44,7 @@ These steps cover Claude on the web, the Claude desktop app, and Cowork.
 
 To install one skill on its own, download its zip, then open Customize, then Skills, click +, and choose "Upload a skill". Uploaded skills need code execution switched on in Claude's settings.
 
-<!-- TODO: verify by uploading oda-measures.zip in claude.ai: the path Customize > Skills > + > "Upload a skill", that Claude accepts the zip dfo-docs builds (one top folder `oda-measures/` holding `SKILL.md` and `references/`), and the name and location of the code execution setting. From Anthropic's help article 12512180, not run. -->
+<!-- TODO: verify by uploading oda-measures.zip in claude.ai: the path Customize > Skills > + > "Upload a skill", that Claude accepts the zip the `docs` repository builds (one top folder `oda-measures/` holding `SKILL.md` and `references/`), and the name and location of the code execution setting. From Anthropic's help article 12512180, not run. -->
 
 ::tab{label="ChatGPT"}
 
@@ -56,7 +56,7 @@ Whether you can upload a skill depends on your ChatGPT plan, and in a ChatGPT wo
 1. Wait for ChatGPT to finish scanning the skill.
 1. Start a new chat.
 
-<!-- TODO: confirm these steps with one real upload of oda-measures.zip in ChatGPT. They come from search snippets of OpenAI's help article 20001066 and from a review citing it. The article returned 403 to every fetch, so no primary source has been read. Confirm the labels (Plugins, Skills, Create, "Upload from your computer"), what the scan shows while it runs (the snippets report "Needs Review" and "Blocked" states), that the dfo-docs zip layout (one top folder `oda-measures/`) passes the scan, and whether the skill loads only in a new chat. -->
+<!-- TODO: confirm these steps with one real upload of oda-measures.zip in ChatGPT. They come from search snippets of OpenAI's help article 20001066 and from a review citing it. The article returned 403 to every fetch, so no primary source has been read. Confirm the labels (Plugins, Skills, Create, "Upload from your computer"), what the scan shows while it runs (the snippets report "Needs Review" and "Blocked" states), that the zip layout from `docs` (one top folder `oda-measures/`) passes the scan, and whether the skill loads only in a new chat. -->
 
 <!-- TODO: confirm which ChatGPT plans can upload a skill, then name them in the sentence above the steps. Business, Enterprise, Healthcare and Edu are reported, with uploads off by default on Enterprise and Edu. Free, Go, Plus and Pro are unconfirmed. Confirm also that a workspace admin has to enable skill uploads, which the same snippets report. -->
 
@@ -75,7 +75,7 @@ Gemini takes skills on a personal Google Account, for people aged 18 or over, wi
 
 <!-- TODO: confirm in the Gemini app (gemini.google.com) that the Skills page is under Settings. Google's help page 17094296 gives the steps from the Skills page onwards (Upload, select the .zip, Open, review, Create) and the account requirements, and does not say how to reach the page. Confirm also whether the skill loads only in a new chat. -->
 
-<!-- TODO: upload a zip built by dfo-docs to Gemini, which nobody has done. Google's help page 17094296 says `SKILL.md` must be in the zip's root (main) folder, and the dfo-docs zip holds it one level down, in `oda-measures/`. If Gemini rejects that layout, change the zip builder in dfo-docs (`src/dfo_docs/skills.py`) and leave this page as it is. -->
+<!-- TODO: upload a zip built by `docs` to Gemini, which nobody has done. Google's help page 17094296 says `SKILL.md` must be in the zip's root (main) folder, and the `docs` zip holds it one level down, in `oda-measures/`. If Gemini rejects that layout, change the zip builder in `docs` (`src/dfo_docs/skills.py`) and leave this page as it is. -->
 
 ::tab{label="Claude Code"}
 
@@ -114,7 +114,7 @@ An agent that reads the Agent Skills format loads a skill from a folder on your 
 
 1. Start a new session.
 
-<!-- TODO: verify `~/.agents/skills/` against the documentation of each agent named (Cursor, GitHub Copilot, Gemini CLI) and load oda-measures from it in at least one of them. The folder comes from vendor documentation, not from a test. Run the unzip command on a zip built by dfo-docs and confirm it leaves `~/.agents/skills/oda-measures/SKILL.md`. -->
+<!-- TODO: verify `~/.agents/skills/` against the documentation of each agent named (Cursor, GitHub Copilot, Gemini CLI) and load oda-measures from it in at least one of them. The folder comes from vendor documentation, not from a test. Run the unzip command on a zip built by `docs` and confirm it leaves `~/.agents/skills/oda-measures/SKILL.md`. -->
 
 Check your agent's documentation if it reads a different folder. Keep the unzipped folder whole, because `SKILL.md` points to the files in `references/` by relative path.
 
@@ -162,7 +162,7 @@ Download the zip again from the skill's page. In Claude, ChatGPT, or Gemini, del
 
 :::
 
-<!-- TODO: add a "Programmatically" route. dfo-apis includes a Skills API that lists skills and serves each skill's body and reference files, with no public deployment yet. Document the Skills API (GET /api/skills, GET /api/skills/{skill_id}, GET /api/skills/{skill_id}/resources/{path}) and link the API pages once a public deployment serves it with DFO_SKILLS_SURFACE on. -->
+<!-- TODO: add a "Programmatically" route. `apis` includes a Skills API that lists skills and serves each skill's body and reference files, with no public deployment yet. Document the Skills API (GET /api/skills, GET /api/skills/{skill_id}, GET /api/skills/{skill_id}/resources/{path}) and link the API pages once a public deployment serves it with DFO_SKILLS_SURFACE on. -->
 
 ## Next
 
