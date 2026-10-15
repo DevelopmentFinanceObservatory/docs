@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/ONEcampaign/dfo-docs/corpus/roadmap.schema.json",
+  "title": "dfo-docs roadmap index",
+  "description": "The published roadmap.json names the roadmap tracks and says where to fetch each one. It carries no entries. Each track is a separate document validated by roadmap-track.schema.json and owned by the team that owns that part of the product, so a track is edited, reviewed, and published without touching the others. Fetch this file first, render the tabs from it in array order, and load a track's own document when its tab is opened.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "description": "The compatibility signal for this index, versioned independently of the manifest and of the track documents. Adding an optional field keeps it. Removing a field, renaming one, or changing what a field means bumps it. Adding or removing a track leaves it alone, since tracks are data here rather than a fixed enum."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC ISO 8601 timestamp of this build, second precision, with a trailing Z."
+    },
+    "generator_commit": {
+      "type": "string",
+      "description": "The commit of the dfo-docs generator that produced this file. Omitted, not null, when git was unavailable at build time."
+    },
+    "tracks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/track"
+      },
+      "description": "Every roadmap track, in the order the tabs render, with the first as the default tab. A track stays listed here while its document holds no entries, so an empty tab renders an empty state rather than vanishing. This index carries no counts: fetch a track's document to learn what is in it, since a count declared here could disagree with the file it describes."
+    }
+  },
+  "required": [
+    "schema_version",
+    "generated_at",
+    "tracks"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "track": {
+      "type": "object",
+      "description": "One tab, and a pointer to the document behind it.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "description": "Stable and opaque. Matches the `track` field of the document at `file`, which the build checks."
+        },
+        "label": {
+          "type": "string",
+          "description": "The tab's display text, in sentence case. Change it freely, since `id` is what anything stored keys on."
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional intro copy for this tab, where a track needs to say what it covers before its entries make sense."
+        },
+        "file": {
+          "type": "string",
+          "pattern": "^roadmap/[a-z0-9]+(-[a-z0-9]+)*\\.json$",
+          "description": "The track document's path relative to the branch root, such as `roadmap/data.json`. Resolve it the way `corpus_path` is resolved in the manifest."
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "file"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

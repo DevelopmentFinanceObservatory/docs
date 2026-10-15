@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-15T06:27:32Z",
+  "generator_commit": "65a1e5b810a4689d663a36ac810d2a2cb38dab0f",
+  "track": "ai-tools",
+  "categories": [
+    {
+      "id": "analysis",
+      "label": "Analysis"
+    },
+    {
+      "id": "methods",
+      "label": "Methods"
+    },
+    {
+      "id": "models-access",
+      "label": "Models and access"
+    }
+  ],
+  "entries": [
+    {
+      "id": "faster-reliable-answers",
+      "title": "Faster and more reliable answers",
+      "description": "Reduce the time Studio takes to find data and complete an analysis. Improve how it asks for clarification and handles failed steps.",
+      "categories": [
+        "analysis"
+      ],
+      "status": "planned",
+      "expected": "2026-Q4"
+    },
+    {
+      "id": "saved-reproducible-analyses",
+      "title": "Saved reproducible analyses",
+      "description": "Save and download an analysis with its method, data versions, and calculations, then rerun it or use it as the starting point for further work.",
+      "categories": [
+        "analysis"
+      ],
+      "status": "under-consideration"
+    },
+    {
+      "id": "more-analytical-operations",
+      "title": "More analytical operations",
+      "description": "Add new analytical operations to support a wider range of development finance questions.",
+      "categories": [
+        "analysis"
+      ],
+      "status": "planned",
+      "expected": "2026-Q4"
+    },
+    {
+      "id": "more-development-finance-methods",
+      "title": "More development finance methods",
+      "description": "Apply additional documented approaches to aid, debt, and health-financing questions, with assumptions, source guidance, and methodological choices available for review.",
+      "categories": [
+        "analysis",
+        "methods"
+      ],
+      "status": "under-consideration"
+    },
+    {
+      "id": "more-model-provider-options",
+      "title": "More model and provider options",
+      "description": "Support additional AI models and inference providers for DFO analysis.",
+      "categories": [
+        "models-access"
+      ],
+      "status": "under-consideration"
+    },
+    {
+      "id": "adjustable-analysis-depth",
+      "title": "Adjustable analysis depth",
+      "description": "Choose a quick answer or a more thorough analysis for a complex question, with the effect on response time explained before starting.",
+      "categories": [
+        "analysis"
+      ],
+      "status": "under-consideration"
+    },
+    {
+      "id": "account-usage-limits",
+      "title": "Account usage",
+      "description": "See the AI usage available to your account and how much has been used.",
+      "categories": [
+        "models-access"
+      ],
+      "status": "under-consideration"
+    }
+  ]
+}

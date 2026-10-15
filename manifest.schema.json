@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/ONEcampaign/dfo-docs/corpus/manifest.schema.json",
+  "title": "dfo-docs manifest envelope",
+  "description": "The published manifest.json envelope: a versioned nav tree and the pages it points at. Generate types from this schema rather than reverse-engineering shapes from an example; the two do not always agree, and this file is the one that is kept honest by a test that validates a real generator run against it.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "description": "The sole compatibility signal a consumer checks. Adding an optional field to this schema keeps the same schema_version. Removing a field, renaming one, changing what a field means, or adding a value to an existing enum (including PageKind and NavKind below) bumps it. Treat an unrecognised schema_version as a breaking change rather than attempting to read it: an exhaustive switch written against today's enum values will break the day a member is added, unless the version bump is honoured."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC ISO 8601 timestamp of this build, second precision, with a trailing Z."
+    },
+    "generator_commit": {
+      "type": "string",
+      "description": "The commit of the dfo-docs generator that produced this manifest. Omitted, not null, when git was unavailable at build time."
+    },
+    "nav": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/navNode"
+      },
+      "description": "The nav tree, and the sole authority on ordering and on where every page sits: array order at every level is the display order, and a page's breadcrumb is the titles of its ancestor group nodes. No ordering field and no flattened copy of a page's position exists anywhere else in the manifest."
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/page"
+      },
+      "description": "Every page and external link the corpus carries. This array's order carries no meaning: it comes from however the generator happened to walk sources, not from flattening nav. Do not build next/previous links, a table of contents, or any other ordering off this array's index; walk `nav` instead, which is the sole ordering authority. A page is looked up from a nav node by matching ids, not by position."
+    }
+  },
+  "required": [
+    "schema_version",
+    "generated_at",
+    "nav",
+    "pages"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "navNode": {
+      "type": "object",
+      "description": "One node of the nav tree. A node's `id` is opaque: it is not a route, and a group id such as `group:tools/bblocks` resembling the path `tools/bblocks` is coincidence. Branch on `kind`; never parse an `id` to derive a path or a slug. A node carries a `title` and no address. Its address is the Page's, reached by the `id` join (or `page_id` on a group), which is the join this schema tells you to use everywhere else.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Opaque within this tree. A `page` or `external` node's `id` is the `id` of the `Page` it renders; join on that, not on `path`. A `group` node's `id` has no corresponding `Page` and exists only to be unique within `nav`. Do not parse it, and do not assume it resembles `path`."
+        },
+        "title": {
+          "type": "string",
+          "description": "Display title for this node, as it should render in a sidebar or menu."
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "group",
+            "page",
+            "external"
+          ],
+          "description": "Discriminator. `group` is a grouping heading or a mounted source, and carries `children`; it has no page of its own unless `page_id` is also set. `page` and `external` are leaves that each join to exactly one entry in the top-level `pages` array by matching `id`. Adding a fourth value here is a breaking change and bumps `schema_version`; do not write an exhaustive switch that fails silently on an unrecognised value."
+        },
+        "page_id": {
+          "type": "string",
+          "description": "Set only on a `group` node that has its own landing page (for example a source mount whose docs carry a root `index.md`); absent on a `group` node with no landing page, and absent on every `page` and `external` node. On those, use the node's own `id` instead: a `page` or `external` node's `id` already is its page's id, so `page_id` would only ever repeat it. No node in the manifest carries the same id under two different property names."
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/navNode"
+          },
+          "minItems": 1,
+          "description": "This node's own children, in display order. Omitted entirely (not an empty array) on a node with none."
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "kind"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "group"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "page_id"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "page": {
+      "type": "object",
+      "description": "One entry in the corpus, or one card linking out to a package that publishes its own docs elsewhere (`kind: external`). Join a nav `page` or `external` node to its `Page` by matching `id`. Carries no breadcrumb. Where a page sits is recorded once, in `nav`, and a consumer that needs a breadcrumb collects the ancestor group titles while walking that tree, which it already walks to render a sidebar.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Opaque and unique across `pages`. Matches the `id` of the nav node that links to this page; do not derive one from the other."
+        },
+        "path": {
+          "type": "string",
+          "description": "The public path this page is served at, without a leading or trailing slash. The empty string is the hub's own home page and is legal."
+        },
+        "title": {
+          "type": "string",
+          "description": "Display title."
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "page",
+            "external",
+            "skill"
+          ],
+          "description": "`page` is markdown carried in the corpus at `corpus_path`. `skill` is an agent skill's `SKILL.md`, also markdown carried at `corpus_path`; its reference files are `page` entries. `external` is a card linking to `url`; it carries no corpus file. Adding a value to this enum is a breaking change and bumps `schema_version`; do not write an exhaustive switch on this field that assumes these are the only values forever."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The page's own frontmatter description. Omitted, not an empty string, when the page carries none."
+        },
+        "source_repo": {
+          "type": "string",
+          "description": "The repository this page (or external link) came from, `owner/name`."
+        },
+        "source_path": {
+          "type": "string",
+          "description": "The file's path within `source_repo`, as fetched. Omitted on a `kind: external` page, which has no source file."
+        },
+        "source_commit": {
+          "type": "string",
+          "description": "The commit of `source_repo` this page was fetched at. Omitted when there is none to report, for example the hub's own pages, which live in this repository directly rather than being fetched, or a `kind: external` page."
+        },
+        "last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When `source_path` was last changed in `source_repo`, if that history is available. Omitted otherwise."
+        },
+        "corpus_path": {
+          "type": "string",
+          "description": "This page's location in the corpus tree, relative to the corpus root, for example `corpus/sample/getting-started.md`. Omitted on a `kind: external` page, which carries no corpus file."
+        },
+        "bundle_path": {
+          "type": "string",
+          "description": "The location in the corpus tree of a zip of the skill's source files, relative to the corpus root, for example `corpus/dfo-skills/oda-crs.zip`. Present only on a `kind: skill` page whose skill is offered for download. The zip holds `<skill>/SKILL.md` and `<skill>/references/<file>.md`."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Present only on a `kind: external` page: the URL its card links to."
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "title",
+        "kind",
+        "source_repo"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

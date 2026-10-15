@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-15T06:27:32Z",
+  "generator_commit": "65a1e5b810a4689d663a36ac810d2a2cb38dab0f",
+  "track": "platform",
+  "categories": [
+    {
+      "id": "data-exploration",
+      "label": "Data exploration"
+    },
+    {
+      "id": "charts",
+      "label": "Charts"
+    },
+    {
+      "id": "sharing-publishing",
+      "label": "Sharing and publishing"
+    },
+    {
+      "id": "website",
+      "label": "Website"
+    },
+    {
+      "id": "developer-experience",
+      "label": "Developer experience"
+    }
+  ],
+  "entries": [
+    {
+      "id": "more-chart-types",
+      "title": "Scatter plots",
+      "description": "Create scatter plots to explore relationships between indicators and compare countries.",
+      "categories": [
+        "charts",
+        "data-exploration"
+      ],
+      "status": "planned",
+      "expected": "2026-Q4"
+    },
+    {
+      "id": "start-from-shared-analysis",
+      "title": "Start from a shared analysis",
+      "description": "Open a gallery example or shared analysis in your own Studio session, ask follow-up questions, and edit its charts and tables with AI.",
+      "categories": [
+        "sharing-publishing"
+      ],
+      "status": "planned",
+      "expected": "2026-Q4"
+    },
+    {
+      "id": "searchable-source-catalogue",
+      "title": "A searchable source catalogue",
+      "description": "Find sources by name or theme, and filter the catalogue to the data you need. Browse related datasets through Aid & ODA, Debt, Climate, Health, Economy, and Humanitarian finance.",
+      "categories": [
+        "data-exploration"
+      ],
+      "status": "planned",
+      "expected": "2026-Q4"
+    },
+    {
+      "id": "gallery-publishing-tools",
+      "title": "Gallery publishing tools",
+      "description": "Internal tools for the DFO team to curate worked examples, edit their descriptions, and choose which canvases appear in the gallery.",
+      "categories": [
+        "sharing-publishing",
+        "website"
+      ],
+      "status": "planned",
+      "expected": "2026-Q4"
+    },
+    {
+      "id": "publishing-reference-analyses",
+      "title": "Publishing reference analyses",
+      "description": "Publish selected analyses as citable reference views, with a stable citation and a public page that people can find and reuse.",
+      "categories": [
+        "sharing-publishing"
+      ],
+      "status": "under-consideration"
+    },
+    {
+      "id": "content-editing",
+      "title": "Content editing",
+      "description": "Let the DFO team edit website text, guidance, and example prompts with a CMS.",
+      "categories": [
+        "website"
+      ],
+      "status": "planned",
+      "expected": "2026-Q4"
+    },
+    {
+      "id": "homepage-examples",
+      "title": "Homepage examples",
+      "description": "Show a wider range of DFO analyses on the homepage.",
+      "categories": [
+        "website"
+      ],
+      "status": "planned",
+      "expected": "2026-Q4"
+    },
+    {
+      "id": "built-with-dfo",
+      "title": "Built with DFO",
+      "description": "Explore tools, analyses, and applications built with DFO data and APIs, with links to try them and reuse shared analyses.",
+      "categories": [
+        "website",
+        "developer-experience"
+      ],
+      "status": "planned",
+      "expected": "2026-Q4"
+    },
+    {
+      "id": "chart-branding",
+      "title": "Chart branding",
+      "description": "Add an organisation's logo and choose custom chart colours for reports and presentations.",
+      "categories": [
+        "charts"
+      ],
+      "status": "under-consideration"
+    },
+    {
+      "id": "usage-reporting",
+      "title": "Usage reporting",
+      "description": "Bring website, Studio, API, and MCP usage into reporting that helps the team identify data gaps and show data partners how their datasets are used.",
+      "categories": [
+        "developer-experience"
+      ],
+      "status": "under-consideration"
+    },
+    {
+      "id": "developer-keys-usage-controls",
+      "title": "Developer keys and usage controls",
+      "description": "Let developers create API keys for their applications, with clear request limits and usage records.",
+      "categories": [
+        "developer-experience"
+      ],
+      "status": "under-consideration"
+    },
+    {
+      "id": "maps",
+      "title": "Maps",
+      "description": "Explore geographic patterns in development finance through maps.",
+      "categories": [
+        "charts",
+        "data-exploration"
+      ],
+      "status": "under-consideration"
+    },
+    {
+      "id": "clearer-caveats-uncertainty",
+      "title": "Clearer caveats and uncertainty",
+      "description": "See qualifications such as provisional values, estimates, and coverage gaps alongside a chart or table.",
+      "categories": [
+        "charts",
+        "data-exploration"
+      ],
+      "status": "planned",
+      "expected": "2026-Q4"
+    },
+    {
+      "id": "verification-exported-charts",
+      "title": "Verification for exported charts",
+      "description": "Check that a chart was exported from DFO by following its link to a DFO record of the chart and its source data.",
+      "categories": [
+        "charts",
+        "sharing-publishing"
+      ],
+      "status": "under-consideration"
+    },
+    {
+      "id": "reported-values-projections",
+      "title": "Reported values and projections together",
+      "description": "Where a source publishes both, follow a series from reported observations into projections, with the projected period clearly marked in charts, tables, and downloads.",
+      "categories": [
+        "charts",
+        "data-exploration"
+      ],
+      "status": "under-consideration"
+    }
+  ]
+}
