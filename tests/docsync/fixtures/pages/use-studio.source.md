@@ -14,7 +14,7 @@ A canvas with one pinned line chart, "Current Health Expenditure Per Capita in K
 
 Studio generates a new plan, title, and answer for each run. The chart uses the same data.
 
-<!-- TODO: verify the chart title, plan and answer against the staging site; they come from the recorded Studio session dfo-ai docs/transcripts/studio_transcript_plan.jsonl. -->
+<!-- TODO: verify the chart title, plan and answer against the staging site; they come from the recorded Studio session in the ai repository, docs/transcripts/studio_transcript_plan.jsonl. -->
 
 ## What you'll learn
 

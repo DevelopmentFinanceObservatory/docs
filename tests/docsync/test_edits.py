@@ -5,11 +5,12 @@
 deleteContentRange); its baseline is the recorded `sampler.baseline.md` or
 `pages/<page>.baseline.md`, which the upload reproduced byte for byte.
 `<page>.expected.md` is the source with exactly those edits made by hand.
-`pages/conventions.*` is a dfo-apis page and its recorded baseline, which holds
-Author notes on lines of their own and in table cells. `pages/use-studio.*`,
-`pages/connect.*` and `pages/methods.*` are hub and dfo-ai pages with their recorded
-baselines, holding Author notes beside paragraphs, tabs and code blocks.
-`pages/conventions-live.*` is an earlier version of the dfo-apis page, its recorded
+`pages/conventions.*` is a page from the apis repository and its recorded baseline,
+which holds Author notes on lines of their own and in table cells.
+`pages/use-studio.*`, `pages/connect.*` and `pages/methods.*` are pages from the hub
+and the ai repository with their recorded baselines, holding Author notes beside
+paragraphs, tabs and code blocks.
+`pages/conventions-live.*` is an earlier version of that page, its recorded
 baseline, and Google's export after an editor resolved a TODO note, pressed Enter at
 the end of a paragraph and typed a sentence, and typed a paragraph below the page's
 final list.
@@ -273,7 +274,7 @@ def test_a_note_resolved_in_place_becomes_page_text(note: str, answer: str) -> N
 
 
 def test_a_table_cell_note_resolved_in_place_follows_the_table() -> None:
-    note = "TODO: rate-limit thresholds; set in proxy config, not recorded in dfo-apis."
+    note = "TODO: rate-limit thresholds; set in proxy config, not recorded in the apis repository."
     answer = "The rate limit is 10 calls per second, set in the proxy config."
     source = _read("pages/conventions.source.md")
     table_end = (
@@ -736,13 +737,13 @@ STUDIO_TEXT = (
 )
 STUDIO_NOTE = (
     "**Author note:** TODO: verify the chart title, plan and answer against the"
-    " staging site; they come from the recorded Studio session dfo-ai"
-    " docs/transcripts/studio\\_transcript\\_plan.jsonl."
+    " staging site; they come from the recorded Studio session in the ai"
+    " repository, docs/transcripts/studio\\_transcript\\_plan.jsonl."
 )
 STUDIO_COMMENT = (
     "<!-- TODO: verify the chart title, plan and answer against the staging site;"
-    " they come from the recorded Studio session dfo-ai"
-    " docs/transcripts/studio_transcript_plan.jsonl. -->"
+    " they come from the recorded Studio session in the ai"
+    " repository, docs/transcripts/studio_transcript_plan.jsonl. -->"
 )
 ANSWER = "The staging site shows the same title."
 

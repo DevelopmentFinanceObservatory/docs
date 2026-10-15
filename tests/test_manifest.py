@@ -875,7 +875,7 @@ def test_skill_corpus_files_carry_the_header_and_keep_links(tmp_path):
     assert not (corpus_root / "dfo-skills" / "_template").exists()
 
 
-# The page entry and the download link that dfo-website's sync and link resolver are
+# The page entry and the download link that the website's sync and link resolver are
 # tested against. Both repositories hold these literals.
 _BUNDLE_PAGE = {
     "path": "skills/oda-crs",

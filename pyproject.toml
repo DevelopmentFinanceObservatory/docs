@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Fetches, normalises, and publishes documentation aggregated from DFO source repositories."
 
 authors = [
-  { name = "ONE Campaign", email = "jorge.rivera@one.org" }
+    { name = "ONE Campaign", email = "data@one.org" },
 ]
 
 readme = "README.md"
