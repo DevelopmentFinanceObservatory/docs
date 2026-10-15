@@ -40,7 +40,7 @@ A proxy in front of every route enforces three limits before the request reaches
 | `413` | Request body too large. |
 | `415` | The media type is unsupported. Send `Content-Type: application/json`. |
 
-**Author note:** TODO: rate-limit thresholds; set in proxy config, not recorded in dfo-apis.
+**Author note:** TODO: rate-limit thresholds; set in proxy config, not recorded in the apis repository.
 
 **Author note:** TODO: byte ceiling; set in proxy config.
 

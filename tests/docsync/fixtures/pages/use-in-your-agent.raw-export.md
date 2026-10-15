@@ -13,14 +13,13 @@ Claude Code reads skills from two folders. Skills in `~/.claude/skills/` load in
 ### Before you start
 
 - Claude Code installed.  
-- Read access to `ONEcampaign/dfo-skills` on GitHub. The repository is private, so this route works only for ONE staff.
 
 ### Steps
 
 1. Clone the skills repository.
 
 ```sh
-git clone --depth 1 https://github.com/ONEcampaign/dfo-skills.git
+git clone --depth 1 https://github.com/DevelopmentFinanceObservatory/skills.git
 ```
 
 2. Copy the skills into a skills folder.  
@@ -31,7 +30,7 @@ git clone --depth 1 https://github.com/ONEcampaign/dfo-skills.git
 
 ```sh
 mkdir -p ~/.claude/skills
-rsync -a --exclude _template dfo-skills/skills/ ~/.claude/skills/
+rsync -a --exclude _template skills/skills/ ~/.claude/skills/
 ```
 
    ::tab{label="For one project"}
@@ -42,7 +41,7 @@ rsync -a --exclude _template dfo-skills/skills/ ~/.claude/skills/
 
 ```sh
 mkdir -p .claude/skills
-rsync -a --exclude _template path/to/dfo-skills/skills/ .claude/skills/
+rsync -a --exclude _template path/to/skills/skills/ .claude/skills/
 ```
 
    :::
@@ -52,7 +51,7 @@ rsync -a --exclude _template path/to/dfo-skills/skills/ .claude/skills/
    The `_template` directory holds the files for creating a new skill. Exclude it when copying skills. Copy a single skill by naming its directory without a trailing slash. On macOS, a trailing slash copies `SKILL.md` and `references/` directly into `skills/`.
 
 ```sh
-cp -R dfo-skills/skills/oda-measures ~/.claude/skills/
+cp -R skills/skills/oda-measures ~/.claude/skills/
 ```
 
 3. Start a new Claude Code session.
@@ -79,11 +78,11 @@ Ask a question one of the skills covers, such as "Should I use grant equivalents
 Pull the repository, then sync the skills. `rsync` overwrites changed files and leaves your other skills alone.
 
 ```sh
-git -C dfo-skills pull
-rsync -a --exclude _template dfo-skills/skills/ ~/.claude/skills/
+git -C skills pull
+rsync -a --exclude _template skills/skills/ ~/.claude/skills/
 ```
 
-Delete a skill's directory when dfo-skills removes it. `rsync` leaves the local copy in place.
+Delete a skill's directory when the skills repository removes it. `rsync` leaves the local copy in place.
 
 ### Other agents
 

@@ -100,7 +100,7 @@ Only published pages are valid link targets. The link check fails for a page abs
 
 A source repository keeps its pages in a docs folder and declares them in a nav sidecar. The build looks for the sidecar at `docs/mkdocs.yml`, then a root `mkdocs.yml`, then a root `zensical.toml`. The docs root is the sidecar's own `docs_dir`, resolved from the folder the sidecar sits in.
 
-Use a root `mkdocs.yml` when user-facing pages sit in a subfolder separate from a repository's internal docs. dfo-apis publishes `docs/guide/` this way:
+Use a root `mkdocs.yml` when user-facing pages sit in a subfolder separate from a repository's internal docs. `apis` publishes `docs/guide/` this way:
 
 ```yaml
 site_name: API
@@ -131,7 +131,7 @@ Then register the repository in `sources.yaml`:
 
 In `sources.yaml`, `docs_dir` sets which folder the build checks out. Match it to the sidecar's `docs_dir`. Set `path` to `extra.dfo.path`. The build fails if they differ. Add a `mount` entry in `hub.yaml` that names the source row. To register a repository before publication, set `enabled: false` with a `reason` and leave it out of `hub.yaml`. A mount for a disabled source fails the build. Every registered repository must be public. [docs/development.md](docs/development.md) covers `exclude`, `kind: external`, `kind: skill`, and each build failure.
 
-Before opening a pull request in the source repository, check its nav against its pages from a dfo-docs checkout. Then check links from the source repository's docs folder:
+Before opening a pull request in the source repository, check its nav against its pages from a `docs` checkout. Then check links from the source repository's docs folder:
 
 ```bash
 uv run python scripts/check_nav.py /path/to/source-repo

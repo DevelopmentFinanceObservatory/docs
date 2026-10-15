@@ -1884,9 +1884,10 @@ def _same_list_kind(block: Block, other: Block) -> bool:
 def heading_anchor(heading: str) -> str:
     """The anchor the docs site gives a heading with Markdown text `heading`.
 
-    The site (dfo-website `docsSlug`) takes the heading's rendered text, code spans
-    included, lowercases and trims it, drops every character but ASCII letters,
-    digits, `_`, `-` and whitespace, and turns each run of whitespace into `-`.
+    The site (`docsSlug` in the website repository) takes the heading's rendered
+    text, code spans included, lowercases and trims it, drops every character but
+    ASCII letters, digits, `_`, `-` and whitespace, and turns each run of whitespace
+    into `-`.
     """
     text = "".join(_text_content(_MARKDOWN.parseInline(heading)[0].children or []))
     dropped = _SLUG_DROP_RE.sub("", text.lower().strip())
