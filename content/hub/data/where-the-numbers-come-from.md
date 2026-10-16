@@ -77,6 +77,8 @@ The ontology is public. Every concept the graph uses, from a purpose code to a t
 
 The packages the pipelines use to fetch sources are open source. The OECD's DAC statistics, including the CRS, come through the [ODA reader](../../oda_reader/index.md), and you can run the same `bulk_download_crs` call yourself. The IMF's World Economic Outlook comes through the [IMF reader](../../imf-reader/index.md). [DCP tools](../../dcp-tools/index.md) writes the files the graph loads.
 
+The pipelines that produce these numbers are open source. You can read the code, the transformation notes and the tests in [DevelopmentFinanceObservatory/pipelines](https://github.com/DevelopmentFinanceObservatory/pipelines).
+
 ## Next
 
 - [The knowledge graph](knowledge-graph.md) follows the 2008 French grant to Togo from its CRS row to a graph observation, column by column.
