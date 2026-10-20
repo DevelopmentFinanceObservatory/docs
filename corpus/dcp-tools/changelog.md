@@ -4,6 +4,11 @@ description: Read dcp-tools release notes from version 0.0.1 onwards, including 
 
 # Changelog
 
+## Unreleased
+
+- dcp-tools leaves logging to the importing application: its module loggers sit under `dcp_tools`, propagate to the root logger and set no handler or level, so unconfigured applications see only warnings. `LOG_LEVEL` now applies to the `dcp-tools` CLI only, which still prints its messages.
+- Deprecated `dcp_tools.logger` and the `dcp-tools` logger name, to be removed in 2.0. Until then both resolve to the `dcp_tools` package logger, provided `dcp-tools` is configured after dcp-tools is imported.
+
 ## v1.0.1 (2026-10-13)
 
 - Fixed a fresh install failing to import `dcp_tools.gcp_utilities`, which broke the `dcp-tools` CLI and `run_ingestion_workflow`. `datacommons-admin` 1.1.3 moved `IngestionJobClient` to a new module, and 1.1.6 removed the `job_name` argument dcp-tools passes. The dependency is now capped at `datacommons-admin<1.1.3` until dcp-tools supports the new client.

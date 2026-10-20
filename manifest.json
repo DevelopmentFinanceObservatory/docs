@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-20T15:11:07Z",
-  "generator_commit": "67dba959663fc15d7dd99c50871412d7d26e4f40",
+  "generated_at": "2026-10-20T16:15:46Z",
+  "generator_commit": "16e3cba4149c4bd722ed66af73acba0b8f91ac2b",
   "nav": [
     {
       "id": "hub",
@@ -852,7 +852,7 @@
       "description": "Build Data Commons Platform import files with the dcp-tools Python API or CLI, upload them, and trigger ingestion.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/index.md",
-      "source_commit": "106083fbb821c93f41cbe1206de4f4f42512b5ca",
+      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
       "last_modified": "2026-10-13T13:35:47Z",
       "corpus_path": "corpus/dcp-tools/index.md"
     },
@@ -864,7 +864,7 @@
       "description": "Install dcp-tools and build a complete climate finance import bundle from Python, then export it and check the config, MCF, and CSV files.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/getting-started.md",
-      "source_commit": "106083fbb821c93f41cbe1206de4f4f42512b5ca",
+      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
       "last_modified": "2026-10-13T14:56:42Z",
       "corpus_path": "corpus/dcp-tools/getting-started.md"
     },
@@ -876,7 +876,7 @@
       "description": "Use CustomDataManager recipes to register data, define StatVars and schema nodes, merge configs, validate bundles, and export files.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/preparing-data.md",
-      "source_commit": "106083fbb821c93f41cbe1206de4f4f42512b5ca",
+      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
       "last_modified": "2026-10-13T14:56:42Z",
       "corpus_path": "corpus/dcp-tools/preparing-data.md"
     },
@@ -888,7 +888,7 @@
       "description": "Why dcp-tools writes both config.json and MCF files, how a CSV column becomes an observation predicate, and how custom dimensions carry bilateral data.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/dc-schemas.md",
-      "source_commit": "106083fbb821c93f41cbe1206de4f4f42512b5ca",
+      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
       "last_modified": "2026-10-13T13:35:47Z",
       "corpus_path": "corpus/dcp-tools/dc-schemas.md"
     },
@@ -900,7 +900,7 @@
       "description": "Upload an exported bundle to Google Cloud Storage, trigger the Data Commons Platform ingestion workflow, check the upload, and fix common settings errors.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/loading-data.md",
-      "source_commit": "106083fbb821c93f41cbe1206de4f4f42512b5ca",
+      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
       "last_modified": "2026-10-13T13:35:47Z",
       "corpus_path": "corpus/dcp-tools/loading-data.md"
     },
@@ -912,7 +912,7 @@
       "description": "Use the dcp-tools CLI reference to convert CSV files to MCF, upload bundles, trigger ingestion, and check command options.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/cli-tools.md",
-      "source_commit": "106083fbb821c93f41cbe1206de4f4f42512b5ca",
+      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
       "last_modified": "2026-10-13T13:35:47Z",
       "corpus_path": "corpus/dcp-tools/cli-tools.md"
     },
@@ -924,8 +924,8 @@
       "description": "Read dcp-tools release notes from version 0.0.1 onwards, including changes to the API, settings and exported files.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/changelog.md",
-      "source_commit": "106083fbb821c93f41cbe1206de4f4f42512b5ca",
-      "last_modified": "2026-10-13T15:23:24Z",
+      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
+      "last_modified": "2026-10-20T15:11:23Z",
       "corpus_path": "corpus/dcp-tools/changelog.md"
     },
     {
@@ -1512,7 +1512,7 @@
       "description": "Connect the DFO to Claude, ChatGPT, or Gemini so your assistant can look up development finance data. Developers can also connect Claude Code, Codex, or Gemini CLI.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/connect.md",
-      "source_commit": "39804b2b62f559f25f4e5bb02327b7e008efdd7b",
+      "source_commit": "10f235bec831047e7d55ed04d96c569013746bc7",
       "last_modified": "2026-10-14T10:50:14Z",
       "corpus_path": "corpus/dfo-ai/connect.md"
     },
@@ -1524,7 +1524,7 @@
       "description": "How a question to the DFO MCP server becomes a cited answer, and the limits and refusals that bound it.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/what-you-can-ask.md",
-      "source_commit": "39804b2b62f559f25f4e5bb02327b7e008efdd7b",
+      "source_commit": "10f235bec831047e7d55ed04d96c569013746bc7",
       "last_modified": "2026-10-15T18:50:12Z",
       "corpus_path": "corpus/dfo-ai/what-you-can-ask.md"
     },
@@ -1536,7 +1536,7 @@
       "description": "Context for answering questions about the Development Finance Observatory itself: what it is, who builds and funds it, what data it holds and from which sources, how answers are sourced and cited, how often data updates, privacy, and where to get help. Load when a user asks about the DFO or this assistant.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "internal/skills/dfo-faq/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T23:43:50Z",
       "corpus_path": "corpus/dfo-skills/dfo-faq/SKILL.md"
     },
@@ -1548,7 +1548,7 @@
       "description": "Context for working with the OECD DAC1 table, the donor-level totals of ODA, OOF, export credits and private flows by aid type. Covers who reports, the flow types (grant equivalent, net and gross disbursements, commitments) and price bases, what the ODA total includes (in-donor costs and core multilateral contributions), private sector instruments, ODA/GNI, and the double-counting traps with donor aggregates, EU Institutions, nested aid-type lines and memo items. Load once DAC1 has been chosen for an analysis, or when working with DAC1 figures. For choosing between DAC datasets, use oda-dataset-selection.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-dac1/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-dac1/SKILL.md",
       "bundle_path": "corpus/dfo-skills/oda-dac1.zip"
@@ -1561,7 +1561,7 @@
       "description": "Context for working with the OECD DAC2A table, ODA disbursements by donor and recipient country or region. Covers its measures, multilateral agencies reporting as donors and appearing as recipients, how its totals reconcile with DAC1, the OECD's imputed multilateral ODA by recipient, and the double-counting traps with donor and recipient aggregates, EU aggregates and imputed figures. Load once DAC2A has been chosen for an analysis, or when working with DAC2A figures. For choosing between DAC datasets, use oda-dataset-selection.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-dac2a/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-11T14:54:43Z",
       "corpus_path": "corpus/dfo-skills/oda-dac2a/SKILL.md",
       "bundle_path": "corpus/dfo-skills/oda-dac2a.zip"
@@ -1574,7 +1574,7 @@
       "description": "Context for working with the OECD DAC2B table, other official flows (OOF) and officially supported export credits by donor and recipient. Covers its measures, why bilateral donors' figures sit at regional or income-group level while country detail comes from multilateral lenders, and the double-counting traps with donor and recipient aggregates and nested measures. Load once DAC2B has been chosen for an analysis, or when working with DAC2B figures. For choosing between DAC datasets, use oda-dataset-selection.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-dac2b/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-dac2b/SKILL.md",
       "bundle_path": "corpus/dfo-skills/oda-dac2b.zip"
@@ -1587,7 +1587,7 @@
       "description": "Context for working with the OECD Creditor Reporting System (CRS), the activity-level dataset of ODA, OOF, private sector instruments and private philanthropy reported by bilateral providers, multilateral organisations and foundations. Covers its attributes, coverage by year and against DAC1, the flow categories and bilateral/multilateral flags, the April 2026 core contribution records and their treatment in the DFO, and the double-counting traps with multilateral outflows, foundation funding and regional buckets. Load once the CRS has been chosen for an analysis, or when working with CRS records. For choosing between DAC datasets, use oda-dataset-selection.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-crs/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-crs/SKILL.md",
       "bundle_path": "corpus/dfo-skills/oda-crs.zip"
@@ -1600,7 +1600,7 @@
       "description": "Context for working with ONE's imputed multilateral sectors dataset, which estimates how much of each provider's core (unearmarked) contributions to multilateral organisations reached each sector and recipient. Covers how the estimate is built from Multisystem core contributions and multilaterals' CRS spending, its dimensions and price basis, how it relates to the OECD's imputed multilateral ODA and the discontinued OECD sectoral method, how contributions with borrowed or no shares are published, and the double-counting traps when combining it with bilateral CRS data or multilateral outflows. Load once this dataset has been chosen for an analysis, or when working with its figures. For choosing between datasets, use oda-dataset-selection.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-imputed-multilateral-sectors/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-imputed-multilateral-sectors/SKILL.md",
       "bundle_path": "corpus/dfo-skills/oda-imputed-multilateral-sectors.zip"
@@ -1613,7 +1613,7 @@
       "description": "Context for working with the World Bank's International Debt Statistics (IDS), the external debt of low- and middle-income countries as reported by the borrowers. Covers its sources, the debt stocks, flows, debt service, net flows and net transfers it reports and how they relate, the creditor and borrower breakdowns, the DFO's version of the data, the conversion to US dollars, projections, revisions and underreporting, how IDS differs from creditor-side data such as the CRS, and how its series codes are built. Load once IDS has been chosen for an analysis, or when working with IDS figures.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/debt-ids/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/debt-ids/SKILL.md",
       "bundle_path": "corpus/dfo-skills/debt-ids.zip"
@@ -1625,7 +1625,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/debt-ids/references/series-codes.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/debt-ids/references/series-codes.md"
     },
@@ -1637,7 +1637,7 @@
       "description": "Context for working with the IMF World Economic Outlook (WEO) database, the IMF staff's annual macroeconomic estimates and projections for 197 economies. Covers which years are actual and which are projections, which currencies and units can be compared or summed across countries, fiscal-year reporters and level breaks, how IMF country groups are built, countries with suspended data, and how the DFO's version of the data is shaped. The DFO holds the WEO's national accounts series only. Load once WEO has been chosen for an analysis, or when working with WEO figures.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/imf-weo/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/imf-weo/SKILL.md",
       "bundle_path": "corpus/dfo-skills/imf-weo.zip"
@@ -1650,7 +1650,7 @@
       "description": "Context for choosing the dataset that answers an ODA or development finance question. Summarises what each dataset covers, which breakdowns each supports, and how their totals relate.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-dataset-selection/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-dataset-selection/SKILL.md",
       "bundle_path": "corpus/dfo-skills/oda-dataset-selection.zip"
@@ -1663,7 +1663,7 @@
       "description": "Core definitions, measures and classifications in ODA analysis. Covers the 0.7% ODA/GNI target and how ODA/GNI is calculated, the grant equivalent methodology and its 2018 break in comparability, Core ODA and the items it excludes (in-donor refugee costs, imputed student costs, debt relief), donor groupings (DAC members, DAC associates, non-DAC donors and EU Institutions, with the double-counting risk EU Institutions bring), ONE's sector groupings by CRS purpose code, and indicators of donor prioritisation such as sector shares and the bilateral/multilateral split.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-concepts/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-concepts/SKILL.md",
       "bundle_path": "corpus/dfo-skills/oda-concepts.zip"
@@ -1675,7 +1675,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-concepts/references/core-oda.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-concepts/references/core-oda.md"
     },
@@ -1686,7 +1686,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-concepts/references/donor-groupings.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-09T07:56:16Z",
       "corpus_path": "corpus/dfo-skills/oda-concepts/references/donor-groupings.md"
     },
@@ -1697,7 +1697,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-concepts/references/key-indicators.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-concepts/references/key-indicators.md"
     },
@@ -1708,7 +1708,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-concepts/references/sector-groupings.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-concepts/references/sector-groupings.md"
     },
@@ -1720,7 +1720,7 @@
       "description": "How the OECD DAC measures and reports ODA. Covers the flow types (gross disbursements, net disbursements, grant equivalents, and commitments) and which questions each fits, current and constant prices, DAC deflators and base years, and the 2018 switch to the grant-equivalent headline. Also covers how grants, concessional loans, and private sector instruments (PSI) qualify as ODA and are counted, including grant elements, discount rates, additionality, the institutional and instrument approaches, PSI transition arrangements, and the policy debate on loan and PSI measurement. Relevant to choosing a measure, comparing ODA across donors or years, explaining what an ODA figure represents, and assessing how a financing instrument counts in ODA.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-measures/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-measures/SKILL.md",
       "bundle_path": "corpus/dfo-skills/oda-measures.zip"
@@ -1732,7 +1732,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-measures/references/flow-types.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-measures/references/flow-types.md"
     },
@@ -1743,7 +1743,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-measures/references/grants-loans-psi.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-measures/references/grants-loans-psi.md"
     },
@@ -1754,7 +1754,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-measures/references/price-basis.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-measures/references/price-basis.md"
     },
@@ -1766,7 +1766,7 @@
       "description": "Context for how ODA is channelled from donors to recipients. Covers the OECD distinction between bilateral and multilateral ODA, earmarked (bi-multi) funding through multilaterals, the OECD List of ODA-eligible international organisations, channel of delivery codes, multilateral outflows, and how a donor's core multilateral contributions are attributed to sectors through imputations.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-channels/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-channels/SKILL.md",
       "bundle_path": "corpus/dfo-skills/oda-channels.zip"
@@ -1778,7 +1778,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-channels/references/bilateral-multilateral.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-channels/references/bilateral-multilateral.md"
     },
@@ -1789,7 +1789,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/oda-channels/references/sector-imputations.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/oda-channels/references/sector-imputations.md"
     },
@@ -1801,7 +1801,7 @@
       "description": "Core concepts in sovereign debt analysis, domestic and external, that hold across data sources. Covers external against domestic debt and the three ways of drawing the line between them, where domestic public debt figures come from and what sets domestic debt apart, which parts of the public sector a debt figure covers, face value against present value, the choices that make two figures for \"external public debt\" or \"debt service\" differ (IMF credit, creditor groups, Chinese lenders, regional definitions, denominators) and the choices ONE's published analysis makes, concessionality under the World Bank, OECD and IMF definitions, and how debt relief appears in aid data and in debt data. Load for any question about a country's public, external or domestic debt, its creditors, debt service or debt relief, alongside the skill for the data source in use.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/debt-concepts/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/debt-concepts/SKILL.md",
       "bundle_path": "corpus/dfo-skills/debt-concepts.zip"
@@ -1813,7 +1813,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/debt-concepts/references/creditors.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/debt-concepts/references/creditors.md"
     },
@@ -1824,7 +1824,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/debt-concepts/references/domestic-debt.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/debt-concepts/references/domestic-debt.md"
     },
@@ -1835,7 +1835,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/debt-concepts/references/relief-and-restructuring.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/debt-concepts/references/relief-and-restructuring.md"
     },
@@ -1847,7 +1847,7 @@
       "description": "Context for describing a country's external debt: how much it owes and how that has changed, who borrowed, which creditors hold the debt, its cost and terms, debt service against exports and revenue, upcoming payments, debt flows, arrears and reserves, and comparisons with peers. Covers which measure answers each part, the traps in each, and what an external-only profile leaves out. Load for questions about a country's debt situation, how much it owes and to whom, how expensive its debt is, or what it pays each year. Questions about whether the debt is sustainable or at risk need the debt-sustainability skill as well.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/debt-profile/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/debt-profile/SKILL.md",
       "bundle_path": "corpus/dfo-skills/debt-profile.zip"
@@ -1860,7 +1860,7 @@
       "description": "Context on how the IMF and World Bank assess whether a country's public debt is sustainable, and how far public data can approximate their assessments. Covers debt sustainability analyses (DSAs), which of the two frameworks applies to a country (the joint framework for low-income countries, LIC-DSF, or the IMF's framework for market-access countries, MAC-SRDSF), risk ratings against sustainability judgements, solvency against liquidity, the indicators and thresholds each framework uses, and why indicators built from debt and macroeconomic data differ from a DSA's. Carries the IMF's list of LIC DSAs with each country's latest risk of external debt distress. Load for questions about whether a country's debt is sustainable, its risk of debt distress or sovereign stress, which countries are at high risk or in debt distress, default risk, DSA ratings, debt thresholds or the debt sustainability frameworks.",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/debt-sustainability/SKILL.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/debt-sustainability/SKILL.md",
       "bundle_path": "corpus/dfo-skills/debt-sustainability.zip"
@@ -1872,7 +1872,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/debt-sustainability/references/lic-dsa-list.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/debt-sustainability/references/lic-dsa-list.md"
     },
@@ -1883,7 +1883,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/debt-sustainability/references/lic-dsf.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/debt-sustainability/references/lic-dsf.md"
     },
@@ -1894,7 +1894,7 @@
       "kind": "page",
       "source_repo": "DevelopmentFinanceObservatory/skills",
       "source_path": "skills/debt-sustainability/references/mac-srdsf.md",
-      "source_commit": "2e18139419eca511c8cf90553e09784321c8e140",
+      "source_commit": "186f4bb48ed0e7749ca393ca4cdcc13588b8c15a",
       "last_modified": "2026-10-13T15:07:45Z",
       "corpus_path": "corpus/dfo-skills/debt-sustainability/references/mac-srdsf.md"
     },
