@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-20T16:15:46Z",
+  "generated_at": "2026-10-21T11:08:36Z",
   "generator_commit": "16e3cba4149c4bd722ed66af73acba0b8f91ac2b",
   "nav": [
     {
@@ -852,7 +852,7 @@
       "description": "Build Data Commons Platform import files with the dcp-tools Python API or CLI, upload them, and trigger ingestion.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/index.md",
-      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
+      "source_commit": "bf10ed550e0110e46103535c3e90e692e53c2878",
       "last_modified": "2026-10-13T13:35:47Z",
       "corpus_path": "corpus/dcp-tools/index.md"
     },
@@ -864,7 +864,7 @@
       "description": "Install dcp-tools and build a complete climate finance import bundle from Python, then export it and check the config, MCF, and CSV files.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/getting-started.md",
-      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
+      "source_commit": "bf10ed550e0110e46103535c3e90e692e53c2878",
       "last_modified": "2026-10-13T14:56:42Z",
       "corpus_path": "corpus/dcp-tools/getting-started.md"
     },
@@ -876,8 +876,8 @@
       "description": "Use CustomDataManager recipes to register data, define StatVars and schema nodes, merge configs, validate bundles, and export files.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/preparing-data.md",
-      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
-      "last_modified": "2026-10-13T14:56:42Z",
+      "source_commit": "bf10ed550e0110e46103535c3e90e692e53c2878",
+      "last_modified": "2026-10-21T10:26:37Z",
       "corpus_path": "corpus/dcp-tools/preparing-data.md"
     },
     {
@@ -888,7 +888,7 @@
       "description": "Why dcp-tools writes both config.json and MCF files, how a CSV column becomes an observation predicate, and how custom dimensions carry bilateral data.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/dc-schemas.md",
-      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
+      "source_commit": "bf10ed550e0110e46103535c3e90e692e53c2878",
       "last_modified": "2026-10-13T13:35:47Z",
       "corpus_path": "corpus/dcp-tools/dc-schemas.md"
     },
@@ -900,7 +900,7 @@
       "description": "Upload an exported bundle to Google Cloud Storage, trigger the Data Commons Platform ingestion workflow, check the upload, and fix common settings errors.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/loading-data.md",
-      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
+      "source_commit": "bf10ed550e0110e46103535c3e90e692e53c2878",
       "last_modified": "2026-10-13T13:35:47Z",
       "corpus_path": "corpus/dcp-tools/loading-data.md"
     },
@@ -912,7 +912,7 @@
       "description": "Use the dcp-tools CLI reference to convert CSV files to MCF, upload bundles, trigger ingestion, and check command options.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/cli-tools.md",
-      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
+      "source_commit": "bf10ed550e0110e46103535c3e90e692e53c2878",
       "last_modified": "2026-10-13T13:35:47Z",
       "corpus_path": "corpus/dcp-tools/cli-tools.md"
     },
@@ -924,8 +924,8 @@
       "description": "Read dcp-tools release notes from version 0.0.1 onwards, including changes to the API, settings and exported files.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/changelog.md",
-      "source_commit": "6c0c598cb7dc7048923c01f34a85a7bece3253df",
-      "last_modified": "2026-10-20T15:11:23Z",
+      "source_commit": "bf10ed550e0110e46103535c3e90e692e53c2878",
+      "last_modified": "2026-10-21T10:26:37Z",
       "corpus_path": "corpus/dcp-tools/changelog.md"
     },
     {
@@ -936,7 +936,7 @@
       "description": "Download seven development finance datasets with ODA Reader and use Python functions for filtering, bulk files, caching and schema translation.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/index.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
       "last_modified": "2026-10-13T13:35:44Z",
       "corpus_path": "corpus/oda_reader/index.md"
     },
@@ -948,7 +948,7 @@
       "description": "Understand the access problems ODA Reader addresses, compare it with direct downloads and SDMX libraries, and decide when another tool fits better.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/why-oda-reader.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
       "last_modified": "2026-10-13T13:35:44Z",
       "corpus_path": "corpus/oda_reader/why-oda-reader.md"
     },
@@ -960,7 +960,7 @@
       "description": "Install ODA Reader with pip or uv, download a year of DAC1 data, filter it by donor, and fetch DAC2a.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/getting-started.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
       "last_modified": "2026-10-13T13:35:44Z",
       "corpus_path": "corpus/oda_reader/getting-started.md"
     },
@@ -972,7 +972,7 @@
       "description": "What each of the seven datasets holds, from DAC1 aggregates to CRS project data and AidData, with the download function and an example for each.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/datasets.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
       "last_modified": "2026-10-13T13:35:44Z",
       "corpus_path": "corpus/oda_reader/datasets.md"
     },
@@ -984,7 +984,7 @@
       "description": "Filter ODA Reader downloads by dimension, combine values and filters, find valid codes, and diagnose empty or slow queries.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/filtering.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
       "last_modified": "2026-10-13T13:35:44Z",
       "corpus_path": "corpus/oda_reader/filtering.md"
     },
@@ -996,8 +996,8 @@
       "description": "Download the full CRS, DAC1, DAC2b, Multisystem and AidData files, stream the CRS and Multisystem files in chunks to save memory, and handle their .Stat schema.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/bulk-downloads.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
-      "last_modified": "2026-10-13T13:35:44Z",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
+      "last_modified": "2026-10-21T10:34:10Z",
       "corpus_path": "corpus/oda_reader/bulk-downloads.md"
     },
     {
@@ -1008,8 +1008,8 @@
       "description": "Configure API and bulk-file caches, change cache locations, clear stored data, and set request limits for OECD calls.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/caching.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
-      "last_modified": "2026-10-13T13:35:44Z",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
+      "last_modified": "2026-10-21T10:34:10Z",
       "corpus_path": "corpus/oda_reader/caching.md"
     },
     {
@@ -1020,7 +1020,7 @@
       "description": "How the pre_process and dotstat_codes options convert Data Explorer API columns and codes to the OECD.Stat schema, and which mode to pick.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/schema-translation.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
       "last_modified": "2026-10-13T13:35:44Z",
       "corpus_path": "corpus/oda_reader/schema-translation.md"
     },
@@ -1032,7 +1032,7 @@
       "description": "Fetch OECD DAC codelists such as purpose codes, recipients and provider agencies as snapshots, read their keys, and reconcile them against stored versions.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/codelists.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
       "last_modified": "2026-10-13T13:35:44Z",
       "corpus_path": "corpus/oda_reader/codelists.md"
     },
@@ -1044,7 +1044,7 @@
       "description": "Check codelist function signatures, snapshot attributes, frame columns, reconciliation results, module constants and exceptions.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/codelists-reference.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
       "last_modified": "2026-10-13T13:35:44Z",
       "corpus_path": "corpus/oda_reader/codelists-reference.md"
     },
@@ -1056,7 +1056,7 @@
       "description": "Map the 26 OECD codelist ids to names and fetch functions, and identify the contract that covers each codelist.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/codelist-ids.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
       "last_modified": "2026-10-13T13:35:44Z",
       "corpus_path": "corpus/oda_reader/codelist-ids.md"
     },
@@ -1068,7 +1068,7 @@
       "description": "Build SDMX filters with QueryBuilder, pin dataflow versions, tune rate limits, combine queries, and debug failed downloads.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/advanced.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
       "last_modified": "2026-10-13T13:35:44Z",
       "corpus_path": "corpus/oda_reader/advanced.md"
     },
@@ -1080,7 +1080,7 @@
       "description": "Find ODA Reader release notes in the repository, understand semantic versioning, and upgrade with pip or uv.",
       "source_repo": "ONEcampaign/oda_reader",
       "source_path": "docs/docs/changelog.md",
-      "source_commit": "96341817a81f717ad19106a246fb651b631d5294",
+      "source_commit": "95630135340883b1fe4e4559516b92c660211907",
       "last_modified": "2026-10-13T13:35:44Z",
       "corpus_path": "corpus/oda_reader/changelog.md"
     },
@@ -1440,7 +1440,7 @@
       "description": "Build a Parquet dataset from a plain-English development-finance question.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/quickstart.md",
-      "source_commit": "8408f1f95c622223f8fa6e9ba55826ee8e22a852",
+      "source_commit": "1d72670ce50e89df67eae292909447a349676d9e",
       "last_modified": "2026-10-14T00:15:11Z",
       "corpus_path": "corpus/dfo-apis/quickstart.md"
     },
@@ -1452,7 +1452,7 @@
       "description": "Understand how questions, specs, versions, StatVars, series, rows, and facets fit together.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/concepts.md",
-      "source_commit": "8408f1f95c622223f8fa6e9ba55826ee8e22a852",
+      "source_commit": "1d72670ce50e89df67eae292909447a349676d9e",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/concepts.md"
     },
@@ -1464,7 +1464,7 @@
       "description": "Resolve a plain-English question into an interpretable DFO spec.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/resolve-a-question.md",
-      "source_commit": "8408f1f95c622223f8fa6e9ba55826ee8e22a852",
+      "source_commit": "1d72670ce50e89df67eae292909447a349676d9e",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/resolve-a-question.md"
     },
@@ -1476,7 +1476,7 @@
       "description": "Create, retrieve, and download a versioned DFO dataset.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/get-a-dataset.md",
-      "source_commit": "8408f1f95c622223f8fa6e9ba55826ee8e22a852",
+      "source_commit": "1d72670ce50e89df67eae292909447a349676d9e",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/get-a-dataset.md"
     },
@@ -1488,7 +1488,7 @@
       "description": "Resolve names, inspect graph nodes, list what belongs to them, and read source documentation.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/look-things-up.md",
-      "source_commit": "8408f1f95c622223f8fa6e9ba55826ee8e22a852",
+      "source_commit": "1d72670ce50e89df67eae292909447a349676d9e",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/look-things-up.md"
     },
@@ -1500,7 +1500,7 @@
       "description": "Reference for DFO API URLs, versioning, response tracing, and errors.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/conventions.md",
-      "source_commit": "8408f1f95c622223f8fa6e9ba55826ee8e22a852",
+      "source_commit": "1d72670ce50e89df67eae292909447a349676d9e",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/conventions.md"
     },
@@ -1512,7 +1512,7 @@
       "description": "Connect the DFO to Claude, ChatGPT, or Gemini so your assistant can look up development finance data. Developers can also connect Claude Code, Codex, or Gemini CLI.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/connect.md",
-      "source_commit": "10f235bec831047e7d55ed04d96c569013746bc7",
+      "source_commit": "676f0c35b5d8ce8de587e40d12c0178856bcf798",
       "last_modified": "2026-10-14T10:50:14Z",
       "corpus_path": "corpus/dfo-ai/connect.md"
     },
@@ -1524,7 +1524,7 @@
       "description": "How a question to the DFO MCP server becomes a cited answer, and the limits and refusals that bound it.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/what-you-can-ask.md",
-      "source_commit": "10f235bec831047e7d55ed04d96c569013746bc7",
+      "source_commit": "676f0c35b5d8ce8de587e40d12c0178856bcf798",
       "last_modified": "2026-10-15T18:50:12Z",
       "corpus_path": "corpus/dfo-ai/what-you-can-ask.md"
     },

@@ -6,6 +6,7 @@ description: Read dcp-tools release notes from version 0.0.1 onwards, including 
 
 ## Unreleased
 
+- Added `imported_source_release_date` to `add_provenance`, written to the Provenance node as a quoted `importedSourceReleaseDate`.
 - dcp-tools leaves logging to the importing application: its module loggers sit under `dcp_tools`, propagate to the root logger and set no handler or level, so unconfigured applications see only warnings. `LOG_LEVEL` now applies to the `dcp-tools` CLI only, which still prints its messages.
 - Deprecated `dcp_tools.logger` and the `dcp-tools` logger name, to be removed in 2.0. Until then both resolve to the `dcp_tools` package logger, provided `dcp-tools` is configured after dcp-tools is imported.
 

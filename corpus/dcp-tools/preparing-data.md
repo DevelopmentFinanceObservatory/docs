@@ -70,8 +70,9 @@ Commons, in which case it's on you to confirm that it does.
 
 Both methods take `description`, `license`, `license_type`, `license_attribution`, and
 `is_part_of`. `add_provenance` additionally takes `source_data_url`, `last_data_refresh_date`,
-`next_data_refresh_date`, `next_source_release_date`, `source_release_frequency`,
-`earliest_observation_date`, `latest_observation_date`, and `curator`. `license_type` and
+`next_data_refresh_date`, `imported_source_release_date`, `next_source_release_date`,
+`source_release_frequency`, `earliest_observation_date`, `latest_observation_date`, and
+`curator`. `license_type` and
 `curator` are DCID references. A bare token becomes `dcid:<token>`. Use
 `additional_properties={"someProperty": "value"}` for anything else. Pass `override=True` to
 replace a node that's already registered under the same name.
