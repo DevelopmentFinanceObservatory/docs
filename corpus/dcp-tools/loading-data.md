@@ -131,7 +131,8 @@ from dcp_tools.gcp_utilities import get_missing_csv_files, get_unregistered_csv_
 from dcp_tools.gcp_utilities.clients import get_gcs_client
 
 config = json.loads(Path("path/to/output/folder/config.json").read_text())
-bucket = get_gcs_client(settings.gcp_credentials).get_bucket(settings.gcs_bucket_name)
+client = get_gcs_client(settings.gcp_credentials, project=settings.gcp_project_id)
+bucket = client.get_bucket(settings.gcs_bucket_name)
 
 print(get_missing_csv_files(bucket, config, gcs_folder_name=settings.gcs_input_folder_path))
 print(get_unregistered_csv_files(bucket, config, gcs_folder_name=settings.gcs_input_folder_path))
