@@ -36,7 +36,6 @@ settings are read from a `.env` file in the current directory.
   "GCS_BUCKET_NAME": "one-dcp-import",
   "GCS_INPUT_FOLDER_PATH": "climate-finance",
   "GCS_OUTPUT_FOLDER_PATH": "climate-finance/output",
-  "INGESTION_PREP_JOB_NAME": "dcp-prep-job",
   "INGESTION_WORKFLOW_NAME": "dcp-ingestion-workflow"
 }
 ```
@@ -48,7 +47,6 @@ GCP_REGION=us-central1
 GCS_BUCKET_NAME=one-dcp-import
 GCS_INPUT_FOLDER_PATH=climate-finance
 GCS_OUTPUT_FOLDER_PATH=climate-finance/output
-INGESTION_PREP_JOB_NAME=dcp-prep-job
 INGESTION_WORKFLOW_NAME=dcp-ingestion-workflow
 ```
 
@@ -179,9 +177,11 @@ $ dcp-tools upload --settings-file customDC.json --directory export/
 
 Triggers the DCP ingestion workflow that loads uploaded files into the knowledge graph, wrapping
 `run_ingestion_workflow`.
+`ingest` and `pipeline` need a DCP 1.1.6 instance.
 
 ```
 dcp-tools ingest [--settings-file PATH] [--env-file PATH] [--imports a,b,c]
+                 [--skip-workflow-contract-check]
 ```
 
 **Options**
@@ -189,6 +189,10 @@ dcp-tools ingest [--settings-file PATH] [--env-file PATH] [--imports a,b,c]
 - **`--settings-file PATH`**, **`--env-file PATH`**: see [Global options](#global-options).
 - **`--imports a,b,c`** (default: every import): comma-separated import names to scope the run
   to. Omit it to ingest everything under the configured GCS input folder.
+- **`--skip-workflow-contract-check`**: start the workflow without first reading its definition
+  to confirm it comes from a DCP 1.1.6 stack. Use it only when the identity starting the
+  ingestion can't be granted `roles/workflows.viewer` and you know the stack runs 1.1.6. See
+  [Loading data](loading-data.md).
 
 **Example**
 
@@ -211,12 +215,15 @@ Runs `upload` followed by `ingest` for every import in one call, wrapping
 
 ```
 dcp-tools pipeline [--settings-file PATH] [--env-file PATH] [--directory PATH] [--sync]
+                   [--skip-workflow-contract-check]
 ```
 
 **Options**
 
 - **`--settings-file PATH`**, **`--env-file PATH`**, **`--directory PATH`**, **`--sync`**: same
   flags and defaults as [`upload`](#dcp-tools-upload).
+- **`--skip-workflow-contract-check`**: same as for [`ingest`](#dcp-tools-ingest). Without it,
+  `pipeline` checks the workflow before uploading, so it uploads nothing to an older stack.
 
 > [!WARNING]
 > `pipeline` has no `--imports` flag. It always calls `ingest` with no import filter, loading

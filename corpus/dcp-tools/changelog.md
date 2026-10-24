@@ -11,20 +11,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-23
+
 ### Added
 - `add_provenance` takes `imported_source_release_date`, written to the Provenance node as a
   quoted `importedSourceReleaseDate`.
 - `add_provenance` and `ProvenanceNode` take a list for `source_data_url`, written as one quoted
   value per URL on the `sourceDataUrl` line. A single string is written as before.
+- `check_ingestion_workflow_contract` reads the ingestion workflow's definition and raises
+  `WorkflowContractError` unless the workflow creates its preprocessing job on Cloud Batch, as DCP
+  1.1.6 does. It also raises when the definition can't be read, which needs
+  `roles/workflows.viewer`. `run_ingestion_workflow` runs it before starting the workflow, and
+  `dcp-tools pipeline` before uploading. `skip_workflow_contract_check=True`, or
+  `--skip-workflow-contract-check` on `dcp-tools ingest` and `dcp-tools pipeline`, skips the check.
+- `get_ingestion_execution_state` reads an ingestion execution's state, current steps and error
+  from the Workflow Executions API, as an `IngestionExecutionState`.
 
 ### Changed
 - dcp-tools leaves logging to the importing application: its module loggers sit under `dcp_tools`,
   propagate to the root logger and set no handler or level, so unconfigured applications see only
   warnings. `LOG_LEVEL` now applies to the `dcp-tools` CLI only, which still prints its messages.
+- `run_ingestion_workflow`, `dcp-tools ingest` and `dcp-tools pipeline` start ingestion only on a
+  Data Commons Platform 1.1.6 instance. dcp-tools requires `datacommons-admin>=1.1.6,<1.1.7`, whose
+  `IngestionJobClient` sends the ingestion workflow only the list of imports. The workflow runs
+  preprocessing as a Cloud Batch job it creates itself, so no preprocessing job name is sent.
+  `datacommons-admin` 1.1.6 depends on `datacommons-db`, which adds Spanner and SQLAlchemy to the
+  installed packages and caps `setuptools` at 80.0.0 for every project that installs dcp-tools.
+- `run_ingestion_workflow` returns the started execution's resource name, and raises
+  `RuntimeError` when the workflow's response holds none. It used to return `None` and log a
+  warning. Blank or comma-only `imports` ingest every import.
 
 ### Deprecated
 - `dcp_tools.logger` and the `dcp-tools` logger name, to be removed in 2.0. Until then both resolve
   to the `dcp_tools` package logger, provided `dcp-tools` is configured after dcp-tools is imported.
+- `KGSettings.ingestion_prep_job_name` and `INGESTION_PREP_JOB_NAME`, to be removed in 2.0. The
+  setting is optional and ignored, and setting it emits a `FutureWarning`.
 
 ### Fixed
 - Uploads under Application Default Credentials failed with "Project was not passed" when the
@@ -456,5 +477,6 @@ Released for external preview and testing.
 [1.0.0a5]: https://github.com/ONEcampaign/dcp-tools/compare/v1.0.0a4...v1.0.0a5
 [1.0.0]: https://github.com/ONEcampaign/dcp-tools/compare/v1.0.0a5...v1.0.0
 [1.0.1]: https://github.com/ONEcampaign/dcp-tools/compare/v1.0.0...v1.0.1
-[unreleased]: https://github.com/ONEcampaign/dcp-tools/compare/v1.0.1...HEAD
+[1.1.0]: https://github.com/ONEcampaign/dcp-tools/compare/v1.0.1...v1.1.0
+[unreleased]: https://github.com/ONEcampaign/dcp-tools/compare/v1.1.0...HEAD
 
