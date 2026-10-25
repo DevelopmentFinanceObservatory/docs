@@ -69,25 +69,26 @@ sources:
     exclude:
       - reference/*
 
-  # Private repositories, cloned with the dfo-reader GitHub App token the build workflow mints.
+  # The DFO's own repositories. Their integration branch is `dev`, which docsync opens its pull
+  # requests against.
   - name: dfo-apis
-    repo: ONEcampaign/dfo-apis
+    repo: DevelopmentFinanceObservatory/apis
     ref: dev
     docs_dir: docs/guide
     path: api
     title: API
 
   - name: dfo-ai
-    repo: ONEcampaign/dfo-ai
+    repo: DevelopmentFinanceObservatory/ai
     ref: dev
     docs_dir: docs/guide
     path: mcp
     title: MCP server
 
   - name: dfo-skills
-    repo: ONEcampaign/dfo-skills
+    repo: DevelopmentFinanceObservatory/skills
     kind: skill
-    ref: main
+    ref: dev
     docs_dir: skills
     internal_dir: internal/skills
     path: skills

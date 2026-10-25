@@ -42,7 +42,7 @@ class HubCheckoutError(RuntimeError):
     """The dfo-docs checkout cannot supply hub pages.
 
     Its hub content has uncommitted changes, it has no branch checked out, or its
-    `HEAD` is not the remote's `main`.
+    `HEAD` is not the remote's `dev`.
     """
 
 

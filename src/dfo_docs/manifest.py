@@ -46,7 +46,7 @@ from dfo_docs.skills import Skill, load_skills, skill_page_text, write_skill_bun
 # The hub's own content has no registered Source, so it is given a stand-in name and
 # repo shorthand consistent with the "owner/name" shape every other source_repo carries.
 _HUB_SOURCE_NAME = "hub"
-_HUB_SOURCE_REPO = "ONEcampaign/dfo-docs"
+_HUB_SOURCE_REPO = "DevelopmentFinanceObservatory/docs"
 # The hub page each generated skill header links to, relative to the hub's content root.
 _SKILL_INSTALL_PAGE = "skills/use-in-your-agent.md"
 

@@ -373,7 +373,7 @@ def test_hub_pages_land_at_corpus_root(tmp_path):
     assert home.title == "Home"
     assert home.description == "The hub landing page."
     assert home.corpus_path == "corpus/hub/index.md"
-    assert home.source_repo == "ONEcampaign/dfo-docs"
+    assert home.source_repo == "DevelopmentFinanceObservatory/docs"
     assert home.source_commit is None
     assert home.last_modified is None
     assert (corpus_root / "hub" / "index.md").is_file()
@@ -875,7 +875,7 @@ def test_skill_corpus_files_carry_the_header_and_keep_links(tmp_path):
     assert not (corpus_root / "dfo-skills" / "_template").exists()
 
 
-# The page entry and the download link that dfo-website's sync and link resolver are
+# The page entry and the download link that the website's sync and link resolver are
 # tested against. Both repositories hold these literals.
 _BUNDLE_PAGE = {
     "path": "skills/oda-crs",

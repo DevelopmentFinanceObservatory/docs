@@ -26,7 +26,7 @@ An inserted paragraph.
 1. Clone the skills repo.
 
 ```sh
-git clone --depth 1 https://github.com/ONEcampaign/dfo-skills.git
+git clone --depth 1 https://github.com/DevelopmentFinanceObservatory/skills.git
 ```
 
 1. Copy the skills into a skills folder.

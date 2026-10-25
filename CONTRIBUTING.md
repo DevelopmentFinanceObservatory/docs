@@ -1,12 +1,14 @@
 # Contributing to the DFO docs
 
-The DFO docs serve analysts who know the DAC and the CRS, write some Python or R, and need data they can trust in their own work. AI assistants read the same pages. This guide covers where pages live, how to write one, and how a source repository publishes its own pages into the corpus.
+Issues and pull requests are welcome. The ONE Data team maintains this repository. Open an issue to discuss a large change, such as a new section or a new source repository, before you write it. Contributors follow the [Code of Conduct](https://github.com/DevelopmentFinanceObservatory/.github/blob/main/CODE_OF_CONDUCT.md). Report security issues through the "Report a vulnerability" button under the repository's Security tab, as the [security policy](https://github.com/DevelopmentFinanceObservatory/.github/blob/main/SECURITY.md) describes.
+
+The DFO docs serve analysts who know the DAC and the CRS, write some Python or R, and need data they can trust in their own work. AI assistants read the same pages.
 
 ## Where pages live
 
 The site publishes hub pages from Markdown files under `content/hub/` in this repository. Source pages live in each source repository's docs folder, and the build fetches them through a row in `sources.yaml`.
 
-```
+```text
 dfo-docs/
 ├── content/hub/          hub pages; a page's URL is its path here
 │   ├── index.md          Home, published at /docs
@@ -21,7 +23,7 @@ dfo-docs/
 
 A hub page publishes at its path under `content/hub/` without the `.md` suffix, so `content/hub/data/glossary.md` publishes at `/docs/data/glossary`. Its place in the nav comes from `hub.yaml`, so a page can move in the nav without changing its URL. Only pages named in `hub.yaml` publish.
 
-A source repository with several pages groups them by mode: `tutorials/`, `how-to/` and `about/`, as `tossd-reader` does.
+A source repository with several pages groups them by mode in `tutorials/`, `how-to/` and `about/`, as `tossd-reader` does.
 
 ## Writing a page
 
@@ -48,11 +50,11 @@ Use DFO values in examples, including `country/NGA`, CRS purpose 12220, finance 
 
 End every page with a `## Next` section of one or two links, each with a sentence saying what the reader gets there. Leave out boilerplate headings such as Overview, Summary or Conclusion.
 
-Use only three callouts: `!!! note`, `!!! tip` and `!!! warning`. Leave them untitled and indent the body four spaces. The build renders them as site alerts. A title becomes a bold lead sentence, so put the point in the body. Use callouts for optional material and keep required information in the page body.
+Use only three callouts, `!!! note`, `!!! tip` and `!!! warning`. Leave them untitled and indent the body four spaces. The build renders them as site alerts. A title becomes a bold lead sentence, so put the point in the body. Use callouts for optional material and keep required information in the page body.
 
 ```markdown
 !!! warning
-    Studio links are always snapshots.
+Studio links are always snapshots.
 ```
 
 The build passes collapsible `???` blocks through unchanged, where they render as raw text. Leave them out.
@@ -96,9 +98,9 @@ Only published pages are valid link targets. The link check fails for a page abs
 
 ## Publishing a source repository's docs
 
-A source repository keeps its pages in a docs folder and declares them in a nav sidecar. The build looks for the sidecar in three places, in this order: `docs/mkdocs.yml`, a root `mkdocs.yml`, and a root `zensical.toml`. The docs root is the sidecar's own `docs_dir`, resolved from the folder the sidecar sits in.
+A source repository keeps its pages in a docs folder and declares them in a nav sidecar. The build looks for the sidecar at `docs/mkdocs.yml`, then a root `mkdocs.yml`, then a root `zensical.toml`. The docs root is the sidecar's own `docs_dir`, resolved from the folder the sidecar sits in.
 
-Use a root `mkdocs.yml` when user-facing pages sit in a subfolder separate from a repository's internal docs. dfo-apis publishes `docs/guide/` this way:
+Use a root `mkdocs.yml` when user-facing pages sit in a subfolder separate from a repository's internal docs. `apis` publishes `docs/guide/` this way:
 
 ```yaml
 site_name: API
@@ -119,30 +121,40 @@ nav:
 Then register the repository in `sources.yaml`:
 
 ```yaml
-  - name: dfo-apis
-    repo: ONEcampaign/dfo-apis
-    ref: dev
-    docs_dir: docs/guide
-    path: api
-    title: API
+- name: dfo-apis
+  repo: DevelopmentFinanceObservatory/apis
+  ref: dev
+  docs_dir: docs/guide
+  path: api
+  title: API
 ```
 
-In `sources.yaml`, `docs_dir` sets which folder the build checks out. Match it to the sidecar's `docs_dir`. Set `path` to `extra.dfo.path`. The build fails if they differ. Add a `mount` entry in `hub.yaml` that names the source row. To register a repository before publication, set `enabled: false` with a `reason` and leave it out of `hub.yaml`. A mount for a disabled source fails the build. A private repository also needs the `dfo-reader` GitHub App installed on it and its name added to the token steps in the build and registry-health workflows, as the README describes. The README covers `exclude`, `kind: external`, `kind: skill`, and each build failure.
+In `sources.yaml`, `docs_dir` sets which folder the build checks out. Match it to the sidecar's `docs_dir`. Set `path` to `extra.dfo.path`. The build fails if they differ. Add a `mount` entry in `hub.yaml` that names the source row. To register a repository before publication, set `enabled: false` with a `reason` and leave it out of `hub.yaml`. A mount for a disabled source fails the build. Every registered repository must be public. [docs/development.md](docs/development.md) covers `exclude`, `kind: external`, `kind: skill`, and each build failure.
 
-Before opening a pull request in the source repository, check its nav against its pages from a dfo-docs checkout. Then check links from the source repository's docs folder:
+Before opening a pull request in the source repository, check its nav against its pages from a `docs` checkout. Then check links from the source repository's docs folder:
 
-```
+```bash
 uv run python scripts/check_nav.py /path/to/source-repo
 lychee --offline /path/to/source-repo/docs/guide/
 ```
 
 ## Checking a change here
 
-```
+```bash
 uv run ruff check .
+uv run ruff format --check .
+uv run ty check src/dfo_docs
 uv run pytest
 uv run python scripts/build.py --out /tmp/dfo-docs-build
 lychee --config lychee.toml /tmp/dfo-docs-build/corpus/
 ```
 
-The build clones every enabled source over HTTPS. Public sources need no credentials, and private ones use whatever GitHub credentials your git already has, so you need read access to them.
+The build clones every enabled source over HTTPS without credentials, so none of this needs ONE's cloud access. Run `uv run pre-commit install` once, and pre-commit then runs the formatters and hygiene checks on each commit.
+
+## Pull requests
+
+Branch from `dev` and open the pull request into `dev`. A push to `dev` rebuilds the corpus the site reads, and a pull request runs the build without publishing. A draft pull request runs no CI, so mark it ready when you want the checks. CI runs ruff, ty, the tests on Python 3.13 and 3.14, the build, and the link check. A page change needs a description in its front matter and working links. Code changes need tests and must pass these checks.
+
+Commit messages follow Conventional Commits, such as `docs(docsync): describe the first run without state`.
+
+Maintainer internals are in [docs/development.md](docs/development.md).

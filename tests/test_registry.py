@@ -188,7 +188,7 @@ def test_external_row_may_not_exclude(tmp_path: Path):
 _SKILL_ROW = (
     "sources:\n"
     "  - name: dfo-skills\n"
-    "    repo: ONEcampaign/dfo-skills\n"
+    "    repo: DevelopmentFinanceObservatory/skills\n"
     "    kind: skill\n"
     "    docs_dir: skills\n"
     "    path: skills\n"

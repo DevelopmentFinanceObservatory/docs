@@ -9,7 +9,7 @@
 # in it, created by `dfo-docsync init` and found by its Drive property dfo_role=tracking-sheet.
 #
 # `pr_author` is the author docsync lists its open pull requests by, as gh's `--author` takes
-# it. The value `app/dfo-bot` names the dfo-bot GitHub App that opens them in CI. A local run
+# it. The value `app/dfo-docsync` names the dfo-docsync GitHub App that opens them in CI. A local run
 # that opens pull requests with your own gh login passes `--pr-author @me`.
 
 sources:
@@ -20,4 +20,4 @@ sources:
 
 drive_folder_id: 1DL_BWEeo92oksJEr28xlXFD46xQxFQG1
 
-pr_author: app/dfo-bot
+pr_author: app/dfo-docsync

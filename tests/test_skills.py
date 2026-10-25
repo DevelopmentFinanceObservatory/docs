@@ -21,7 +21,7 @@ from dfo_docs.skills import (
     write_skill_bundle,
 )
 
-# The seven published dfo-skills descriptions, as YAML parses them, and the lead each gives.
+# The seven published skill descriptions, as YAML parses them, and the lead each gives.
 REAL_DESCRIPTIONS = [
     (
         "dfo-faq",
@@ -84,7 +84,7 @@ def _fetched(tmp_path: Path, *, internal_dir: str | None = None) -> Fetched:
     docs_root.mkdir(parents=True)
     source = Source(
         name="dfo-skills",
-        repo="ONEcampaign/dfo-skills",
+        repo="DevelopmentFinanceObservatory/skills",
         kind=SourceKind.SKILL,
         docs_dir="skills",
         path="skills",
