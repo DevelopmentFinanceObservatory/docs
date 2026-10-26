@@ -16,6 +16,62 @@ categories:
     label: Developer experience
 
 entries:
+  - id: search-states-assumptions
+    title: Search answers state their assumptions
+    description: >-
+      Each search answer lists the assumptions it made, and a partial answer
+      opens by saying how many parts of the question it answered. Search reads
+      relative dates such as "last five years" in English, Spanish and French.
+    categories: [data-exploration]
+    status: released
+    released_on: "2026-10-25"
+
+  - id: published-group-totals
+    title: Published totals for donor groups
+    description: >-
+      Questions about all donors or all official donors use the total the source
+      publishes, where it has one.
+    categories: [data-exploration]
+    status: released
+    released_on: "2026-10-25"
+
+  - id: guest-shared-snapshots
+    title: Shared snapshots open for guests
+    description: >-
+      Anyone with the link can open a shared Studio snapshot without signing in.
+      Live links now work for canvases with more than four data cards.
+    categories: [sharing-publishing]
+    status: released
+    released_on: "2026-10-25"
+
+  - id: line-chart-isolated-points
+    title: Line charts show isolated values
+    description: >-
+      A value with no neighbour on either side now appears as a point on line
+      charts, in Studio and in Claude Desktop and ChatGPT.
+    categories: [charts]
+    status: released
+    released_on: "2026-10-25"
+
+  - id: api-reference-and-errors
+    title: OpenAPI reference and standard errors
+    description: >-
+      The API publishes its OpenAPI description at /openapi.json and explains
+      each refusal code at /codes/{code}. Every error is a problem+json
+      document. Dataset downloads serve any stored version in any format, report
+      how long versions are kept, and page through version history.
+    categories: [developer-experience]
+    status: released
+    released_on: "2026-10-25"
+
+  - id: open-source-repositories
+    title: Open-source code
+    description: >-
+      The platform's code repositories are public under the MIT licence.
+    categories: [developer-experience]
+    status: released
+    released_on: "2026-10-25"
+
   - id: more-chart-types
     title: Scatter plots
     description: >-
