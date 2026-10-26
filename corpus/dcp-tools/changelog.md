@@ -11,6 +11,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- `LOCAL_PATH` and `GCS_OUTPUT_FOLDER_PATH` are optional. `upload_to_cloud_storage` without a
+  `directory` and `full_gcs_output_path` raise a `ValueError` naming the setting when it's unset.
+- Requires `pydantic-settings>=2.14.0`.
+- `upload_directory_to_gcs`, and with it `sync_directory_to_gcs`, `dcp-tools upload` and
+  `dcp-tools pipeline`, skips a file whose MD5 matches the blob already at its remote path and logs
+  it as unchanged. A blob without an MD5, such as a composite object, is always overwritten.
+
+### Fixed
+- `KGSettings` ignores variables in its `.env` file that it doesn't define, instead of rejecting
+  them as extra inputs. JSON files and constructor calls still reject unknown keys.
+- `ColumnMappings` accepts the spec's `variableMeasured` and `observationDate` keys, so a
+  `config.json` written to the spec loads. Mappings are still written with `dcid:` keys.
+- `observationProperties` in an exported `config.json` uses camelCase keys (`scalingFactor`,
+  `measurementMethod`, `observationPeriod`) when `add_input_file` or `ObservationProperties` gets
+  snake_case ones. Passing both spellings of one key raises a `ValidationError`.
+
 ## [1.1.0] - 2026-10-23
 
 ### Added

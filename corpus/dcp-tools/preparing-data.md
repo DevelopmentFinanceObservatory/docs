@@ -107,13 +107,16 @@ manager.add_input_file(
 
 `columnMappings` keys map a role to a CSV column name. Allowed keys: `variable`,
 `observationAbout`, `date`, `value`, `unit`, `scalingFactor`, `measurementMethod`,
-`observationPeriod`, plus `custom:<name>` for multi-entity data (see the next section).
-`observationAbout` is the entity column for single-entity data. It holds a dcid per row (here,
-country dcids like `country/KEN`).
+`observationPeriod`, plus `custom:<name>` for multi-entity data (see the next section). The
+spec's `variableMeasured` and `observationDate`, and the `dcid:`-prefixed forms, work too.
+`config.json` is written with `dcid:` keys. `observationAbout` is the entity column for
+single-entity data. It holds a dcid per row (here, country dcids like `country/KEN`).
 
 `observationProperties` here differs from `add_variable_to_mcf`'s parameter of the same
 name. On `add_input_file` it's a dict of file-level constants applied to every row (every
-observation in this file is in US dollars), not a list of dcid refs.
+observation in this file is in US dollars), not a list of dcid refs. Its standard keys,
+`unit`, `scalingFactor`, `measurementMethod` and `observationPeriod`, also accept snake_case
+and are written in camelCase. Other keys are written as given.
 
 Data is optional at registration:
 

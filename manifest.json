@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-25T10:41:19Z",
+  "generated_at": "2026-10-26T12:14:08Z",
   "generator_commit": "f3fa2db198e8a71ccb05bdd7f58358674f1afc5d",
   "nav": [
     {
@@ -857,7 +857,7 @@
       "description": "Build Data Commons Platform import files with the dcp-tools Python API or CLI, upload them, and trigger ingestion.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/index.md",
-      "source_commit": "6cd46ec67041d299d1013fb0f9bb7bc0fec3cfca",
+      "source_commit": "780f16e284e35cb69eb0be51dc61c9d569d0e9a9",
       "last_modified": "2026-10-13T13:35:47Z",
       "corpus_path": "corpus/dcp-tools/index.md"
     },
@@ -869,7 +869,7 @@
       "description": "Install dcp-tools and build a complete climate finance import bundle from Python, then export it and check the config, MCF, and CSV files.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/getting-started.md",
-      "source_commit": "6cd46ec67041d299d1013fb0f9bb7bc0fec3cfca",
+      "source_commit": "780f16e284e35cb69eb0be51dc61c9d569d0e9a9",
       "last_modified": "2026-10-13T14:56:42Z",
       "corpus_path": "corpus/dcp-tools/getting-started.md"
     },
@@ -881,8 +881,8 @@
       "description": "Use CustomDataManager recipes to register data, define StatVars and schema nodes, merge configs, validate bundles, and export files.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/preparing-data.md",
-      "source_commit": "6cd46ec67041d299d1013fb0f9bb7bc0fec3cfca",
-      "last_modified": "2026-10-21T16:25:34Z",
+      "source_commit": "780f16e284e35cb69eb0be51dc61c9d569d0e9a9",
+      "last_modified": "2026-10-26T10:24:27Z",
       "corpus_path": "corpus/dcp-tools/preparing-data.md"
     },
     {
@@ -893,7 +893,7 @@
       "description": "Why dcp-tools writes both config.json and MCF files, how a CSV column becomes an observation predicate, and how custom dimensions carry bilateral data.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/dc-schemas.md",
-      "source_commit": "6cd46ec67041d299d1013fb0f9bb7bc0fec3cfca",
+      "source_commit": "780f16e284e35cb69eb0be51dc61c9d569d0e9a9",
       "last_modified": "2026-10-13T13:35:47Z",
       "corpus_path": "corpus/dcp-tools/dc-schemas.md"
     },
@@ -905,8 +905,8 @@
       "description": "Upload an exported bundle to Google Cloud Storage, trigger the Data Commons Platform ingestion workflow, check the upload, and fix common settings errors.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/loading-data.md",
-      "source_commit": "6cd46ec67041d299d1013fb0f9bb7bc0fec3cfca",
-      "last_modified": "2026-10-23T17:23:03Z",
+      "source_commit": "780f16e284e35cb69eb0be51dc61c9d569d0e9a9",
+      "last_modified": "2026-10-26T10:44:41Z",
       "corpus_path": "corpus/dcp-tools/loading-data.md"
     },
     {
@@ -917,8 +917,8 @@
       "description": "Use the dcp-tools CLI reference to convert CSV files to MCF, upload bundles, trigger ingestion, and check command options.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/cli-tools.md",
-      "source_commit": "6cd46ec67041d299d1013fb0f9bb7bc0fec3cfca",
-      "last_modified": "2026-10-23T17:23:03Z",
+      "source_commit": "780f16e284e35cb69eb0be51dc61c9d569d0e9a9",
+      "last_modified": "2026-10-26T10:44:41Z",
       "corpus_path": "corpus/dcp-tools/cli-tools.md"
     },
     {
@@ -929,7 +929,7 @@
       "description": "Read dcp-tools release notes from version 0.0.1 onwards, including changes to the API, settings and exported files.",
       "source_repo": "ONEcampaign/dcp-tools",
       "source_path": "docs/docs/changelog.md",
-      "source_commit": "6cd46ec67041d299d1013fb0f9bb7bc0fec3cfca",
+      "source_commit": "780f16e284e35cb69eb0be51dc61c9d569d0e9a9",
       "last_modified": "2026-10-21T15:48:31Z",
       "corpus_path": "corpus/dcp-tools/changelog.md"
     },
@@ -1457,7 +1457,7 @@
       "description": "Build a Parquet dataset from a plain-English development-finance question.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/quickstart.md",
-      "source_commit": "d340e158b084d58e3f7c14b5900b5256ca3d17a5",
+      "source_commit": "44ac1baf0452b0d5f09378cf5d4e9f99682dfbca",
       "last_modified": "2026-10-23T11:57:03Z",
       "corpus_path": "corpus/dfo-apis/quickstart.md"
     },
@@ -1469,7 +1469,7 @@
       "description": "Understand how questions, specs, versions, StatVars, series, rows, and facets fit together.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/concepts.md",
-      "source_commit": "d340e158b084d58e3f7c14b5900b5256ca3d17a5",
+      "source_commit": "44ac1baf0452b0d5f09378cf5d4e9f99682dfbca",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/concepts.md"
     },
@@ -1481,7 +1481,7 @@
       "description": "Resolve a plain-English question into an interpretable DFO spec.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/resolve-a-question.md",
-      "source_commit": "d340e158b084d58e3f7c14b5900b5256ca3d17a5",
+      "source_commit": "44ac1baf0452b0d5f09378cf5d4e9f99682dfbca",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/resolve-a-question.md"
     },
@@ -1493,7 +1493,7 @@
       "description": "Create, retrieve, and download a versioned DFO dataset.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/get-a-dataset.md",
-      "source_commit": "d340e158b084d58e3f7c14b5900b5256ca3d17a5",
+      "source_commit": "44ac1baf0452b0d5f09378cf5d4e9f99682dfbca",
       "last_modified": "2026-10-23T11:57:03Z",
       "corpus_path": "corpus/dfo-apis/get-a-dataset.md"
     },
@@ -1505,7 +1505,7 @@
       "description": "Resolve names, inspect graph nodes, list what belongs to them, and read source documentation.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/look-things-up.md",
-      "source_commit": "d340e158b084d58e3f7c14b5900b5256ca3d17a5",
+      "source_commit": "44ac1baf0452b0d5f09378cf5d4e9f99682dfbca",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/look-things-up.md"
     },
@@ -1517,7 +1517,7 @@
       "description": "Reference for DFO API URLs, versioning, response tracing, and errors.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/conventions.md",
-      "source_commit": "d340e158b084d58e3f7c14b5900b5256ca3d17a5",
+      "source_commit": "44ac1baf0452b0d5f09378cf5d4e9f99682dfbca",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/conventions.md"
     },
@@ -1529,7 +1529,7 @@
       "description": "Connect the DFO to Claude, ChatGPT, or Gemini so your assistant can look up development finance data. Developers can also connect Claude Code, Codex, or Gemini CLI.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/connect.md",
-      "source_commit": "4815af512a2683b440cde6241e0f701acd02bbb5",
+      "source_commit": "f3a95922f7009f1ba5f2ff3da0f76f94f166bd58",
       "last_modified": "2026-10-14T10:50:14Z",
       "corpus_path": "corpus/dfo-ai/connect.md"
     },
@@ -1541,7 +1541,7 @@
       "description": "How a question to the DFO MCP server becomes a cited answer, and the limits and refusals that bound it.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/what-you-can-ask.md",
-      "source_commit": "4815af512a2683b440cde6241e0f701acd02bbb5",
+      "source_commit": "f3a95922f7009f1ba5f2ff3da0f76f94f166bd58",
       "last_modified": "2026-10-15T18:50:12Z",
       "corpus_path": "corpus/dfo-ai/what-you-can-ask.md"
     },

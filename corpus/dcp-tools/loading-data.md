@@ -14,19 +14,19 @@ Upload an exported data bundle to Google Cloud Storage, then trigger the Data Co
 
 - The settings `dcp-tools` needs to reach GCP and your ingestion resources, gathered into a `KGSettings` object:
 
-  - `local_path` (`LOCAL_PATH`): local directory to export and upload. This is the bundle directory from the step above.
+  - `local_path` (`LOCAL_PATH`, optional): local directory to upload when you don't pass one to `upload_to_cloud_storage`. This is the bundle directory from the step above.
   - `gcp_project_id` (`GCP_PROJECT_ID`): your GCP project ID.
   - `gcp_region` (`GCP_REGION`): region the ingestion resources are deployed in.
   - `gcp_credentials` (`GCP_CREDENTIALS`, optional): GCP service account credentials as a JSON string. Leave unset to use Application Default Credentials (after `gcloud auth application-default login`). Only the Cloud Storage calls use it. Starting an ingestion always uses Application Default Credentials.
   - `gcs_bucket_name` (`GCS_BUCKET_NAME`): the Cloud Storage bucket the DCP pipeline reads from.
   - `gcs_input_folder_path` (`GCS_INPUT_FOLDER_PATH`, optional): folder in that bucket to upload the bundle to. Defaults to `ingestion/input`, the DCP Terraform default.
-  - `gcs_output_folder_path` (`GCS_OUTPUT_FOLDER_PATH`): folder the pipeline writes its output to.
+  - `gcs_output_folder_path` (`GCS_OUTPUT_FOLDER_PATH`, optional): folder the pipeline writes its output to.
   - `ingestion_workflow_name` (`INGESTION_WORKFLOW_NAME`): name of the Cloud Workflow that runs the ingestion.
   - `ingestion_service_account` (`INGESTION_SERVICE_ACCOUNT`, optional): service account that Application Default Credentials impersonate to read and start the workflow. Leave unset to start it as your Application Default Credentials identity.
 
 ## Steps
 
-1. **Build a `KGSettings` object.** `dcp-tools` reads these settings through `KGSettings`, a `pydantic-settings` model. Build one from a `.env` file, a JSON file, or directly, whichever fits how you manage secrets.
+1. **Build a `KGSettings` object.** `dcp-tools` reads these settings through `KGSettings`, a `pydantic-settings` model. Build one from a `.env` file, a JSON file, or directly, whichever fits how you manage secrets. A `.env` file can hold other variables too: `KGSettings` ignores any it doesn't define. A JSON file or constructor call rejects unknown keys.
 
    ```python title="from a .env file"
    from dcp_tools.gcp_utilities import get_kg_settings
@@ -72,7 +72,7 @@ Upload an exported data bundle to Google Cloud Storage, then trigger the Data Co
 
    Using the CLI instead of the Python API? Skip building a `KGSettings` object yourself and pass `--env-file customDC.env` or `--settings-file customDC.json` to any of the commands in the next two steps.
 
-1. **Upload the bundle to Cloud Storage.** This pushes every `.csv`, `.json`, and `.mcf` file under `settings.local_path` to `gs://<gcs_bucket_name>/<gcs_input_folder_path>/`, preserving the directory structure. Other file types are skipped with a warning.
+1. **Upload the bundle to Cloud Storage.** This pushes every `.csv`, `.json`, and `.mcf` file under `settings.local_path` to `gs://<gcs_bucket_name>/<gcs_input_folder_path>/`, preserving the directory structure. Other file types are skipped with a warning. A file whose MD5 matches the blob already at its remote path isn't uploaded again.
 
    ```python
    from dcp_tools.gcp_utilities import upload_to_cloud_storage
@@ -158,7 +158,7 @@ Ingestion itself runs as a Cloud Workflow execution (`ingestion_workflow_name` i
 
 ## Troubleshooting
 
-- **`KGSettings`/`get_kg_settings` raises a `pydantic.ValidationError` listing several fields as "Field required".** One or more required settings are missing from your `.env`/JSON file, or weren't passed to the constructor. Every field except `gcp_credentials`, `gcs_input_folder_path`, `ingestion_prep_job_name`, and `ingestion_service_account` is required. Check the list under [Before you start](#before-you-start).
+- **`KGSettings`/`get_kg_settings` raises a `pydantic.ValidationError` listing several fields as "Field required".** One or more required settings are missing from your `.env`/JSON file, or weren't passed to the constructor. The required fields are `gcp_project_id`, `gcs_bucket_name`, `gcp_region`, and `ingestion_workflow_name`. Check the list under [Before you start](#before-you-start).
 - **`GCP_CREDENTIALS` raises `Invalid JSON`.** `gcp_credentials` expects the *contents* of a service-account key as a JSON string, not a file path. Read the key file and pass its contents (`Path("key.json").read_text()`), or leave the setting unset to use Application Default Credentials.
 - **`get_missing_csv_files` reports every registered CSV as missing, even though the upload succeeded.** Both functions treat a `gcs_folder_name` that doesn't match anything in the bucket as an empty folder rather than raising: `get_missing_csv_files` then reports every `inputFiles` entry as missing, and `get_unregistered_csv_files` reports nothing (there's nothing to compare against). Check `gcs_input_folder_path` for a typo, or confirm the upload step ran first. Leading and trailing slashes are stripped automatically, so those aren't the issue.
 - **`run_ingestion_workflow` raises `RuntimeError: Failed to start ingestion workflow: ...`.** The underlying `IngestionJobClient` call failed, most often from a wrong `ingestion_workflow_name`/`gcp_region`, or an `ingestion_service_account` that isn't allowed to invoke the workflow.

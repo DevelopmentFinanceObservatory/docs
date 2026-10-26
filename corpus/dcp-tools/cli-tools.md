@@ -21,7 +21,8 @@ Every command, including `dcp-tools` itself, accepts `-h`/`--help` for its full 
 
 - **`--settings-file PATH`**: a JSON file using the settings' alias keys, all uppercase
   (`LOCAL_PATH`, `GCP_PROJECT_ID`, `GCS_BUCKET_NAME`, and so on).
-- **`--env-file PATH`**: a `.env` file using the same keys.
+- **`--env-file PATH`**: a `.env` file using the same keys. Other variables in the file are
+  ignored.
 
 If both are given, `--settings-file` wins and `--env-file` is ignored. If neither is given,
 settings are read from a `.env` file in the current directory.
@@ -53,7 +54,8 @@ INGESTION_WORKFLOW_NAME=dcp-ingestion-workflow
 > [!NOTE]
 > `GCP_CREDENTIALS` and `INGESTION_SERVICE_ACCOUNT` are optional and omitted above. Without
 > `GCP_CREDENTIALS`, GCP calls fall back to Application Default Credentials
-> (`gcloud auth application-default login`).
+> (`gcloud auth application-default login`). `LOCAL_PATH`, `GCS_INPUT_FOLDER_PATH` and
+> `GCS_OUTPUT_FOLDER_PATH` are optional too.
 
 ## Exit status
 
@@ -156,9 +158,10 @@ dcp-tools upload [--settings-file PATH] [--env-file PATH] [--directory PATH] [--
 
 - **`--settings-file PATH`**, **`--env-file PATH`**: see [Global options](#global-options).
 - **`--directory PATH`** (default: the directory configured as `LOCAL_PATH` in settings): local
-  directory to upload. Files are matched recursively. Anything under it that isn't `.csv`,
-  `.json`, or `.mcf` is skipped with a warning. The local directory structure is preserved under
-  the bucket's input folder.
+  directory to upload. Required when `LOCAL_PATH` is unset. Files are matched recursively.
+  Anything under it that isn't `.csv`, `.json`, or `.mcf` is skipped with a warning. The local
+  directory structure is preserved under the bucket's input folder. A file whose MD5 matches the
+  blob already at its remote path is skipped and logged as unchanged.
 - **`--sync`** (default: off): after uploading, delete remote blobs that no longer have a local
   counterpart. Deletion is scoped to import subdirectories that have local files present. An
   import missing from `--directory` entirely, or present but empty, is left untouched remotely. When `--directory` holds `.csv`, `.json`, or `.mcf` files at its top level, stale blobs directly under the input folder are deleted too.
@@ -170,7 +173,7 @@ $ dcp-tools upload --settings-file customDC.json --directory export/
 2026-07-21 09:14:02 | INFO     | dcp-tools | Uploaded export/config.json to climate-finance/config.json
 2026-07-21 09:14:02 | INFO     | dcp-tools | Uploaded export/provenance.mcf to climate-finance/provenance.mcf
 2026-07-21 09:14:03 | INFO     | dcp-tools | Uploaded export/custom_nodes.mcf to climate-finance/custom_nodes.mcf
-2026-07-21 09:14:03 | INFO     | dcp-tools | Uploaded 3 files to climate-finance in GCS bucket one-dcp-import
+2026-07-21 09:14:03 | INFO     | dcp-tools | Uploaded 3 files to climate-finance in GCS bucket one-dcp-import, skipped 0 unchanged
 ```
 
 ## `dcp-tools ingest`
