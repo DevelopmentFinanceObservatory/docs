@@ -16,6 +16,91 @@ categories:
     label: Developer experience
 
 entries:
+  - id: counting-method-shown
+    title: Counting method shown with each answer
+    description: >-
+      Each search answer ends with a "Counted as" line listing the sectors,
+      regions, providers and measure basis used. Defaults follow OECD
+      conventions, with donor totals in grant equivalents from 2018 and net
+      flows before, and regions as the OECD defines them.
+    categories: [data-exploration]
+    status: released
+    released_on: "2026-10-27"
+
+  - id: similar-place-names
+    title: Places with similar names kept apart
+    description: >-
+      Search and Studio treat places with similar names, such as the Republic
+      of the Congo and the Democratic Republic of the Congo, as separate
+      choices and ask which one you mean.
+    categories: [data-exploration]
+    status: released
+    released_on: "2026-10-27"
+
+  - id: gallery-search-indexing
+    title: Gallery searches easier to find
+    description: >-
+      Gallery search pages include their title, description and data sources
+      on first load, and the site has a sitemap for search engines.
+    categories: [website]
+    status: released
+    released_on: "2026-10-27"
+
+  - id: search-assumptions-shown
+    title: Assumptions shown with search answers
+    description: >-
+      Search shows the assumptions behind each answer and, for a partial
+      answer, how many parts of the question were answered.
+    categories: [data-exploration]
+    status: released
+    released_on: "2026-10-24"
+
+  - id: published-group-totals
+    title: Published totals for donor groups
+    description: >-
+      For questions about all donors or all official donors, Search uses the
+      total the source publishes, where there is one.
+    categories: [data-exploration]
+    status: released
+    released_on: "2026-10-24"
+
+  - id: guest-shared-snapshots
+    title: Guest access to shared snapshots
+    description: >-
+      Anyone with the link can open a shared Studio snapshot without signing in.
+      Live links now work for canvases with more than four data cards.
+    categories: [sharing-publishing]
+    status: released
+    released_on: "2026-10-23"
+
+  - id: line-chart-isolated-points
+    title: Isolated values plotted on line charts
+    description: >-
+      A value with no neighbour on either side now appears as a point on line
+      charts, in Studio and in Claude Desktop and ChatGPT.
+    categories: [charts]
+    status: released
+    released_on: "2026-10-23"
+
+  - id: api-reference-and-errors
+    title: OpenAPI reference and standard errors
+    description: >-
+      The OpenAPI description is at /openapi.json, and each refusal code is
+      documented at /codes/{code}. Every error is a problem+json document.
+      Dataset downloads cover any stored version in any format, with retention
+      periods and paged version history.
+    categories: [developer-experience]
+    status: released
+    released_on: "2026-10-25"
+
+  - id: open-source-repositories
+    title: Open-source code
+    description: >-
+      The platform's code repositories are public under the MIT licence.
+    categories: [developer-experience]
+    status: released
+    released_on: "2026-10-24"
+
   - id: more-chart-types
     title: Scatter plots
     description: >-
