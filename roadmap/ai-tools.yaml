@@ -15,21 +15,21 @@ entries:
   - id: switch-answer-reading
     title: Switch how an answer is counted
     description: >-
-      Chips on Studio's plan card and answer offer the other readings of a
+      Chips on Studio's plan card and answer switch between readings of a
       question, such as bilateral aid or aid including imputed multilateral
-      spending, and gross, net or grant-equivalent flows. One click returns
-      the new figure without a new search, and Studio seldom needs to ask
-      whether you mean gross or net.
+      spending, and gross, net or grant-equivalent flows. One click
+      recalculates the figure without a new search, and Studio seldom needs
+      to ask whether you mean gross or net.
     categories: [analysis]
     status: released
     released_on: "2026-10-27"
 
-  - id: shares-name-their-total
-    title: Shares name what they divide by
+  - id: share-denominators-shown
+    title: Denominators shown on share cards
     description: >-
-      Plans and share cards name the total a share divides by, such as the
+      Plans and share cards show the total a share is divided by, such as the
       total from official donors or from all donors, and list the donors in a
-      share of named donors. Plans state how many donors and indicators a
+      share of named donors. Plans show how many donors and indicators a
       figure sums.
     categories: [analysis]
     status: released
@@ -49,9 +49,9 @@ entries:
   - id: clearer-plans-and-steps
     title: Clearer plans and fewer false failures
     description: >-
-      Plans and cards use consistent wording, chart titles take their period
-      from the data, and coverage notes name the series that fall short. A step
-      that succeeds on a retry says so.
+      Plans and cards use consistent wording, chart titles use the period in
+      the data, and coverage notes list the series that fall short. A step
+      that succeeds on retry is marked as a success.
     categories: [analysis]
     status: released
     released_on: "2026-10-25"
