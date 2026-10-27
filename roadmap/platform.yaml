@@ -20,8 +20,7 @@ entries:
     title: Search answers state their assumptions
     description: >-
       Each search answer lists the assumptions it made, and a partial answer
-      opens by saying how many parts of the question it answered. Search reads
-      relative dates such as "last five years" in English, Spanish and French.
+      opens by saying how many parts of the question it answered.
     categories: [data-exploration]
     status: released
     released_on: "2026-10-25"
