@@ -16,6 +16,37 @@ categories:
     label: Developer experience
 
 entries:
+  - id: answers-say-how-counted
+    title: Answers say how they were counted
+    description: >-
+      Every search answer ends with a "Counted as" line naming the sectors,
+      regions, providers and measure basis it used. Defaults follow OECD
+      conventions: donor totals are in grant equivalents from 2018 and net
+      flows before, and regions read as the OECD counts them.
+    categories: [data-exploration]
+    status: released
+    released_on: "2026-10-27"
+
+  - id: similar-place-names
+    title: Places with similar names kept apart
+    description: >-
+      Search and Studio treat places with similar names, such as the Republic
+      of the Congo and the Democratic Republic of the Congo, as separate
+      choices and ask which one you mean.
+    categories: [data-exploration]
+    status: released
+    released_on: "2026-10-27"
+
+  - id: gallery-search-indexing
+    title: Gallery searches easier to find
+    description: >-
+      Gallery search pages carry their title, description and data sources
+      when the page first loads, and the site publishes a sitemap for search
+      engines.
+    categories: [website]
+    status: released
+    released_on: "2026-10-27"
+
   - id: search-states-assumptions
     title: Search answers state their assumptions
     description: >-

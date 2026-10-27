@@ -12,6 +12,29 @@ categories:
     label: Models and access
 
 entries:
+  - id: switch-answer-reading
+    title: Switch how an answer is counted
+    description: >-
+      Chips on Studio's plan card and answer offer the other readings of a
+      question, such as bilateral aid or aid including imputed multilateral
+      spending, and gross, net or grant-equivalent flows. One click returns
+      the new figure without a new search, and Studio seldom needs to ask
+      whether you mean gross or net.
+    categories: [analysis]
+    status: released
+    released_on: "2026-10-27"
+
+  - id: shares-name-their-total
+    title: Shares name what they divide by
+    description: >-
+      Plans and share cards name the total a share divides by, such as the
+      total from official donors or from all donors, and list the donors in a
+      share of named donors. Plans state how many donors and indicators a
+      figure sums.
+    categories: [analysis]
+    status: released
+    released_on: "2026-10-27"
+
   - id: more-accurate-answers
     title: More accurate answers
     description: >-
