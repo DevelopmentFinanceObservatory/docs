@@ -40,7 +40,7 @@ entries:
       questions in one pause and keeps your answers in the conversation.
     categories: [analysis]
     status: released
-    released_on: "2026-10-25"
+    released_on: "2026-10-23"
 
   - id: new-analytical-operations
     title: New analytical operations
@@ -50,7 +50,7 @@ entries:
       total.
     categories: [analysis]
     status: released
-    released_on: "2026-10-25"
+    released_on: "2026-10-24"
 
   - id: studio-daily-limits
     title: Daily Studio limits
@@ -58,7 +58,7 @@ entries:
       Studio allows 5 prompts a day for guests and 75 for signed-in users.
     categories: [models-access]
     status: released
-    released_on: "2026-10-25"
+    released_on: "2026-10-23"
 
   - id: faster-reliable-answers
     title: Faster and more reliable answers

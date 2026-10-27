@@ -23,7 +23,7 @@ entries:
       opens by saying how many parts of the question it answered.
     categories: [data-exploration]
     status: released
-    released_on: "2026-10-25"
+    released_on: "2026-10-24"
 
   - id: published-group-totals
     title: Published totals for donor groups
@@ -32,7 +32,7 @@ entries:
       publishes, where it has one.
     categories: [data-exploration]
     status: released
-    released_on: "2026-10-25"
+    released_on: "2026-10-24"
 
   - id: guest-shared-snapshots
     title: Shared snapshots open for guests
@@ -41,7 +41,7 @@ entries:
       Live links now work for canvases with more than four data cards.
     categories: [sharing-publishing]
     status: released
-    released_on: "2026-10-25"
+    released_on: "2026-10-23"
 
   - id: line-chart-isolated-points
     title: Line charts show isolated values
@@ -50,7 +50,7 @@ entries:
       charts, in Studio and in Claude Desktop and ChatGPT.
     categories: [charts]
     status: released
-    released_on: "2026-10-25"
+    released_on: "2026-10-23"
 
   - id: api-reference-and-errors
     title: OpenAPI reference and standard errors
@@ -69,7 +69,7 @@ entries:
       The platform's code repositories are public under the MIT licence.
     categories: [developer-experience]
     status: released
-    released_on: "2026-10-25"
+    released_on: "2026-10-24"
 
   - id: more-chart-types
     title: Scatter plots
