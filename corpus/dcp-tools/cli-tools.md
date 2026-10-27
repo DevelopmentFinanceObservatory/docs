@@ -59,7 +59,9 @@ INGESTION_WORKFLOW_NAME=dcp-ingestion-workflow
 
 ## Exit status
 
-All four subcommands return `0` on success. Argument errors, such as a missing required argument
+All four subcommands return `0` on success. With `--wait`, `ingest` and `pipeline` return `1`
+when the ingestion execution finishes in any state other than `SUCCEEDED`, or when `--timeout`
+runs out. Argument errors, such as a missing required argument
 or an invalid `--node-type` choice, print a usage message to stderr and exit non-zero before any
 subcommand code runs. Errors raised by the underlying Python API (a pydantic validation error from
 a malformed CSV, a Google Cloud auth failure) propagate as an uncaught exception and also exit
@@ -185,6 +187,7 @@ Triggers the DCP ingestion workflow that loads uploaded files into the knowledge
 ```
 dcp-tools ingest [--settings-file PATH] [--env-file PATH] [--imports a,b,c]
                  [--skip-workflow-contract-check]
+                 [--wait [--timeout SECONDS] [--poll-interval SECONDS]]
 ```
 
 **Options**
@@ -196,6 +199,13 @@ dcp-tools ingest [--settings-file PATH] [--env-file PATH] [--imports a,b,c]
   to confirm it comes from a DCP 1.1.6 stack. Use it only when the identity starting the
   ingestion can't be granted `roles/workflows.viewer` and you know the stack runs 1.1.6. See
   [Loading data](loading-data.md).
+- **`--wait`**: block until the ingestion execution finishes, logging its state and current steps
+  as they change, and exit `1` if it ends in any state other than `SUCCEEDED`. Wraps `wait_for_ingestion`.
+- **`--timeout SECONDS`** (default: no limit): with `--wait`, give up after this many seconds and
+  exit `1`. The execution keeps running.
+- **`--poll-interval SECONDS`** (default: `30`): with `--wait`, seconds between state checks.
+
+`--timeout` and `--poll-interval` without `--wait` are rejected as argument errors.
 
 **Example**
 
@@ -203,6 +213,19 @@ dcp-tools ingest [--settings-file PATH] [--env-file PATH] [--imports a,b,c]
 $ dcp-tools ingest --settings-file customDC.json --imports climate-finance
 2026-07-21 09:15:10 | INFO     | dcp-tools | Starting data ingestion workflow 'dcp-ingestion-workflow'
 2026-07-21 09:15:11 | INFO     | dcp-tools | Started workflow execution 'projects/one-climate-finance/locations/us-central1/workflows/dcp-ingestion-workflow/executions/a1b2c3'
+```
+
+With `--wait`, the command returns once the execution finishes:
+
+```
+$ dcp-tools ingest --settings-file customDC.json --imports climate-finance --wait --timeout 7200
+2026-07-21 09:15:10 | INFO     | dcp-tools | Starting data ingestion workflow 'dcp-ingestion-workflow'
+2026-07-21 09:15:11 | INFO     | dcp-tools | Started workflow execution 'projects/one-climate-finance/locations/us-central1/workflows/dcp-ingestion-workflow/executions/a1b2c3'
+2026-07-21 09:15:11 | INFO     | dcp-tools | Execution 'projects/.../executions/a1b2c3' is ACTIVE (current steps: main.run_preprocessing)
+2026-07-21 09:41:42 | INFO     | dcp-tools | Execution 'projects/.../executions/a1b2c3' is SUCCEEDED (current steps: none)
+2026-07-21 09:41:42 | INFO     | dcp-tools | Execution 'projects/.../executions/a1b2c3' succeeded
+$ echo $?
+0
 ```
 
 > [!NOTE]
@@ -219,6 +242,7 @@ Runs `upload` followed by `ingest` for every import in one call, wrapping
 ```
 dcp-tools pipeline [--settings-file PATH] [--env-file PATH] [--directory PATH] [--sync]
                    [--skip-workflow-contract-check]
+                   [--wait [--timeout SECONDS] [--poll-interval SECONDS]]
 ```
 
 **Options**
@@ -227,6 +251,8 @@ dcp-tools pipeline [--settings-file PATH] [--env-file PATH] [--directory PATH] [
   flags and defaults as [`upload`](#dcp-tools-upload).
 - **`--skip-workflow-contract-check`**: same as for [`ingest`](#dcp-tools-ingest). Without it,
   `pipeline` checks the workflow before uploading, so it uploads nothing to an older stack.
+- **`--wait`**, **`--timeout SECONDS`**, **`--poll-interval SECONDS`**: same as for
+  [`ingest`](#dcp-tools-ingest).
 
 > [!WARNING]
 > `pipeline` has no `--imports` flag. It always calls `ingest` with no import filter, loading

@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-26
+
+### Added
+- `wait_for_ingestion` polls an ingestion execution until it finishes and returns its terminal
+  `IngestionExecutionState`, including a failed or cancelled one. It raises `TimeoutError` only when
+  a `timeout` is passed and runs out. `TERMINAL_EXECUTION_STATES` lists the states it stops on.
+  `UNAVAILABLE` is not one of them: the execution may still be running, so polling continues and
+  logs a warning with the new `IngestionExecutionState.state_error`.
+- `--wait` on `dcp-tools ingest` and `dcp-tools pipeline` blocks until the execution finishes and
+  exits non-zero when it doesn't succeed or `--timeout` runs out. `--poll-interval` sets the
+  seconds between checks. Both need `--wait`.
+
 ### Changed
 - `LOCAL_PATH` and `GCS_OUTPUT_FOLDER_PATH` are optional. `upload_to_cloud_storage` without a
   `directory` and `full_gcs_output_path` raise a `ValueError` naming the setting when it's unset.
@@ -495,5 +507,6 @@ Released for external preview and testing.
 [1.0.0]: https://github.com/ONEcampaign/dcp-tools/compare/v1.0.0a5...v1.0.0
 [1.0.1]: https://github.com/ONEcampaign/dcp-tools/compare/v1.0.0...v1.0.1
 [1.1.0]: https://github.com/ONEcampaign/dcp-tools/compare/v1.0.1...v1.1.0
-[unreleased]: https://github.com/ONEcampaign/dcp-tools/compare/v1.1.0...HEAD
+[1.2.0]: https://github.com/ONEcampaign/dcp-tools/compare/v1.1.0...v1.2.0
+[unreleased]: https://github.com/ONEcampaign/dcp-tools/compare/v1.2.0...HEAD
 

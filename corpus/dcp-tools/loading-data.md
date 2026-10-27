@@ -111,7 +111,7 @@ Upload an exported data bundle to Google Cloud Storage, then trigger the Data Co
 
    `pipeline` always loads every import. It has no `--imports` flag. If you need to load a subset, run `upload` then `ingest --imports=...` separately.
 
-`run_ingestion_workflow` returns as soon as the workflow execution starts. It doesn't wait for it to finish. Under the hood it calls `datacommons-admin`'s `IngestionJobClient`, which starts the Cloud Workflow (`ingestion_workflow_name`) with the list of imports to load. The workflow runs preprocessing as a Cloud Batch job it creates itself, ingests the uploaded data, and serves it. There's nothing further to trigger from `dcp-tools`.
+`run_ingestion_workflow` returns as soon as the workflow execution starts. To wait for it to finish, use `wait_for_ingestion`, or `--wait` on the CLI. Under the hood it calls `datacommons-admin`'s `IngestionJobClient`, which starts the Cloud Workflow (`ingestion_workflow_name`) with the list of imports to load. The workflow runs preprocessing as a Cloud Batch job it creates itself, ingests the uploaded data, and serves it. There's nothing further to trigger from `dcp-tools`.
 
 Before starting the workflow, `run_ingestion_workflow` calls `check_ingestion_workflow_contract`, which reads the workflow's definition from the Workflows API and checks that it comes from a DCP 1.1.6 stack: the 1.1.6 workflow creates its preprocessing job on Cloud Batch, and older workflows run a Cloud Run job that needs arguments `dcp-tools` 1.1 no longer sends. When the workflow is older, or its definition can't be read, it raises `WorkflowContractError` and nothing starts. `dcp-tools pipeline` runs the check before uploading, so an older stack receives no files. Call `check_ingestion_workflow_contract(settings)` yourself to do the same before your own upload. The identity that starts the ingestion (the `ingestion_service_account` when it is set, otherwise your Application Default Credentials) needs `roles/workflows.viewer` for the check, as well as `roles/workflows.invoker` to start the workflow. `roles/workflows.invoker` grants `workflows.executions.create` and `workflows.executions.get`, but not the `workflows.workflows.get` permission that reading the definition needs. If you can't grant `roles/workflows.viewer` and know the stack is on 1.1.6, pass `skip_workflow_contract_check=True`, or `--skip-workflow-contract-check` on the CLI, to skip the check.
 
@@ -125,6 +125,24 @@ state = get_ingestion_execution_state(settings, execution)
 print(state.state)          # "ACTIVE", then "SUCCEEDED", "FAILED" or "CANCELLED"
 print(state.current_steps)  # ("main.run_preprocessing", ...) while it runs
 print(state.error)          # the error payload when it failed, otherwise None
+print(state.state_error)    # why the data is unavailable ("UNAVAILABLE" state), otherwise None
+```
+
+To block until the run finishes, pass the resource name to `wait_for_ingestion`. It polls every 30 seconds by default, logs the state and current steps when they change, and returns the terminal state: `SUCCEEDED`, `FAILED` or `CANCELLED`. `UNAVAILABLE` means the API can't read the execution's data, for example after its KMS key permissions were revoked. The execution may still be running, so polling continues and logs a warning with `state_error`. A failed run is returned, not raised, so check the state yourself:
+
+```python
+from dcp_tools.gcp_utilities import run_ingestion_workflow, wait_for_ingestion
+
+execution = run_ingestion_workflow(settings=settings)
+state = wait_for_ingestion(settings, execution, timeout=2 * 60 * 60)
+if state.state != "SUCCEEDED":
+    raise RuntimeError(f"Ingestion ended {state.state}: {state.error}")
+```
+
+Without `timeout` it waits indefinitely, including on an execution that stays `UNAVAILABLE`. With one, it raises `TimeoutError` once that many seconds pass, and the execution keeps running. On the CLI, `--wait` does the same and exits non-zero if the run does not succeed:
+
+```bash
+dcp-tools pipeline --env-file customDC.env --wait --timeout 7200
 ```
 
 > [!NOTE]
@@ -154,7 +172,7 @@ print(get_unregistered_csv_files(bucket, config, gcs_folder_name=settings.gcs_in
 
 Both should return `[]`. A non-empty `get_missing_csv_files` result means a file the config expects never made it to GCS (upload failed, or it ran against the wrong folder). A non-empty `get_unregistered_csv_files` result means there's a stray CSV in the bucket that no `inputFiles` entry points at.
 
-Ingestion itself runs as a Cloud Workflow execution (`ingestion_workflow_name` in `gcp_region`). `get_ingestion_execution_state` reports its state, and its run history and logs are in the Google Cloud Console under Workflows.
+Ingestion itself runs as a Cloud Workflow execution (`ingestion_workflow_name` in `gcp_region`). `get_ingestion_execution_state` reports its state, `wait_for_ingestion` waits for it to finish, and its run history and logs are in the Google Cloud Console under Workflows.
 
 ## Troubleshooting
 
