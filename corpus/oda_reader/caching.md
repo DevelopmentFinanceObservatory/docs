@@ -185,6 +185,18 @@ The cache is governed separately because the files are large (up to 1.18 GB each
   `save_to_path` are written to a temporary sibling file and moved into
   place afterward, so a failed or interrupted write never leaves a
   truncated file where a good one used to be.
+- **Scanned tables**: `scan()` keeps the Parquet files of the current and
+  the previous release beside the bulk files until the cache is cleared,
+  also after OECD moves a dataset to a new URL, and any older file a
+  `lease()` holds. Clearing a bulk file deletes the Parquet files made from
+  it, leased or not, and so do `clear_cache()` and `enforce_cache_limits()`,
+  which walk the whole cache root. See
+  [Query bulk files in place](bulk-downloads.md#query-bulk-files-in-place-with-scan).
+
+`oda_reader.cache_info()` lists the cached bulk files with their dataset,
+release token, readable label release, download time, size, size of the
+scanned Parquet files, staleness and path. Pass `cache_dir=`
+to list another cache root.
 
 #### Cache invalidation on republish
 
@@ -204,6 +216,9 @@ recently it was fetched. The token comes from the file host:
   `Last-Modified` if no `ETag` is sent) as the token. Any rewrite of the
   file changes it, including one where the version stamp in the SDMX
   annotation label, such as `CRS-Parquet-v20260803`, stays the same.
+- The cache stores the token the download's own response carried, so a
+  cached copy is labelled with the version it holds even when OECD
+  republishes between the one-byte request and the download.
 - If that request fails (offline, a server error, or a response carrying
   neither header), the cache keeps the token it stored and invalidation
   falls back to the 90-day TTL rather than failing the call. A cached file
@@ -358,7 +373,7 @@ enable_http_cache()
 
 ### Clear version discovery cache
 
-ODA Reader caches discovered dataflow versions in-process. If the OECD publishes a new version mid-session:
+ODA Reader caches each resolved dataflow version and its dimension order in-process. An explicit version stays for the life of the process and the latest version for one day. To see a version the OECD published within the last two days, clear the cache:
 
 ```python
 from oda_reader import clear_version_cache
@@ -366,7 +381,7 @@ from oda_reader import clear_version_cache
 clear_version_cache()
 ```
 
-This forces a fresh metadata lookup on the next query.
+The next lookup of each dataflow after the call skips the HTTP cache and reaches the OECD, including for a dataflow the process has not looked up yet. Without the call, a latest-version lookup is refreshed after one day, and the HTTP cache keeps a lookup of an explicit version for seven.
 
 ### Clear HTTP cache only
 
