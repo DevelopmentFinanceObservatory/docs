@@ -362,7 +362,7 @@ def _build_source_nav(
     and recursively for each nested grouping heading inside it.
     """
     landing: str | None = None
-    if entries and len(entries[0].breadcrumb) == depth and _is_index(entries[0].file):
+    if _leads_with_landing(entries, depth=depth):
         landing = _page_id(source_name, _page_slug(entries[0].file))
         entries = entries[1:]
 
@@ -416,6 +416,16 @@ def _group_id(key_path: tuple[str, ...]) -> str:
     return "group:" + "/".join(key_path)
 
 
+def _leads_with_landing(entries: Sequence[NavEntry], *, depth: int) -> bool:
+    """Whether `entries`, one nav group's flattened entries at `depth`, open with the
+    group's own `index.md`, which `_build_source_nav` folds into the group's landing."""
+    return (
+        bool(entries)
+        and len(entries[0].breadcrumb) == depth
+        and _is_index(entries[0].file)
+    )
+
+
 def _is_index(file: str) -> bool:
     return PurePosixPath(file).name == "index.md"
 
@@ -433,6 +443,9 @@ def _source_pages(
     *,
     corpus_root: Path,
 ) -> list[Page]:
+    landing_file = (
+        sidecar.nav[0].file if _leads_with_landing(sidecar.nav, depth=0) else None
+    )
     return [
         _fetched_page(
             fetched,
@@ -440,7 +453,11 @@ def _source_pages(
             file=nav_entry.file,
             slug=_page_slug(nav_entry.file),
             path_prefix=sidecar.path,
-            title=nav_entry.title or nav_entry.file,
+            title=(
+                sidecar.title
+                if nav_entry.file == landing_file
+                else nav_entry.title or nav_entry.file
+            ),
             kind=PageKind.PAGE,
             corpus_root=corpus_root,
             excluded=sidecar.excluded,

@@ -509,6 +509,49 @@ def test_mount_group_folds_leading_index_into_page_id_and_path(tmp_path):
     assert [child.title for child in guides_group.children] == ["Advanced"]
 
 
+def test_source_index_page_takes_the_source_title_not_its_nav_label(tmp_path):
+    """A source that labels its landing `Home: index.md` still publishes that page
+    under the source's title, matching its group; other pages, including a later
+    top-level `index.md` leaf, keep their nav label."""
+    repo = _make_repo(tmp_path, "labelled")
+    (repo / "mkdocs.yml").write_text(
+        "site_name: tools/labelled\n"
+        "title: Labelled Reader\n"
+        "nav:\n"
+        "  - Home: index.md\n"
+        "  - Changelog: changelog.md\n"
+        "  - Reference: reference/index.md\n"
+        "  - Guides:\n"
+        "      - Home: guides/index.md\n"
+        "      - Advanced: guides/advanced.md\n"
+    )
+    docs = repo / "docs"
+    (docs / "guides").mkdir(parents=True)
+    (docs / "reference").mkdir()
+    for name in (
+        "index",
+        "changelog",
+        "reference/index",
+        "guides/index",
+        "guides/advanced",
+    ):
+        (docs / f"{name}.md").write_text(f"# {name}\n")
+    _commit_all(repo, "init")
+    source = _sample_source(repo, name="labelled", path="tools/labelled")
+    fetched = _fetch(source, tmp_path)
+    hub = HubNode(children=(HubNode(mount="labelled"),))
+
+    _, pages, _ = _build(
+        tmp_path, sources={"labelled": source}, hub=hub, fetched=[fetched]
+    )
+
+    assert _by_id(pages, "labelled").title == "Labelled Reader"
+    assert _by_id(pages, "labelled/changelog").title == "Changelog"
+    # Only the leading index is the landing; a later top-level index is a leaf.
+    assert _by_id(pages, "labelled/reference").title == "Reference"
+    assert _by_id(pages, "labelled/guides").title == "Home"
+
+
 def test_nav_node_ids_join_to_pages_and_groups_are_opaque(tmp_path):
     repo = _sample_repo(tmp_path)
     source = _sample_source(repo, path="tools/sample")
