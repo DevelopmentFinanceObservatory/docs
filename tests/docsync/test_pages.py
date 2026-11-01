@@ -164,7 +164,7 @@ def test_pages_follow_the_nav_with_their_sections_and_titles(tmp_path):
     assert [(p.page_id, p.section_path, p.title) for p in pages] == [
         ("hub", (), "Home"),
         ("hub/build/share", ("Build",), "Share"),
-        ("guide", ("Build", "Guide"), "Guide home"),
+        ("guide", ("Build", "Guide"), "Guide"),
         ("guide/start", ("Build", "Guide"), "Start"),
         ("guide/deep", ("Build", "Guide", "Deep"), "Deep"),
         ("guide/deep/detail", ("Build", "Guide", "Deep"), "Detail"),
