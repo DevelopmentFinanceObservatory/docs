@@ -73,7 +73,7 @@ An embed follows the mode of its link. The embed of a live link redraws its card
 
 ### Turn a live link into a snapshot
 
-Under a live link, **Make this link a snapshot** stops the updates. The dialog says: "Everyone who has the link then sees the numbers as they were when you made it. This cannot be undone." The link keeps its address and loses the "Live data" line. To share live data again, make a new link.
+Under a live link, **Make this link a snapshot** stops the updates. The dialog says: "To stop live updates, make this link a snapshot. Everyone who has the link then sees the numbers it shows now, and they stay that way. This cannot be undone." The link keeps its address and loses the "Live data" line. To share live data again, make a new link.
 
 ## Check the link
 
