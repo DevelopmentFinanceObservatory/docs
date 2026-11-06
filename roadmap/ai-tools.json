@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-06T06:12:37Z",
-  "generator_commit": "d5dc73856c994cb9a7c07338509a51c68b24d5eb",
+  "generated_at": "2026-11-06T11:24:26Z",
+  "generator_commit": "955ef960b9a31558f927abdac66d75fa0e372acd",
   "track": "ai-tools",
   "categories": [
     {
@@ -18,6 +18,46 @@
     }
   ],
   "entries": [
+    {
+      "id": "switchable-plan-decisions",
+      "title": "Clearer plans with switchable decisions",
+      "description": "Studio's plan card leads with the question, a short summary and the decisions that shape the answer: how sectors and regions are counted, whether multilateral spending is included, gross or net flows, and how phrases such as \"major donors\" are read. Defaults follow OECD counting conventions, and each answer ends with a \"Counted as\" line. Each decision can be switched in one click, on the plan card before a run or from chips under the answer afterwards, and the figure is recalculated without a new search. Plans list each decision once and take about half as long, and Studio prepares the data while you review the plan.",
+      "categories": [
+        "analysis"
+      ],
+      "status": "released",
+      "released_on": "2026-10-30"
+    },
+    {
+      "id": "new-analytical-operations",
+      "title": "New analytical operations",
+      "description": "Studio can give one figure across every row, join tables whose key columns have different names, and compute each donor's share of a pooled total.",
+      "categories": [
+        "analysis"
+      ],
+      "status": "released",
+      "released_on": "2026-10-24"
+    },
+    {
+      "id": "clarifying-questions",
+      "title": "Several clarifying questions at once",
+      "description": "When a question is ambiguous, Studio can ask up to three clarifying questions in one pause and keeps your answers in the conversation.",
+      "categories": [
+        "analysis"
+      ],
+      "status": "released",
+      "released_on": "2026-10-23"
+    },
+    {
+      "id": "studio-daily-limits",
+      "title": "Daily Studio limits",
+      "description": "Studio allows 5 prompts a day for guests and 75 for signed-in users.",
+      "categories": [
+        "models-access"
+      ],
+      "status": "released",
+      "released_on": "2026-10-23"
+    },
     {
       "id": "faster-reliable-answers",
       "title": "Faster and more reliable answers",
