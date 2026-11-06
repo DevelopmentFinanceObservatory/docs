@@ -16,37 +16,6 @@ categories:
     label: Developer experience
 
 entries:
-  - id: search-more-phrasings
-    title: Wider range of search phrasings
-    description: >-
-      Search reads questions such as "German aid to Kenya", "Kenya's debt" and
-      commitments in constant prices, regions named as providers, currency names
-      such as the Malawian kwacha, and stated exclusions such as "excluding the
-      CRS".
-    categories: [data-exploration]
-    status: released
-    released_on: "2026-11-03"
-
-  - id: gallery-search-indexing
-    title: Gallery searches easier to find
-    description: >-
-      Gallery search pages include their title, description and data sources on
-      first load, each page has its own title, and the site has a sitemap for
-      search engines.
-    categories: [website]
-    status: released
-    released_on: "2026-11-02"
-
-  - id: studio-activity-and-credits
-    title: Activity tab and source credits in Studio
-    description: >-
-      The Activity tab lists each turn's question, plan and steps. Each card lists
-      its sources, More Info shows each series' publisher code, and a button
-      creates a public link to cite.
-    categories: [data-exploration, sharing-publishing]
-    status: released
-    released_on: "2026-11-01"
-
   - id: sortable-tables-chart-hovers
     title: Sortable tables and focused chart hovers
     description: >-
@@ -65,25 +34,6 @@ entries:
       health covers CRS 120 and 130, donor totals include imputed multilateral
       spending, and totals are in grant equivalents from 2018 and net flows
       before.
-    categories: [data-exploration]
-    status: released
-    released_on: "2026-10-30"
-
-  - id: similar-place-names
-    title: Places with similar names kept apart
-    description: >-
-      Search and Studio treat places with similar names, such as the Republic of
-      the Congo and the Democratic Republic of the Congo, as separate choices and
-      ask which one you mean.
-    categories: [data-exploration]
-    status: released
-    released_on: "2026-10-30"
-
-  - id: faster-dataset-builds
-    title: Faster dataset builds
-    description: >-
-      Large datasets build about twice as fast, and repeat requests reuse built
-      data until the source changes.
     categories: [data-exploration]
     status: released
     released_on: "2026-10-30"
@@ -108,15 +58,6 @@ entries:
     status: released
     released_on: "2026-10-24"
 
-  - id: published-group-totals
-    title: Published totals for donor groups
-    description: >-
-      For questions about all donors or all official donors, Search uses the
-      total the source publishes, where there is one.
-    categories: [data-exploration]
-    status: released
-    released_on: "2026-10-24"
-
   - id: open-source-repositories
     title: Open-source code
     description: >-
@@ -131,15 +72,6 @@ entries:
       Anyone with the link can open a shared Studio snapshot without signing in.
       Live links now work for canvases with more than four data cards.
     categories: [sharing-publishing]
-    status: released
-    released_on: "2026-10-23"
-
-  - id: line-chart-isolated-points
-    title: Isolated values plotted on line charts
-    description: >-
-      A value with no neighbour on either side now appears as a point on line
-      charts, in Studio and in Claude Desktop and ChatGPT.
-    categories: [charts]
     status: released
     released_on: "2026-10-23"
 
