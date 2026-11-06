@@ -18,20 +18,12 @@ entries:
       Studio's plan card leads with the question, a short summary and the
       decisions that shape the answer: how sectors and regions are counted,
       whether multilateral spending is included, gross or net flows, and how
-      phrases such as "major donors" are read. Each decision can be switched in
-      one click, on the plan card before a run or from chips under the answer
-      afterwards, and the figure is recalculated without a new search. Plans use
-      consistent wording and list each decision once.
-    categories: [analysis]
-    status: released
-    released_on: "2026-10-30"
-
-  - id: faster-plans-and-switches
-    title: Faster plans and switches
-    description: >-
-      Studio reuses search results between planning and switching, so a switch
-      takes about half as long, and it prepares the data while you review the
-      plan.
+      phrases such as "major donors" are read. Defaults follow OECD counting
+      conventions, and each answer ends with a "Counted as" line. Each decision
+      can be switched in one click, on the plan card before a run or from chips
+      under the answer afterwards, and the figure is recalculated without a new
+      search. Plans list each decision once and take about half as long, and
+      Studio prepares the data while you review the plan.
     categories: [analysis]
     status: released
     released_on: "2026-10-30"

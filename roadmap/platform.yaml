@@ -26,18 +26,6 @@ entries:
     status: released
     released_on: "2026-11-01"
 
-  - id: counting-method-shown
-    title: Counting method shown with each answer
-    description: >-
-      Each Studio answer ends with a "Counted as" line listing the sectors,
-      regions, providers and measure basis used. Defaults follow OECD conventions:
-      health covers CRS 120 and 130, donor totals include imputed multilateral
-      spending, and totals are in grant equivalents from 2018 and net flows
-      before.
-    categories: [data-exploration]
-    status: released
-    released_on: "2026-10-30"
-
   - id: api-reference-and-errors
     title: OpenAPI reference and standard errors
     description: >-
