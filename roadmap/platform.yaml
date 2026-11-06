@@ -16,35 +16,88 @@ categories:
     label: Developer experience
 
 entries:
-  - id: counting-method-shown
-    title: Counting method shown with each answer
+  - id: search-more-phrasings
+    title: Wider range of search phrasings
     description: >-
-      Each search answer ends with a "Counted as" line listing the sectors,
-      regions, providers and measure basis used. Defaults follow OECD
-      conventions, with donor totals in grant equivalents from 2018 and net
-      flows before, and regions as the OECD defines them.
+      Search reads questions such as "German aid to Kenya", "Kenya's debt" and
+      commitments in constant prices, regions named as providers, currency names
+      such as the Malawian kwacha, and stated exclusions such as "excluding the
+      CRS".
     categories: [data-exploration]
     status: released
-    released_on: "2026-10-27"
-
-  - id: similar-place-names
-    title: Places with similar names kept apart
-    description: >-
-      Search and Studio treat places with similar names, such as the Republic
-      of the Congo and the Democratic Republic of the Congo, as separate
-      choices and ask which one you mean.
-    categories: [data-exploration]
-    status: released
-    released_on: "2026-10-27"
+    released_on: "2026-11-03"
 
   - id: gallery-search-indexing
     title: Gallery searches easier to find
     description: >-
-      Gallery search pages include their title, description and data sources
-      on first load, and the site has a sitemap for search engines.
+      Gallery search pages include their title, description and data sources on
+      first load, each page has its own title, and the site has a sitemap for
+      search engines.
     categories: [website]
     status: released
-    released_on: "2026-10-27"
+    released_on: "2026-11-02"
+
+  - id: studio-activity-and-credits
+    title: Activity tab and source credits in Studio
+    description: >-
+      The Activity tab lists each turn's question, plan and steps. Each card lists
+      its sources, More Info shows each series' publisher code, and a button
+      creates a public link to cite.
+    categories: [data-exploration, sharing-publishing]
+    status: released
+    released_on: "2026-11-01"
+
+  - id: sortable-tables-chart-hovers
+    title: Sortable tables and focused chart hovers
+    description: >-
+      Tables can be sorted by column, and table cards fit their rows and columns.
+      Hovering over a chart shows only the series under the pointer, and several
+      cards from one answer collapse into one row in the chat.
+    categories: [charts]
+    status: released
+    released_on: "2026-11-01"
+
+  - id: counting-method-shown
+    title: Counting method shown with each answer
+    description: >-
+      Each Studio answer ends with a "Counted as" line listing the sectors,
+      regions, providers and measure basis used. Defaults follow OECD conventions:
+      health covers CRS 120 and 130, donor totals include imputed multilateral
+      spending, and totals are in grant equivalents from 2018 and net flows
+      before.
+    categories: [data-exploration]
+    status: released
+    released_on: "2026-10-30"
+
+  - id: similar-place-names
+    title: Places with similar names kept apart
+    description: >-
+      Search and Studio treat places with similar names, such as the Republic of
+      the Congo and the Democratic Republic of the Congo, as separate choices and
+      ask which one you mean.
+    categories: [data-exploration]
+    status: released
+    released_on: "2026-10-30"
+
+  - id: faster-dataset-builds
+    title: Faster dataset builds
+    description: >-
+      Large datasets build about twice as fast, and repeat requests reuse built
+      data until the source changes.
+    categories: [data-exploration]
+    status: released
+    released_on: "2026-10-30"
+
+  - id: api-reference-and-errors
+    title: OpenAPI reference and standard errors
+    description: >-
+      The OpenAPI description is at /openapi.json, and each refusal code is
+      documented at /codes/{code}. Every error is a problem+json document.
+      Dataset downloads cover any stored version in any format, with retention
+      periods and paged version history.
+    categories: [developer-experience]
+    status: released
+    released_on: "2026-10-25"
 
   - id: search-assumptions-shown
     title: Assumptions shown with search answers
@@ -61,6 +114,14 @@ entries:
       For questions about all donors or all official donors, Search uses the
       total the source publishes, where there is one.
     categories: [data-exploration]
+    status: released
+    released_on: "2026-10-24"
+
+  - id: open-source-repositories
+    title: Open-source code
+    description: >-
+      The platform's code repositories are public under the MIT licence.
+    categories: [developer-experience]
     status: released
     released_on: "2026-10-24"
 
@@ -81,25 +142,6 @@ entries:
     categories: [charts]
     status: released
     released_on: "2026-10-23"
-
-  - id: api-reference-and-errors
-    title: OpenAPI reference and standard errors
-    description: >-
-      The OpenAPI description is at /openapi.json, and each refusal code is
-      documented at /codes/{code}. Every error is a problem+json document.
-      Dataset downloads cover any stored version in any format, with retention
-      periods and paged version history.
-    categories: [developer-experience]
-    status: released
-    released_on: "2026-10-25"
-
-  - id: open-source-repositories
-    title: Open-source code
-    description: >-
-      The platform's code repositories are public under the MIT licence.
-    categories: [developer-experience]
-    status: released
-    released_on: "2026-10-24"
 
   - id: more-chart-types
     title: Scatter plots

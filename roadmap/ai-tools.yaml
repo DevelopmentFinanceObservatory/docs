@@ -12,28 +12,58 @@ categories:
     label: Models and access
 
 entries:
+  - id: charts-in-claude-web
+    title: DFO charts in claude.ai on the web
+    description: >-
+      Charts, tables and cards from the DFO connector draw in claude.ai on the
+      web, including after a reload. The token that allows editing a chart stays
+      out of replies.
+    categories: [models-access]
+    status: released
+    released_on: "2026-11-03"
+
+  - id: smaller-mcp-toolset
+    title: A smaller set of MCP tools
+    description: >-
+      The public MCP server lists 16 tools and uses a third less of an assistant's
+      context. Sums and quotients are part of compare and share_of, and
+      export_data saves a frame to a file.
+    categories: [models-access]
+    status: released
+    released_on: "2026-11-03"
+
   - id: switch-answer-reading
     title: Switch how an answer is counted
     description: >-
-      Chips on Studio's plan card and answer switch between readings of a
-      question, such as bilateral aid or aid including imputed multilateral
-      spending, and gross, net or grant-equivalent flows. One click
-      recalculates the figure without a new search, and Studio seldom needs
-      to ask whether you mean gross or net.
+      Chips under a Studio answer switch between readings of a question, such as
+      bilateral aid or aid including imputed multilateral spending, and gross, net
+      or grant-equivalent flows. One click recalculates the figure without a new
+      search. The plan card offers the same switches before a run, including how
+      Studio reads phrases such as "major donors".
     categories: [analysis]
     status: released
-    released_on: "2026-10-27"
+    released_on: "2026-10-30"
 
   - id: share-denominators-shown
     title: Denominators shown on share cards
     description: >-
       Plans and share cards show the total a share is divided by, such as the
       total from official donors or from all donors, and list the donors in a
-      share of named donors. Plans show how many donors and indicators a
-      figure sums.
+      share of named donors. Plans show how many donors and indicators a figure
+      sums.
     categories: [analysis]
     status: released
-    released_on: "2026-10-27"
+    released_on: "2026-10-30"
+
+  - id: faster-plans-and-switches
+    title: Faster plans and switches
+    description: >-
+      Studio reuses search results between planning and switching, so a switch
+      takes about half as long, and it prepares the data while you review the
+      plan.
+    categories: [analysis]
+    status: released
+    released_on: "2026-10-30"
 
   - id: more-accurate-answers
     title: More accurate answers
@@ -56,15 +86,6 @@ entries:
     status: released
     released_on: "2026-10-25"
 
-  - id: clarifying-questions
-    title: Several clarifying questions at once
-    description: >-
-      When a question is ambiguous, Studio can ask up to three clarifying
-      questions in one pause and keeps your answers in the conversation.
-    categories: [analysis]
-    status: released
-    released_on: "2026-10-23"
-
   - id: new-analytical-operations
     title: New analytical operations
     description: >-
@@ -74,6 +95,15 @@ entries:
     categories: [analysis]
     status: released
     released_on: "2026-10-24"
+
+  - id: clarifying-questions
+    title: Several clarifying questions at once
+    description: >-
+      When a question is ambiguous, Studio can ask up to three clarifying
+      questions in one pause and keeps your answers in the conversation.
+    categories: [analysis]
+    status: released
+    released_on: "2026-10-23"
 
   - id: studio-daily-limits
     title: Daily Studio limits
