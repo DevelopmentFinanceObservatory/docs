@@ -32,8 +32,6 @@ Open [Connected Apps](https://gemini.google.com/apps) in Gemini on the web, sele
 
 ::tab{label="Le Chat (Mistral)"}
 
-<!-- TODO: verify end to end in Le Chat, as in the ai repo's connect guide. -->
-
 In [Le Chat](https://chat.mistral.ai), open **Intelligence**, then **Connectors**, and select **Add Connector**. On the **Custom MCP Connector** tab, enter DFO as the name, paste the address as the **Server URL**, and select **Connect**.
 
 :::
