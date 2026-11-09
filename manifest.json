@@ -1,12 +1,29 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-09T06:15:49Z",
-  "generator_commit": "955ef960b9a31558f927abdac66d75fa0e372acd",
+  "generated_at": "2026-11-09T15:41:12Z",
+  "generator_commit": "2e98676650612cd26e8115db7d3e1573577db3bf",
   "nav": [
     {
       "id": "hub",
       "title": "Home",
       "kind": "page"
+    },
+    {
+      "id": "group:dfo-ai",
+      "title": "AI assistants (MCP)",
+      "kind": "group",
+      "children": [
+        {
+          "id": "dfo-ai/connect",
+          "title": "Connect your assistant",
+          "kind": "page"
+        },
+        {
+          "id": "dfo-ai/what-you-can-ask",
+          "title": "What you can ask",
+          "kind": "page"
+        }
+      ]
     },
     {
       "id": "group:get-started",
@@ -78,23 +95,6 @@
             {
               "id": "dfo-apis/conventions",
               "title": "API conventions",
-              "kind": "page"
-            }
-          ]
-        },
-        {
-          "id": "group:build-with-the-dfo/dfo-ai",
-          "title": "MCP server",
-          "kind": "group",
-          "children": [
-            {
-              "id": "dfo-ai/connect",
-              "title": "Connect",
-              "kind": "page"
-            },
-            {
-              "id": "dfo-ai/what-you-can-ask",
-              "title": "What you can ask",
               "kind": "page"
             }
           ]
@@ -1524,13 +1524,13 @@
     {
       "id": "dfo-ai/connect",
       "path": "mcp/connect",
-      "title": "Connect",
+      "title": "Connect your assistant",
       "kind": "page",
-      "description": "Connect the DFO to Claude, ChatGPT, or Gemini so your assistant can look up development finance data. Developers can also connect Claude Code, Codex, or Gemini CLI.",
+      "description": "Connect the DFO to Claude, ChatGPT, Gemini, or Le Chat so your assistant can look up development finance data. Developers can also connect Claude Code, Codex, or Gemini CLI.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/connect.md",
-      "source_commit": "580641d345db632c91a6438affb841ebe97c31ad",
-      "last_modified": "2026-10-30T12:57:48Z",
+      "source_commit": "245c0a44679020889196ebd310c89d7ec032f3e2",
+      "last_modified": "2026-11-09T15:40:04Z",
       "corpus_path": "corpus/dfo-ai/connect.md"
     },
     {
@@ -1541,8 +1541,8 @@
       "description": "How a question to the DFO MCP server becomes a cited answer, and the limits and refusals that bound it.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/what-you-can-ask.md",
-      "source_commit": "580641d345db632c91a6438affb841ebe97c31ad",
-      "last_modified": "2026-10-30T12:57:48Z",
+      "source_commit": "245c0a44679020889196ebd310c89d7ec032f3e2",
+      "last_modified": "2026-11-09T15:40:04Z",
       "corpus_path": "corpus/dfo-ai/what-you-can-ask.md"
     },
     {
