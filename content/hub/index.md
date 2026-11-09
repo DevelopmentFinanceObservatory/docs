@@ -10,13 +10,35 @@ See the full list of datasets on the [sources page](/data/sources), and check ou
 
 ## Connect your AI assistant
 
-Connect Claude, ChatGPT, Gemini, or a coding tool such as Claude Code to the DFO, and your assistant answers development finance questions from DFO data and names the source of each figure. Add this server address to your assistant as a custom connector:
+Connect Claude, ChatGPT, Gemini, or Le Chat to the DFO, and your assistant answers development finance questions from DFO data and names the source of each figure. Each assistant needs this server address and no account or token.
 
 ```text
 https://developmentfinance.org/mcp
 ```
 
-It needs no account or token. In Claude, [this link](https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=DFO&connectorUrl=https%3A%2F%2Fdevelopmentfinance.org%2Fmcp) fills in the connector for you. [Connect your assistant](../dfo-ai/connect.md) has the steps for each assistant and a question to check that it works.
+:::tabs
+
+::tab{label="Claude"}
+
+[Add the DFO to Claude](https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=DFO&connectorUrl=https%3A%2F%2Fdevelopmentfinance.org%2Fmcp). The link opens Claude with the connector's name and address filled in, and you confirm.
+
+::tab{label="ChatGPT"}
+
+Open [Plugins](https://chatgpt.com/plugins) in ChatGPT, select **+**, then **Add custom MCP server**. Name it DFO, paste the address under **Connection**, choose **No authentication**, and select **Create as a plugin**.
+
+::tab{label="Gemini"}
+
+Open [Connected Apps](https://gemini.google.com/apps) in Gemini on the web, select **Add a custom app**, paste the address, and select **Next**. Gemini offers custom apps to personal Google accounts in the US.
+
+::tab{label="Le Chat (Mistral)"}
+
+<!-- TODO: verify end to end in Le Chat, as in the ai repo's connect guide. -->
+
+In [Le Chat](https://chat.mistral.ai), open **Intelligence**, then **Connectors**, and select **Add Connector**. On the **Custom MCP Connector** tab, enter DFO as the name, paste the address as the **Server URL**, and select **Connect**.
+
+:::
+
+[Connect your assistant](../dfo-ai/connect.md) covers team plans, coding tools such as Claude Code, and a question that checks the connection.
 
 ## Where to start
 
@@ -38,5 +60,5 @@ The DFO, its tools, and its infrastructure are free to use. The MCP server and t
 
 ## Next
 
-- [Connect your assistant](../dfo-ai/connect.md): Add the DFO to Claude, ChatGPT, Gemini, or a coding tool in a few minutes.
+- [Connect your assistant](../dfo-ai/connect.md): Add the DFO to Claude, ChatGPT, Gemini, Le Chat, or a coding tool in a few minutes.
 - [Get data](get-started/get-data.md): A step-by-step guide to finding a dataset and downloading it as a CSV.
