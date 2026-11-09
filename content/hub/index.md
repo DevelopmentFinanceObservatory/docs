@@ -28,7 +28,7 @@ Open [Plugins](https://chatgpt.com/plugins) in ChatGPT, select **+**, then **Add
 
 ::tab{label="Gemini"}
 
-Open [Connected Apps](https://gemini.google.com/apps) in Gemini on the web, select **Add a custom app**, paste the address, and select **Next**. Gemini offers custom apps to personal Google accounts in the US.
+Open [Connected Apps](https://gemini.google.com/apps) in Gemini on the web, select **Add a custom app**, paste the address, and select **Next**. Custom apps need a personal Google account held by someone in the US aged 18 or over. On Gemini Enterprise, a team administrator can add the server for the team.
 
 ::tab{label="Le Chat (Mistral)"}
 
