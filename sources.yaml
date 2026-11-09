@@ -83,7 +83,7 @@ sources:
     ref: dev
     docs_dir: docs/guide
     path: mcp
-    title: MCP server
+    title: AI assistants (MCP)
 
   - name: dfo-skills
     repo: DevelopmentFinanceObservatory/skills
