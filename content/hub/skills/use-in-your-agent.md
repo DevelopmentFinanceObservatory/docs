@@ -10,7 +10,7 @@ Install the DFO skills in the assistant you already use, and it answers developm
 
 The DFO assistant in [DFO Studio](../get-started/use-studio.md) loads and uses the DFO skills automatically, so you have nothing to set up. [How the DFO assistant uses skills](what-a-skill-is.md#how-the-dfo-assistant-uses-skills) explains how it picks one.
 
-<!-- TODO: add an MCP route once the DFO MCP endpoint is public. data-mcp's search names the skills attached to the datasets it finds, and get_skill and get_skill_file load them, so an MCP client needs no copy. Link get-started/connect-your-assistant.md when it joins the navigation. -->
+<!-- TODO: add an MCP route once the DFO MCP endpoint is public. data-mcp's search names the skills attached to the datasets it finds, and get_skill loads them, so an MCP client needs no copy. Link get-started/connect-your-assistant.md when it joins the navigation. -->
 
 ## Before you start
 
