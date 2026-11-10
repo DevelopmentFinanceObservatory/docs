@@ -67,7 +67,7 @@ Install the skills under `skills/` in your own assistant to use them.
 
 ## How the DFO assistant uses skills
 
-The DFO assistant is an agent too, and it reads the same skills from the knowledge graph. The `apis` repository serves them through its Skills API, and the DFO MCP server gives the assistant two tools over it: `get_skill` loads a skill's `SKILL.md` and lists its reference files, and `get_skill_file` reads one of those files.
+The DFO assistant is an agent too, and it reads the same skills from the knowledge graph. The `apis` repository serves them through its Skills API, and the DFO MCP server gives the assistant one tool over it. `get_skill` loads a skill's `SKILL.md` and lists its reference files, and reads one of those files when given its `path`.
 
 The descriptions the assistant matches against come from its data search. Skills are attached to datasets, and the search result names up to five skills attached to the datasets it found. A question about DFO itself goes straight to [`dfo-faq`](../../dfo-skills/dfo-faq/SKILL.md).
 
