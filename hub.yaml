@@ -10,13 +10,14 @@ nav:
   - title: Home
     page: index.md
 
+  - mount: dfo-ai
+
   - title: Get started
     children:
       - title: Get data
         page: get-started/get-data.md
       - title: Use DFO Studio
         page: get-started/use-studio.md
-      # Connect your assistant (get-started/connect-your-assistant.md) joins once the MCP endpoint is public.
 
   - title: Build with the DFO
     children:
@@ -27,7 +28,6 @@ nav:
       - title: Use DFO data in your code
         page: build/use-data-in-code.md
       - mount: dfo-apis
-      - mount: dfo-ai
 
   - title: Data
     children:
