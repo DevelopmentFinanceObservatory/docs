@@ -44,6 +44,8 @@ Donors and recipients are provided as both individual entries and aggregates, an
 
 Multilateral agencies appear as both recipients and donors. Multilateral recipients hold donors' core contributions to IDA, UNICEF, EU Institutions, and others. A total that counts money going into multilaterals and money they provide to developing countries counts it twice.
 
+For one donor's ODA across recipients, read the developing countries total, which is the donor's bilateral ODA, and the countries under it. All recipients adds the donor's core contributions to multilateral agencies, so the bilateral-plus-imputed sum above sits on the developing countries total. A ranking of one donor's recipients lists countries only.
+
 The two aggregates that add EU Institutions to member states (DAC countries plus EU Institutions, and DAC EU countries plus EU Institutions) contain both the members' contributions to EU Institutions and EU Institutions' own ODA. The members' contributions sit under multilateral recipients, so to the developing countries total these aggregates count EU money once. To all recipients they count it twice.
 
 A recipient question that leaves donors unnamed ("flows to Kenya", "what Kenya receives"), or calls them major, main, or big donors without ranking them ("how much do the major donors provide to Ethiopia?"), reads as the OECD's official donors total, which sums DAC countries, non-DAC countries, and multilaterals and is the recipient's total receipts from official donors. State that reading in the answer, and offer the top 10 donors to the recipient by latest year as the other reading. A question that ranks the donors ("top donors to Ethiopia") lists them.
