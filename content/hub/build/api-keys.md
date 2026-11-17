@@ -46,7 +46,7 @@ x-ratelimit-reset: 36
 1. Sign in on [developmentfinance.org](https://developmentfinance.org).
 1. Open the account menu and select **API keys**. The page is at `/account/api-keys`.
 1. Enter a label for what the key is for, such as `my notebook`, and select **Create key**.
-1. Copy the key now. It starts with `dfo_live_` and the page shows it once. The DFO stores only a hash of it, so nobody can show it to you again. If you lose it, delete it and create another.
+1. Copy the key now, all of it. It starts with `dfo_live_`, is 49 characters long, and the page shows it once. The DFO stores only a hash of it, so nobody can show it to you again. If you lose it, delete it and create another.
 
 An account holds up to five keys, for example one for each application. To revoke a key, delete it on the same page. A deleted key stops working within about a minute. A key's last use on the page runs up to a minute or so behind.
 
@@ -114,11 +114,11 @@ Leave the trailing slash off the address. [Connect your assistant](../../dfo-ai/
 
 ## Errors
 
-| Status | Code              | Meaning                                                                                                  |
-| ------ | ----------------- | -------------------------------------------------------------------------------------------------------- |
-| `401`  | `invalid_api_key` | The key is unknown or deleted. The API does not fall back to anonymous access, so fix or remove the key. |
-| `400`  | —                 | Both headers carry different values. Send one.                                                           |
-| `429`  | `rate_limited`    | The caller is over its limit. Wait for the seconds in `retry-after`, then repeat the call.               |
+| Status | Code              | Meaning                                                                                                              |
+| ------ | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `401`  | `invalid_api_key` | The key is unknown, deleted or incomplete. The API does not fall back to anonymous access, so fix or remove the key. |
+| `400`  | —                 | Both headers carry different values. Send one.                                                                       |
+| `429`  | `rate_limited`    | The caller is over its limit. Wait for the seconds in `retry-after`, then repeat the call.                           |
 
 ## Keep the key secret
 
