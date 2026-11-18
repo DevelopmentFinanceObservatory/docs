@@ -106,6 +106,34 @@ entries:
     released_on: "2026-10-14"
     provenance: provenance/ONEConversionTablesIMF
 
+  - id: one-climate-finance-files
+    title: ONE Climate Finance Files
+    description: >-
+      ONE's estimates of bilateral and multilateral climate finance by provider,
+      recipient and climate objective.
+    categories: [climate]
+    status: released
+    released_on: "2026-11-12"
+    provenance: provenance/ONEClimateFinance
+
+  - id: oecd-climate-related-development-finance
+    title: OECD Climate-related Development Finance
+    description: >-
+      Provider and recipient climate finance, as reported to the OECD.
+    categories: [climate]
+    status: released
+    released_on: "2026-11-12"
+    provenance: provenance/OECDClimateRelatedDevelopmentFinance
+
+  - id: unfccc-biennial-transparency-reports
+    title: UNFCCC Biennial Transparency Reports
+    description: >-
+      Climate finance that Parties report to the UNFCCC.
+    categories: [climate]
+    status: released
+    released_on: "2026-11-12"
+    provenance: provenance/UNFCCCBiennialTransparencyReports
+
   - id: iati
     title: International Aid Transparency Initiative (IATI)
     description: >-
@@ -144,14 +172,13 @@ entries:
     expected: "2026-Q4"
     url: https://tossd.online/
 
-  - id: one-climate-finance-files
-    title: ONE Climate Finance Files
+  - id: one-climate-finance-detailed
+    title: Detailed climate finance data
     description: >-
-      ONE's estimates of bilateral and multilateral climate finance by provider and
-      recipient.
+      ONE's climate finance estimates in more detail than provider, recipient and
+      climate objective, such as by sector or project.
     categories: [climate]
     status: under-consideration
-    url: https://data.one.org/climate-finance-files
 
   - id: oecd-total-use-multilateral-system
     title: OECD Providers' Total Use of the Multilateral System
