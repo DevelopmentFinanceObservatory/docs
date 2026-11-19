@@ -54,7 +54,7 @@ Choose the starting point that matches what you want to do.
 
 **Do I need an account?**
 
-The DFO, its tools, and its infrastructure are free to use. The MCP server and the API need no account, and anonymous calls are limited for each address. Developers who make many calls can sign in and [use an API key](build/api-keys.md), which counts calls against their account at a higher limit. For Studio you'll need an account after making five search queries. Sign in to save your work in Studio.
+The DFO, its tools, and its infrastructure are free to use. The MCP server and the API need no account, and anonymous calls are limited for each address. Developers who make many MCP calls can sign in and [use an API key](build/api-keys.md), which counts calls against their account at a higher limit. For Studio you'll need an account after making five search queries. Sign in to save your work in Studio.
 
 ## Next
 
