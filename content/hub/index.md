@@ -10,7 +10,7 @@ See the full list of datasets on the [sources page](/data/sources), and check ou
 
 ## Connect your AI assistant
 
-Connect Claude, ChatGPT, Gemini, or Le Chat to the DFO, and your assistant answers development finance questions from DFO data and names the source of each figure. Each assistant needs this server address and no account or token. An API key is optional, and [Use an API key](build/api-keys.md) says when one helps.
+Connect Claude, ChatGPT, Gemini, or Le Chat to the DFO, and your assistant answers development finance questions from DFO data and names the source of each figure. Each assistant needs this server address and no account or token.
 
 ```text
 https://developmentfinance.org/mcp
@@ -54,7 +54,7 @@ Choose the starting point that matches what you want to do.
 
 **Do I need an account?**
 
-The DFO, its tools, and its infrastructure are free to use. The MCP server and the API need no account, and anonymous calls are limited for each address. Developers who make many MCP calls can sign in and [use an API key](build/api-keys.md), which counts calls against their account at a higher limit. For Studio you'll need an account after making five search queries. Sign in to save your work in Studio.
+The DFO, its tools, and its infrastructure are free to use. The MCP server and the API need no account, and anonymous calls are limited for each address. Developers whose scripts or pipelines call the API often can sign in and [use an API key](build/api-keys.md), which counts calls against their account at a higher limit. For Studio you'll need an account after making five search queries. Sign in to save your work in Studio.
 
 ## Next
 
