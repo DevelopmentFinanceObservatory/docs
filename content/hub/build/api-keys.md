@@ -6,7 +6,7 @@ description: Create an optional DFO API key for scripts, pipelines and the SDKs,
 
 An API key is optional. The DFO API stays open to anyone without one, at a small limit for each network address. A key is for scripts, pipelines and apps that call the API often, directly or through the Python and TypeScript SDKs: calls made with a key count against your account and the key's own daily quota, and not against your network address.
 
-A key works only on the API. The MCP server and DFO Studio ignore it, and each keeps its own generous allowance for everyone.
+A key works on the API, the Datasets API included, and nowhere else. The MCP server and DFO Studio ignore it, and each keeps its own limits.
 
 ## Before you start
 
@@ -72,22 +72,27 @@ x-ratelimit-reset: 23
 
 ## Where a key works
 
-| Path                                      | Key used?                                               |
-| ----------------------------------------- | ------------------------------------------------------- |
-| `/api/v1/*`, `/openapi.json` and `/codes` | Yes                                                     |
-| `/mcp`                                    | No. The key is ignored and the call counts by address   |
-| DFO Studio                                | No. Studio keeps its own prompt allowance for each user |
+| Path                                                                                                                                               | Key used?                                                                                                                  |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `/api/v1/*`, the Datasets API's `/api/v1/datasets/*` included, and the `/api/search/*`, `/api/datasets/*` and `/api/graph/*` aliases without `/v1` | Yes                                                                                                                        |
+| `/openapi.json`                                                                                                                                    | Yes                                                                                                                        |
+| `/codes/{code}`                                                                                                                                    | Yes. The site answers `invalid_api_key`, `rate_limited` and `transient_unavailable` itself, with no key check and no count |
+| `/mcp`                                                                                                                                             | No. The key is ignored and the call counts by address                                                                      |
+| DFO Studio, `/api/v1/studio/*` included                                                                                                            | No. Studio keeps its own prompt allowance for each user                                                                    |
+
+The Datasets API's reads, such as a dataset file, can be answered from an edge cache. A read the cache answers is not counted and its key is not checked, so a deleted key can still get a cached read. A cacheable read carries no `x-ratelimit-*` headers, even when the server answered it and counted it.
 
 AI assistants connected to the MCP server need no key. [Connect your assistant](../../dfo-ai/connect.md) covers them.
 
 ## Limits
 
-| Caller | Calls a minute                                   | Calls a day                                 |
-| ------ | ------------------------------------------------ | ------------------------------------------- |
-| No key | 120, for each address                            | No daily limit                              |
-| A key  | 600, for each account, shared by all of its keys | 1,000 for each key, from 00:00 to 00:00 UTC |
+| Caller | Calls a minute                                                                | Calls a day                                 |
+| ------ | ----------------------------------------------------------------------------- | ------------------------------------------- |
+| No key | 120 on the API and 300 on the Datasets API's dataset routes, for each address | No daily limit                              |
+| A key  | 600, for each account, shared by all of its keys                              | 1,000 for each key, from 00:00 to 00:00 UTC |
 
 - All of an account's keys share the per-minute limit. More keys do not add to it.
+- The Datasets API's dataset routes, below `/api/v1/datasets/`, count calls a minute apart from the rest of the API, so a key gets 600 a minute on each. A call to `/api/v1/datasets` itself, which prepares a download, counts on the API.
 - Each key has its own daily quota, and a new key starts its day at 0. The DFO team can set a higher quota for a key, so ask if you need one.
 - A refused call still counts toward both limits. A client that retries at once stays refused longer, so wait for `retry-after`. The SDKs wait and retry for you.
 - The MCP server allows 300 calls a minute for each address, and a key does not change that.
