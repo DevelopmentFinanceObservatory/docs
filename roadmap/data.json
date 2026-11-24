@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-24T06:11:41Z",
-  "generator_commit": "04d8c5a0a4a3310662d1e985d7e5387d674c36f8",
+  "generated_at": "2026-11-24T11:30:22Z",
+  "generator_commit": "c86358a91e508ce4ed35cc9c263f22c437b58c25",
   "track": "data",
   "categories": [
     {
@@ -131,6 +131,39 @@
       "provenance": "provenance/ONEConversionTablesIMF"
     },
     {
+      "id": "one-climate-finance-files",
+      "title": "ONE Climate Finance Files",
+      "description": "ONE's estimates of bilateral and multilateral climate finance by provider, recipient and climate objective.",
+      "categories": [
+        "climate"
+      ],
+      "status": "released",
+      "released_on": "2026-11-12",
+      "provenance": "provenance/ONEClimateFinance"
+    },
+    {
+      "id": "oecd-climate-related-development-finance",
+      "title": "OECD Climate-related Development Finance",
+      "description": "Provider and recipient climate finance, as reported to the OECD.",
+      "categories": [
+        "climate"
+      ],
+      "status": "released",
+      "released_on": "2026-11-12",
+      "provenance": "provenance/OECDClimateRelatedDevelopmentFinance"
+    },
+    {
+      "id": "unfccc-biennial-transparency-reports",
+      "title": "UNFCCC Biennial Transparency Reports",
+      "description": "Climate finance that Parties report to the UNFCCC.",
+      "categories": [
+        "climate"
+      ],
+      "status": "released",
+      "released_on": "2026-11-12",
+      "provenance": "provenance/UNFCCCBiennialTransparencyReports"
+    },
+    {
       "id": "iati",
       "title": "International Aid Transparency Initiative (IATI)",
       "description": "Semi-aggregate development finance data from key providers reporting to IATI.",
@@ -174,14 +207,13 @@
       "url": "https://tossd.online/"
     },
     {
-      "id": "one-climate-finance-files",
-      "title": "ONE Climate Finance Files",
-      "description": "ONE's estimates of bilateral and multilateral climate finance by provider and recipient.",
+      "id": "one-climate-finance-detailed",
+      "title": "Detailed climate finance data",
+      "description": "ONE's climate finance estimates in more detail than provider, recipient and climate objective, such as by sector or project.",
       "categories": [
         "climate"
       ],
-      "status": "under-consideration",
-      "url": "https://data.one.org/climate-finance-files"
+      "status": "under-consideration"
     },
     {
       "id": "oecd-total-use-multilateral-system",
