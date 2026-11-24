@@ -4,7 +4,7 @@ description: Create an optional DFO API key for scripts, pipelines and the SDKs,
 
 # Use an API key
 
-An API key is optional. The DFO API stays open to anyone without one, at a small limit for each network address. A key is for scripts, pipelines and apps that call the API often, directly or through the Python and TypeScript SDKs: calls made with a key count against your account's per-minute limit and daily quota, and not against your network address.
+An API key is optional. Anyone can call the DFO API without one, at a limit for each network address. A key is for scripts, pipelines and apps that call the API often, directly or through the Python and TypeScript SDKs: calls made with a key count against your account's per-minute limit and daily quota, and not against your network address.
 
 A key works on the API, the Datasets API included, and nowhere else. The MCP server and DFO Studio ignore it, and each keeps its own limits.
 
@@ -18,7 +18,7 @@ A key works on the API, the Datasets API included, and nowhere else. The MCP ser
 1. Sign in on [developmentfinance.org](https://developmentfinance.org).
 1. Open the account menu and select **API keys**. A panel opens on the right.
 1. Select **Create API key**, enter a name for what the key is for, such as `pipeline`, and select **Create**.
-1. Copy the key now, all of it, then select **Close**. It starts with `dfo_k_`, is 52 characters long, and the panel shows it once. The DFO stores only a hash of it, so nobody can show it to you again. If you lose it, delete it and create another.
+1. Copy the key now, all of it, then select **Close**. It starts with `dfo_k_`, is 52 characters long, and the panel shows it once. The DFO stores a hash of it and its first 9 and last 4 characters, which tell your keys apart, so nobody can show you the whole key again. If you lose it, delete it and create another.
 
 An account holds up to five keys, for example one for each pipeline. The top of the panel shows a bar of the account's API calls today, all keys together, against its daily quota. Each key's card shows its name, when it was created and last used, and, for a key with a daily cap of its own, a bar of its calls today against the cap. Last use runs up to a minute or so behind.
 
@@ -49,16 +49,10 @@ Authorization: Bearer <your key>
 X-API-Key: <your key>
 ```
 
-Keep the key in an environment variable, such as `DFO_API_KEY`. This call resolves a question with a key:
+- Send the key in a header only. The server does not read a key from the query string.
+- Do not send both headers with different values. The server answers `400` with `request_invalid`.
 
-```bash
-curl -sS -i -X POST https://developmentfinance.org/api/v1/search/resolve \
-  -H "Authorization: Bearer $DFO_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"input":{"kind":"raw_text","query":"ODA disbursements from Germany to Nigeria"}}'
-```
-
-The response carries the per-minute allowance that applied to the call. With a key, `x-ratelimit-limit` is your account's limit:
+A response carries the per-minute allowance that applied to the call. With a key, `x-ratelimit-limit` is your account's limit:
 
 ```text
 HTTP/2 200
@@ -67,8 +61,14 @@ x-ratelimit-remaining: 599
 x-ratelimit-reset: 23
 ```
 
-- Send the key in a header only. The server does not read a key from the query string.
-- Do not send both headers with different values. The server answers `400` with `request_invalid`.
+This call resolves a question with the key kept in the `DFO_API_KEY` environment variable, and prints those headers:
+
+```bash
+curl -sS -i -X POST https://developmentfinance.org/api/v1/search/resolve \
+  -H "Authorization: Bearer $DFO_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"input":{"kind":"raw_text","query":"ODA disbursements from Germany to Nigeria"}}'
+```
 
 ## Where a key works
 
