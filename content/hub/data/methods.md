@@ -66,7 +66,17 @@ For an amount V in source currency S in year t, with deflator entity R, a conver
 V × (D[R, b] / D[R, t]) × X[T, b] / X[S, t]
 ```
 
-D is the recipe's US-dollar deflator, and X is the exchange rate in currency units per US dollar. At current prices the deflator term drops out and the year's own rate applies, V × X[T, t] / X[S, t].
+D is the prices of the deflator entity R expressed in US dollars: its national GDP deflator times the movement of its currency against the dollar. X is the exchange rate in currency units per US dollar. At current prices the deflator term drops out and the year's own rate applies, V × X[T, t] / X[S, t].
+
+### What a constant-price label means
+
+A converted constant-price amount carries a unit label that ends with whose prices deflate it:
+
+- `Constant 2024 Nigerian naira, donor prices` comes from the DAC recipe. The provider's deflator applies, which is the OECD's own constant-price method, and the result is converted at the base year's rate. The amount is 2024 purchasing power in each donor's prices, shown in naira at the 2024 rate.
+- `Constant 2024 Nigerian naira, recipient prices` comes from the IDS recipe. The debtor's deflator applies, so the exchange rate cancels and the amount is in the debtor's own 2024 prices.
+- `Constant 2024 Nigerian naira, national prices` comes from the IMF recipe for GDP. The economy's own deflator applies.
+
+Two amounts in one currency and base year with different price bases are different measures. Nigeria's aid from DAC2a and its debt service from the IDS are both in constant 2024 Nigerian naira, but the first is in donor prices and the second in Nigerian prices, so do not add them or compare them as like for like.
 
 ### When a conversion is refused or flagged
 
