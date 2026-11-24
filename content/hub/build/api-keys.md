@@ -4,7 +4,7 @@ description: Create an optional DFO API key for scripts, pipelines and the SDKs,
 
 # Use an API key
 
-An API key is optional. The DFO API stays open to anyone without one, at a small limit for each network address. A key is for scripts, pipelines and apps that call the API often, directly or through the Python and TypeScript SDKs: calls made with a key count against your account and the key's own daily quota, and not against your network address.
+An API key is optional. The DFO API stays open to anyone without one, at a small limit for each network address. A key is for scripts, pipelines and apps that call the API often, directly or through the Python and TypeScript SDKs: calls made with a key count against your account's per-minute limit and daily quota, and not against your network address.
 
 A key works on the API, the Datasets API included, and nowhere else. The MCP server and DFO Studio ignore it, and each keeps its own limits.
 
@@ -20,7 +20,7 @@ A key works on the API, the Datasets API included, and nowhere else. The MCP ser
 1. Select **Create API key**, enter a name for what the key is for, such as `pipeline`, and select **Create**.
 1. Copy the key now, all of it, then select **Close**. It starts with `dfo_k_`, is 52 characters long, and the panel shows it once. The DFO stores only a hash of it, so nobody can show it to you again. If you lose it, delete it and create another.
 
-An account holds up to five keys, for example one for each pipeline. Each key's card in the panel shows its name, when it was created and last used, and a bar of its API calls today against its daily quota. Last use runs up to a minute or so behind.
+An account holds up to five keys, for example one for each pipeline. The top of the panel shows a bar of the account's API calls today, all keys together, against its daily quota. Each key's card shows its name, when it was created and last used, and, for a key with a daily cap of its own, a bar of its calls today against the cap. Last use runs up to a minute or so behind.
 
 To revoke a key, delete it from its card. A deleted key stops working within about a minute. To replace a key, create a new one, move your code to it, then delete the old one.
 
@@ -86,26 +86,28 @@ AI assistants connected to the MCP server need no key. [Connect your assistant](
 
 ## Limits
 
-| Caller | Calls a minute                                                                | Calls a day                                 |
-| ------ | ----------------------------------------------------------------------------- | ------------------------------------------- |
-| No key | 120 on the API and 300 on the Datasets API's dataset routes, for each address | No daily limit                              |
-| A key  | 600, for each account, shared by all of its keys                              | 1,000 for each key, from 00:00 to 00:00 UTC |
+| Caller | Calls a minute                                                                | Calls a day                                                                |
+| ------ | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| No key | 120 on the API and 300 on the Datasets API's dataset routes, for each address | No daily limit                                                             |
+| A key  | 600, for each account, shared by all of its keys                              | 1,000 for each account, shared by all of its keys, from 00:00 to 00:00 UTC |
 
-- All of an account's keys share the per-minute limit. More keys do not add to it.
-- The Datasets API's dataset routes, below `/api/v1/datasets/`, count calls a minute apart from the rest of the API, so a key gets 600 a minute on each. A call to `/api/v1/datasets` itself, which prepares a download, counts on the API.
-- Each key has its own daily quota, and a new key starts its day at 0. The DFO team can set a higher quota for a key, so ask if you need one.
-- A refused call still counts toward both limits. A client that retries at once stays refused longer, so wait for `retry-after`. The SDKs wait and retry for you.
+- The per-minute limit and the daily quota belong to the account, and every key's calls count against both. More keys do not add to either, and deleting a key and creating another does not start the day's count again.
+- The Datasets API's dataset routes, below `/api/v1/datasets/`, count calls a minute apart from the rest of the API, so a key gets 600 a minute on each. A call to `/api/v1/datasets` itself, which prepares a download, counts on the API. Calls on both count against the one daily quota.
+- The DFO team can set a higher limit or quota for an account, so ask if you need one. The team can also give one key a daily cap of its own, below the account's quota.
+- A refused call still counts against the limit that refused it. A call refused for the per-minute limit does not count against the daily quota. A call refused for a key's own cap counts against the account's quota too, so a script that keeps calling with a capped key spends the quota the other keys share.
+- The SDKs wait and retry a call refused for the per-minute limit when `retry-after` is 60 seconds or less. When the daily quota or a key's cap is used up, they raise `QuotaExceededError` and do not retry.
 - The MCP server allows 300 calls a minute for each address, and a key does not change that.
 
 ## Errors
 
-| Status | Code              | Meaning                                                                                                                                                              |
-| ------ | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `401`  | `invalid_api_key` | The key is unknown, deleted or cut short. The server does not fall back to anonymous access, so fix or remove the key.                                               |
-| `400`  | —                 | The two headers carry different keys. Send one.                                                                                                                      |
-| `429`  | `rate_limited`    | The account is over its per-minute limit, or the key has used its daily quota. The `detail` says which. Wait for the seconds in `retry-after`, then repeat the call. |
+| Status | Code                  | Meaning                                                                                                                                                        |
+| ------ | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `401`  | `invalid_api_key`     | The key is unknown, deleted or cut short. The server does not fall back to anonymous access, so fix or remove the key.                                         |
+| `400`  | —                     | The two headers carry different keys. Send one.                                                                                                                |
+| `429`  | `rate_limited`        | The account is over its per-minute limit, or the address is, for a call without a key. Retryable: wait for the seconds in `retry-after`, then repeat the call. |
+| `429`  | `allowance_exhausted` | The account's daily quota, or the key's own cap, is used up. The `detail` says which. Not retryable: the count starts again at 00:00 UTC.                      |
 
-A refusal is a problem document with the `retry-after` and `x-ratelimit-*` headers:
+A refusal is a problem document with the `retry-after` and `x-ratelimit-*` headers. This one is a per-minute refusal:
 
 ```text
 HTTP/1.1 429 Too Many Requests
@@ -117,10 +119,10 @@ x-ratelimit-reset: 36
 
 {"type":"/codes/rate_limited","title":"Too Many Requests","status":429,
  "detail":"Too many requests: 600 per window per account. Try again in 36s.",
- "code":"rate_limited","retryable":true,"trace_id":"…"}
+ "code":"rate_limited","trace_id":"…","retryable":true}
 ```
 
-On a daily refusal, `retry-after` and `x-ratelimit-reset` give the seconds until 00:00 UTC.
+An `allowance_exhausted` refusal has `"retryable":false`. Its `retry-after` and `x-ratelimit-reset` give the seconds until 00:00 UTC, and its `x-ratelimit-limit` and `x-ratelimit-remaining` give the daily quota or cap and what is left of it.
 
 ## Keep the key secret
 
