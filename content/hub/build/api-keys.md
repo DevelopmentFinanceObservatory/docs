@@ -68,7 +68,7 @@ x-ratelimit-reset: 23
 ```
 
 - Send the key in a header only. The server does not read a key from the query string.
-- Do not send both headers with different values. The server answers `400`.
+- Do not send both headers with different values. The server answers `400` with `request_invalid`.
 
 ## Where a key works
 
@@ -102,10 +102,12 @@ AI assistants connected to the MCP server need no key. [Connect your assistant](
 
 | Status | Code                  | Meaning                                                                                                                                                        |
 | ------ | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `401`  | `invalid_api_key`     | The key is unknown, deleted or cut short. The server does not fall back to anonymous access, so fix or remove the key.                                         |
-| `400`  | —                     | The two headers carry different keys. Send one.                                                                                                                |
+| `401`  | `invalid_api_key`     | The key is unknown, deleted or cut short. Fix the key, or remove it to call without one.                                                                       |
+| `400`  | `request_invalid`     | The two headers carry different keys. Send one.                                                                                                                |
 | `429`  | `rate_limited`        | The account is over its per-minute limit, or the address is, for a call without a key. Retryable: wait for the seconds in `retry-after`, then repeat the call. |
 | `429`  | `allowance_exhausted` | The account's daily quota, or the key's own cap, is used up. The `detail` says which. Not retryable: the count starts again at 00:00 UTC.                      |
+
+A bad key is refused with `401` and the call is not served as anonymous, except in three cases. A deleted key from an address over its own per-minute limit gets `429` `rate_limited`. While the key store cannot be reached, a whole key the DFO issued is served as anonymous and counted against the address, unless the server has checked it in the last minute. A cut-short or made-up key is refused even then. The server reads an `Authorization: Bearer` value as a key only when it starts with `dfo_`, so a damaged value without that start is served as anonymous with no error. An `X-API-Key` value is always read as a key.
 
 A refusal is a problem document with the `retry-after` and `x-ratelimit-*` headers. This one is a per-minute refusal:
 
