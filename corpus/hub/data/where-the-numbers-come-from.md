@@ -49,7 +49,7 @@ Series from Data Commons' own imports, such as the World Bank's World Developmen
 
 ## How to check a figure against its source
 
-Start with the source's page on [Sources](/data/sources). It states the date the DFO downloaded the release now in the graph, the URL of the source data file, and a link to the publisher's own page for the data.
+Start with the source's page on [Sources](/data/sources). It states when the data now in the graph was last refreshed and who refreshed it (the DFO, or the Data Commons that imported it), the URL of the source data file, and a link to the publisher's own page for the data.
 
 Take a [snapshot link](../build/share.md) from /data. It records the exact version of the rows behind the figure, so you compare against the release the DFO used.
 
