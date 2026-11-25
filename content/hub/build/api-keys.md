@@ -88,10 +88,12 @@ AI assistants connected to the MCP server need no key. [Connect your assistant](
 
 ## Limits
 
-| Caller | Calls a minute                                                                                                                           | Calls a day                                                                                                                                                                                    |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| No key | 20 on the API for each address, and 300 on the Datasets API's dataset routes for each address, unless the call carries the site's cookie | 1,000 on the API and 1,000 on the Datasets API, for each holder of the DFO site's cookie or each address without it, and 5,000 on each for all calls from one address, from 00:00 to 00:00 UTC |
-| A key  | 600 on the API and 600 on the Datasets API's dataset routes, for each account, shared by all of its keys                                 | 10,000 for each account, shared by all of its keys, from 00:00 to 00:00 UTC                                                                                                                    |
+| Caller                                   | Calls a minute                                                                                           | Calls a UTC day                                    |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| No key, without the site's cookie        | 20 on the API and 300 on the Datasets API's dataset routes, for each address                             | 1,000 on each, for each address                    |
+| No key, with the site's cookie           | 120 on the API and 300 on the Datasets API's dataset routes, for each visitor                            | 1,000 on each, for each visitor                    |
+| All calls without a key from one address | 240 on the API and 500 on the Datasets API's dataset routes                                              | 5,000 on each                                      |
+| A key                                    | 600 on the API and 600 on the Datasets API's dataset routes, for each account, shared by all of its keys | 10,000 for each account, shared by all of its keys |
 
 - The per-minute limit and the daily quota belong to the account, and every key's calls count against both. More keys do not add to either, and deleting a key and creating another does not start the day's count again.
 - The Datasets API's dataset routes, below `/api/v1/datasets/`, count calls a minute apart from the rest of the API, so the account gets 600 a minute on each. A call to `/api/v1/datasets` itself, which prepares a download, counts on the API. Calls on both count against the one daily quota.
