@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-25T06:11:45Z",
-  "generator_commit": "c86358a91e508ce4ed35cc9c263f22c437b58c25",
+  "generated_at": "2026-11-25T12:14:42Z",
+  "generator_commit": "529acda391a9fb9055f42d17cb8c6f7fbd822bb5",
   "nav": [
     {
       "id": "hub",
@@ -60,6 +60,11 @@
         {
           "id": "hub/build/use-data-in-code",
           "title": "Use DFO data in your code",
+          "kind": "page"
+        },
+        {
+          "id": "hub/build/api-keys",
+          "title": "Use an API key",
           "kind": "page"
         },
         {
@@ -748,6 +753,16 @@
       "source_repo": "DevelopmentFinanceObservatory/docs",
       "source_path": "content/hub/build/use-data-in-code.md",
       "corpus_path": "corpus/hub/build/use-data-in-code.md"
+    },
+    {
+      "id": "hub/build/api-keys",
+      "path": "build/api-keys",
+      "title": "Use an API key",
+      "kind": "page",
+      "description": "Create an optional DFO API key for scripts, pipelines and the SDKs, send it with API calls, and read the limits and errors that come with it.",
+      "source_repo": "DevelopmentFinanceObservatory/docs",
+      "source_path": "content/hub/build/api-keys.md",
+      "corpus_path": "corpus/hub/build/api-keys.md"
     },
     {
       "id": "hub/data/where-the-numbers-come-from",
@@ -1457,8 +1472,8 @@
       "description": "Build a Parquet dataset from a plain-English development-finance question.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/quickstart.md",
-      "source_commit": "6cd29502ab6665d4b5ca956d8d26363dd8b22c1b",
-      "last_modified": "2026-10-23T11:57:03Z",
+      "source_commit": "5ef4e7c507f51f6485d1c90ab6ccca5a6f3071ff",
+      "last_modified": "2026-11-25T12:12:35Z",
       "corpus_path": "corpus/dfo-apis/quickstart.md"
     },
     {
@@ -1469,7 +1484,7 @@
       "description": "Understand how questions, specs, versions, StatVars, series, rows, and facets fit together.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/concepts.md",
-      "source_commit": "6cd29502ab6665d4b5ca956d8d26363dd8b22c1b",
+      "source_commit": "5ef4e7c507f51f6485d1c90ab6ccca5a6f3071ff",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/concepts.md"
     },
@@ -1481,7 +1496,7 @@
       "description": "Resolve a plain-English question into an interpretable DFO spec.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/resolve-a-question.md",
-      "source_commit": "6cd29502ab6665d4b5ca956d8d26363dd8b22c1b",
+      "source_commit": "5ef4e7c507f51f6485d1c90ab6ccca5a6f3071ff",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/resolve-a-question.md"
     },
@@ -1493,7 +1508,7 @@
       "description": "Create, retrieve, and download a versioned DFO dataset.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/get-a-dataset.md",
-      "source_commit": "6cd29502ab6665d4b5ca956d8d26363dd8b22c1b",
+      "source_commit": "5ef4e7c507f51f6485d1c90ab6ccca5a6f3071ff",
       "last_modified": "2026-10-23T11:57:03Z",
       "corpus_path": "corpus/dfo-apis/get-a-dataset.md"
     },
@@ -1505,7 +1520,7 @@
       "description": "Resolve names, inspect graph nodes, list what belongs to them, read source documentation, and read and check the graph's model.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/look-things-up.md",
-      "source_commit": "6cd29502ab6665d4b5ca956d8d26363dd8b22c1b",
+      "source_commit": "5ef4e7c507f51f6485d1c90ab6ccca5a6f3071ff",
       "last_modified": "2026-11-19T20:46:11Z",
       "corpus_path": "corpus/dfo-apis/look-things-up.md"
     },
@@ -1517,7 +1532,7 @@
       "description": "Reference for DFO API URLs, versioning, response tracing, and errors.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/conventions.md",
-      "source_commit": "6cd29502ab6665d4b5ca956d8d26363dd8b22c1b",
+      "source_commit": "5ef4e7c507f51f6485d1c90ab6ccca5a6f3071ff",
       "last_modified": "2026-11-14T21:33:01Z",
       "corpus_path": "corpus/dfo-apis/conventions.md"
     },
@@ -1529,7 +1544,7 @@
       "description": "Connect the DFO to Claude, ChatGPT, Gemini, or Le Chat so your assistant can look up development finance data. Developers can also connect Claude Code, Codex, or Gemini CLI.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/connect.md",
-      "source_commit": "aac1388120f7c9cb53a573cb01d3bb69be569f0b",
+      "source_commit": "54de0001ea0c4bbf318f637108202aedc9cd3f57",
       "last_modified": "2026-11-09T15:40:04Z",
       "corpus_path": "corpus/dfo-ai/connect.md"
     },
@@ -1541,7 +1556,7 @@
       "description": "How a question to the DFO MCP server becomes a cited answer, and the limits and refusals that bound it.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/what-you-can-ask.md",
-      "source_commit": "aac1388120f7c9cb53a573cb01d3bb69be569f0b",
+      "source_commit": "54de0001ea0c4bbf318f637108202aedc9cd3f57",
       "last_modified": "2026-11-10T23:43:13Z",
       "corpus_path": "corpus/dfo-ai/what-you-can-ask.md"
     },
