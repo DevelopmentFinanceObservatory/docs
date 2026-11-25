@@ -4,7 +4,7 @@ description: Create an optional DFO API key for scripts, pipelines and the SDKs,
 
 # Use an API key
 
-An API key is optional. Anyone can call the DFO API without one, at a limit for each network address. A key is for scripts, pipelines and apps that call the API often, directly or through the Python and TypeScript SDKs. It gives a higher per-minute limit and a daily quota of 75,000 calls: calls made with a key count against your account's per-minute limit and daily quota, and not against your network address.
+An API key is optional. Anyone can call the DFO API without one, at a limit for each network address. A key is for scripts, pipelines and apps that call the API often, directly or through the Python and TypeScript SDKs. It gives a higher per-minute limit and a daily quota of 75,000 calls: calls made with a key count against your account's per-minute limit and daily quota, and leave your network address's count alone.
 
 A key works on the API, the Datasets API included, and nowhere else. The MCP server and DFO Studio ignore it. The MCP server keeps its own limit. Studio's calls count against the address's per-minute API limit, and Studio keeps its own prompt allowance for each user.
 
@@ -105,10 +105,10 @@ AI assistants connected to the MCP server need no key. [Connect your assistant](
 | ------ | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `401`  | `invalid_api_key`     | The key is unknown, deleted or cut short. Fix the key, or remove it to call without one.                                                                                          |
 | `400`  | `request_invalid`     | The two headers carry different keys. Send one.                                                                                                                                   |
-| `429`  | `rate_limited`        | The account is over its per-minute limit, or the address is, for a call without a key. Retryable: wait for the seconds in `retry-after`, then repeat the call.                    |
-| `429`  | `allowance_exhausted` | The account's daily quota, the key's own cap, or one of the API's daily write allowances is used up. The `detail` says which. Not retryable: the count starts again at 00:00 UTC. |
+| `429`  | `rate_limited`        | The account is over its per-minute limit, or the address is, for a call without a key. Retryable. Wait for the seconds in `retry-after`, then repeat the call.                    |
+| `429`  | `allowance_exhausted` | The account's daily quota, the key's own cap, or one of the API's daily write allowances is used up. The `detail` says which. Not retryable. The count starts again at 00:00 UTC. |
 
-A bad key is refused with `401` and the call is not served as anonymous, except in three cases. A deleted key from an address over its own per-minute limit gets `429` `rate_limited`. While the key store cannot be reached, a whole key the DFO issued is served as anonymous and counted against the address, unless the server that takes the call checked it in the last minute, in which case the call is treated as that check found it. A cut-short or made-up key is refused even then. The server reads an `Authorization: Bearer` value as a key only when it starts with `dfo_`, so a damaged value without that start is served as anonymous with no error. An `X-API-Key` value is always read as a key.
+A bad key is refused with `401`, with three exceptions. A deleted key from an address over its own per-minute limit gets `429` `rate_limited`. While the key store cannot be reached, a whole key the DFO issued is served as anonymous and counted against the address, unless the server that takes the call checked it in the last minute, in which case the call is treated as that check found it. A cut-short or made-up key is refused even then. The server reads an `Authorization: Bearer` value as a key only when it starts with `dfo_`, so a damaged value without that start is served as anonymous with no error. An `X-API-Key` value is always read as a key.
 
 A refusal is a problem document with the `retry-after` and `x-ratelimit-*` headers. This one is a per-minute refusal:
 
@@ -125,7 +125,7 @@ x-ratelimit-reset: 36
  "code":"rate_limited","trace_id":"…","retryable":true}
 ```
 
-An `allowance_exhausted` refusal has `"retryable":false`. Its `retry-after` and `x-ratelimit-reset` give the seconds until 00:00 UTC. For a quota or cap refusal, `x-ratelimit-limit` and `x-ratelimit-remaining` give the daily quota or cap and what is left of it; a write-allowance refusal carries the per-minute values.
+An `allowance_exhausted` refusal has `"retryable":false`. Its `retry-after` and `x-ratelimit-reset` give the seconds until 00:00 UTC. For a quota or cap refusal, `x-ratelimit-limit` and `x-ratelimit-remaining` give the daily quota or cap and what is left of it. A write-allowance refusal carries the per-minute values.
 
 ## Keep the key secret
 
