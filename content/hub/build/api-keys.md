@@ -4,7 +4,7 @@ description: Create an optional DFO API key for scripts, pipelines and the SDKs,
 
 # Use an API key
 
-An API key is optional. Anyone can call the DFO API without one, at a limit for each network address. A key is for scripts, pipelines and apps that call the API often, directly or through the Python and TypeScript SDKs. It gives a higher per-minute limit and a fixed daily quota of 75,000 calls: calls made with a key count against your account's per-minute limit and daily quota, and not against your network address.
+An API key is optional. Anyone can call the DFO API without one, at a limit for each network address. A key is for scripts, pipelines and apps that call the API often, directly or through the Python and TypeScript SDKs. It gives a higher per-minute limit and a daily quota of 75,000 calls: calls made with a key count against your account's per-minute limit and daily quota, and not against your network address.
 
 A key works on the API, the Datasets API included, and nowhere else. The MCP server and DFO Studio ignore it. The MCP server keeps its own limit. Studio's calls count against the address's per-minute API limit, and Studio keeps its own prompt allowance for each user.
 
@@ -95,7 +95,7 @@ AI assistants connected to the MCP server need no key. [Connect your assistant](
 - The Datasets API's dataset routes, below `/api/v1/datasets/`, count calls a minute apart from the rest of the API, so the account gets 600 a minute on each. A call to `/api/v1/datasets` itself, which prepares a download, counts on the API. Calls on both count against the one daily quota.
 - The DFO team can set a higher limit or quota for an account, so ask if you need one. The team can also give one key a daily cap of its own, below the account's quota.
 - The API also sets daily allowances on writes, for each address without a key and each account with one: 100 new pinned copies (pins, exports and the pins a share makes), 10 shares and 500 card writes. Past one, the call gets `429` `allowance_exhausted`, whatever is left of the account's quota.
-- A refused call still counts against the limit that refused it. A call refused for the per-minute limit does not count against the daily quota. A call refused for a key's own cap counts against the account's quota too, so a script that keeps calling with a capped key spends the quota the other keys share.
+- A refused call still counts against the limit that refused it. A call refused for the per-minute limit does not count against the daily quota. A call refused for a key's own cap leaves the account's daily quota untouched but counts against the per-minute limit, so a script that keeps calling with a capped key can hold the account's other keys back for the rest of that minute.
 - The SDKs wait and retry a call refused for the per-minute limit when `retry-after` is 60 seconds or less. When the daily quota or a key's cap is used up, they raise `QuotaExceededError` and do not retry.
 - The MCP server allows 300 calls a minute for each address, and a key does not change that.
 
