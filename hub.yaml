@@ -27,6 +27,8 @@ nav:
         page: build/embed.md
       - title: Use DFO data in your code
         page: build/use-data-in-code.md
+      - title: Use an API key
+        page: build/api-keys.md
       - mount: dfo-apis
 
   - title: Data
