@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-25T17:30:34Z",
+  "generated_at": "2026-11-26T06:11:58Z",
   "generator_commit": "41627bc8328a52874fab3e6a34ef49376c71d19a",
   "nav": [
     {
@@ -1472,7 +1472,7 @@
       "description": "Build a Parquet dataset from a plain-English development-finance question.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/quickstart.md",
-      "source_commit": "9468ebad954128df19378093e5815a73ebc49685",
+      "source_commit": "35d1d7b8b66c5501004dee6705226111afffb121",
       "last_modified": "2026-11-25T12:12:35Z",
       "corpus_path": "corpus/dfo-apis/quickstart.md"
     },
@@ -1484,7 +1484,7 @@
       "description": "Understand how questions, specs, versions, StatVars, series, rows, and facets fit together.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/concepts.md",
-      "source_commit": "9468ebad954128df19378093e5815a73ebc49685",
+      "source_commit": "35d1d7b8b66c5501004dee6705226111afffb121",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/concepts.md"
     },
@@ -1496,7 +1496,7 @@
       "description": "Resolve a plain-English question into an interpretable DFO spec.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/resolve-a-question.md",
-      "source_commit": "9468ebad954128df19378093e5815a73ebc49685",
+      "source_commit": "35d1d7b8b66c5501004dee6705226111afffb121",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/resolve-a-question.md"
     },
@@ -1508,7 +1508,7 @@
       "description": "Create, retrieve, and download a versioned DFO dataset.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/get-a-dataset.md",
-      "source_commit": "9468ebad954128df19378093e5815a73ebc49685",
+      "source_commit": "35d1d7b8b66c5501004dee6705226111afffb121",
       "last_modified": "2026-10-23T11:57:03Z",
       "corpus_path": "corpus/dfo-apis/get-a-dataset.md"
     },
@@ -1520,8 +1520,8 @@
       "description": "Resolve names, inspect graph nodes, list what belongs to them, read source documentation, and read and check the graph's model.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/look-things-up.md",
-      "source_commit": "9468ebad954128df19378093e5815a73ebc49685",
-      "last_modified": "2026-11-25T12:46:32Z",
+      "source_commit": "35d1d7b8b66c5501004dee6705226111afffb121",
+      "last_modified": "2026-11-25T19:34:45Z",
       "corpus_path": "corpus/dfo-apis/look-things-up.md"
     },
     {
@@ -1532,7 +1532,7 @@
       "description": "Reference for DFO API URLs, versioning, response tracing, and errors.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/conventions.md",
-      "source_commit": "9468ebad954128df19378093e5815a73ebc49685",
+      "source_commit": "35d1d7b8b66c5501004dee6705226111afffb121",
       "last_modified": "2026-11-14T21:33:01Z",
       "corpus_path": "corpus/dfo-apis/conventions.md"
     },
