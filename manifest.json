@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-27T06:12:09Z",
-  "generator_commit": "9f774bc8f52221dacd8d54558181661778c97a90",
+  "generated_at": "2026-11-27T15:51:59Z",
+  "generator_commit": "4c7344877f0a5d79721509237cf89308a128e79f",
   "nav": [
     {
       "id": "hub",
@@ -1472,7 +1472,7 @@
       "description": "Build a Parquet dataset from a plain-English development-finance question.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/quickstart.md",
-      "source_commit": "c7dc0725e9ca68067e505f5b54ec1fba40ff9e9d",
+      "source_commit": "cb6869108cfbe7a55aa9539bb4d9abead2e611cc",
       "last_modified": "2026-11-25T12:12:35Z",
       "corpus_path": "corpus/dfo-apis/quickstart.md"
     },
@@ -1484,7 +1484,7 @@
       "description": "Understand how questions, specs, versions, StatVars, series, rows, and facets fit together.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/concepts.md",
-      "source_commit": "c7dc0725e9ca68067e505f5b54ec1fba40ff9e9d",
+      "source_commit": "cb6869108cfbe7a55aa9539bb4d9abead2e611cc",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/concepts.md"
     },
@@ -1496,7 +1496,7 @@
       "description": "Resolve a plain-English question into an interpretable DFO spec.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/resolve-a-question.md",
-      "source_commit": "c7dc0725e9ca68067e505f5b54ec1fba40ff9e9d",
+      "source_commit": "cb6869108cfbe7a55aa9539bb4d9abead2e611cc",
       "last_modified": "2026-10-13T15:07:58Z",
       "corpus_path": "corpus/dfo-apis/resolve-a-question.md"
     },
@@ -1508,7 +1508,7 @@
       "description": "Create, retrieve, and download a versioned DFO dataset.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/get-a-dataset.md",
-      "source_commit": "c7dc0725e9ca68067e505f5b54ec1fba40ff9e9d",
+      "source_commit": "cb6869108cfbe7a55aa9539bb4d9abead2e611cc",
       "last_modified": "2026-10-23T11:57:03Z",
       "corpus_path": "corpus/dfo-apis/get-a-dataset.md"
     },
@@ -1520,7 +1520,7 @@
       "description": "Resolve names, inspect graph nodes, list what belongs to them, read source documentation, and read and check the graph's model.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/look-things-up.md",
-      "source_commit": "c7dc0725e9ca68067e505f5b54ec1fba40ff9e9d",
+      "source_commit": "cb6869108cfbe7a55aa9539bb4d9abead2e611cc",
       "last_modified": "2026-11-25T19:34:45Z",
       "corpus_path": "corpus/dfo-apis/look-things-up.md"
     },
@@ -1532,7 +1532,7 @@
       "description": "Reference for DFO API URLs, versioning, response tracing, and errors.",
       "source_repo": "DevelopmentFinanceObservatory/apis",
       "source_path": "docs/guide/conventions.md",
-      "source_commit": "c7dc0725e9ca68067e505f5b54ec1fba40ff9e9d",
+      "source_commit": "cb6869108cfbe7a55aa9539bb4d9abead2e611cc",
       "last_modified": "2026-11-14T21:33:01Z",
       "corpus_path": "corpus/dfo-apis/conventions.md"
     },
@@ -1544,7 +1544,7 @@
       "description": "Connect the DFO to Claude, ChatGPT, Gemini, or Le Chat so your assistant can look up development finance data. Developers can also connect Claude Code, Codex, or Gemini CLI.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/connect.md",
-      "source_commit": "43e0e902a17f9676b389898aaddff6761930aa04",
+      "source_commit": "f91b184fee3cb91ebff092c7bb4821cff1c1ce8d",
       "last_modified": "2026-11-09T15:40:04Z",
       "corpus_path": "corpus/dfo-ai/connect.md"
     },
@@ -1556,7 +1556,7 @@
       "description": "How a question to the DFO MCP server becomes a cited answer, and the limits and refusals that bound it.",
       "source_repo": "DevelopmentFinanceObservatory/ai",
       "source_path": "docs/guide/what-you-can-ask.md",
-      "source_commit": "43e0e902a17f9676b389898aaddff6761930aa04",
+      "source_commit": "f91b184fee3cb91ebff092c7bb4821cff1c1ce8d",
       "last_modified": "2026-11-10T23:43:13Z",
       "corpus_path": "corpus/dfo-ai/what-you-can-ask.md"
     },
